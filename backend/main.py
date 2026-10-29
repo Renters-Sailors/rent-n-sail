@@ -1,6 +1,6 @@
 import os
 
-from authtuna import init_app, init_settings
+from authtuna import init_app, init_settings, init_app
 from fastapi import APIRouter, FastAPI
 from scalar_fastapi import add_scalar_reference
 
@@ -49,13 +49,10 @@ add_scalar_reference(app)
 def read_root():
     return {"Hello": "World"}
 
-
 @api_router.get("/health")
 def health():
     return {"status": "ok"}
 
-
 if __name__ == "__main__":  # for debugging
     import uvicorn
-
     uvicorn.run(app, host="0.0.0.0", port=8000)
