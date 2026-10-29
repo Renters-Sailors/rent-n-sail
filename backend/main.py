@@ -42,6 +42,7 @@ api_router = APIRouter()
 app.include_router(api_router)
 api_router.include_router(register_router, prefix="/register")
 api_router.include_router(login_router, prefix="/login")
+api_router.include_router(opening_hours_router)
 api_router.include_router(rental_equipment_router)
 add_scalar_reference(app)
 
