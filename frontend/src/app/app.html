@@ -1,4 +1,17 @@
-<nav>nav</nav>
+<nav>
+  <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+    Discover
+  </a>
+  <a routerLink="/contact" routerLinkActive="active">Contact</a>
+  <a
+    class="reservations"
+    routerLink="/reservations"
+    routerLinkActive="active"
+    aria-label="My reservations"
+  >
+    <span class="material-symbols-outlined" aria-hidden="true">event_upcoming</span>
+  </a>
+</nav>
 <section>
   <router-outlet />
 </section>

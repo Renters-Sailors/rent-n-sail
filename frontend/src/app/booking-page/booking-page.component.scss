@@ -1,0 +1,99 @@
+:host {
+  display: block;
+  height: 100%;
+  overflow-y: auto;
+
+  font-family: 'Google Sans Flex', sans-serif;
+}
+
+main {
+  width: min(100% - 2rem, 48rem);
+  margin: 0 auto;
+  padding: 2rem 0;
+
+  // Image top left, name and description to its right, the rest below.
+  @media (min-width: 40rem) {
+    &:has(.hero) {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      column-gap: 1.5rem;
+
+      h1 {
+        align-self: end;
+        margin-top: 0;
+      }
+
+      > p:not(.confirmation) {
+        align-self: start;
+      }
+
+      form,
+      .confirmation {
+        grid-column: 1 / -1;
+        margin-top: 1.5rem;
+      }
+    }
+  }
+}
+
+.hero {
+  position: relative;
+  grid-row: span 2;
+
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 0.65rem;
+}
+
+form {
+  display: grid;
+  gap: 1rem;
+}
+
+fieldset {
+  display: grid;
+  gap: 0.5rem;
+
+  margin: 0;
+  padding: 1rem;
+  border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+  border-radius: 0.65rem;
+
+  label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    strong {
+      margin-left: auto;
+    }
+  }
+}
+
+label {
+  display: grid;
+  gap: 0.25rem;
+}
+
+input {
+  font: inherit;
+}
+
+button {
+  padding: 0.8rem 1rem;
+  border: 0;
+  border-radius: 0.65rem;
+
+  color: #fff;
+  font: inherit;
+  font-size: 1.1rem;
+  font-weight: 700;
+
+  background: #168447;
+
+  cursor: pointer;
+}
+
+a {
+  color: #168447;
+}

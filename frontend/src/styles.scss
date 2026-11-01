@@ -3,3 +3,67 @@ body {
   margin: 0;
   color-scheme: light dark;
 }
+
+// No vertical scroll chaining, bounce or pull-to-refresh, including inner scroll
+// areas. Horizontal stays default so trackpad swipe back/forward keeps working.
+* {
+  overscroll-behavior-y: none;
+}
+
+// View transitions run on every navigation, but only discover ↔ booking ones get
+// the `rental-image` type (see app.config.ts). Everything else swaps instantly.
+:root:not(:active-view-transition-type(rental-image)) {
+  &::view-transition-group(*),
+  &::view-transition-old(*),
+  &::view-transition-new(*) {
+    animation: none;
+  }
+}
+
+// Discover ↔ booking: the photo (`rental-<id>`) moves into place while the rest of
+// the page fades out, then the new page fades in.
+:root:active-view-transition-type(rental-image) {
+  &::view-transition-group(*.rental-image) {
+    animation-duration: 350ms;
+  }
+
+  // Only the old snapshot (always loaded) is shown while moving; the new one fades
+  // in over the last 100ms, so the two crops never show as a ghost.
+  &::view-transition-old(*.rental-image),
+  &::view-transition-new(*.rental-image) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    mix-blend-mode: normal;
+  }
+
+  &::view-transition-old(*.rental-image) {
+    animation: none;
+  }
+
+  &::view-transition-new(*.rental-image) {
+    animation: 100ms ease-in 250ms both view-fade-in;
+  }
+
+  &::view-transition-old(root),
+  &::view-transition-old(*.fade) {
+    animation: 150ms ease-out both view-fade-out;
+  }
+
+  &::view-transition-new(root),
+  &::view-transition-new(*.fade) {
+    animation: 200ms ease-in 150ms both view-fade-in;
+  }
+}
+
+@keyframes view-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes view-fade-in {
+  from {
+    opacity: 0;
+  }
+}

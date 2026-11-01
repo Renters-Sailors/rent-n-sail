@@ -1,0 +1,42 @@
+<main>
+  <h1>Contact us</h1>
+
+  <section aria-labelledby="contact-business">
+    <h2 id="contact-business">{{ business.name }}</h2>
+    <address>
+      {{ business.street }}<br />
+      {{ business.postalCode }} {{ business.city }}<br />
+      {{ business.country }}<br />
+      <a [href]="telHref(business.phone)">{{ business.phone }}</a
+      ><br />
+      <a [href]="'mailto:' + business.email">{{ business.email }}</a>
+    </address>
+  </section>
+
+  <section aria-labelledby="contact-hours">
+    <h2 id="contact-hours">Opening hours</h2>
+    <dl>
+      @for (entry of openingHours; track entry.days) {
+        <dt>{{ entry.days }}</dt>
+        <dd>{{ entry.hours }}</dd>
+      }
+    </dl>
+  </section>
+
+  <section aria-labelledby="contact-people">
+    <h2 id="contact-people">Contact people</h2>
+    <ul>
+      @for (person of people; track person.email) {
+        <li>
+          <h3>{{ person.name }}</h3>
+          <p>{{ person.role }}</p>
+          <address>
+            <a [href]="telHref(person.phone)">{{ person.phone }}</a
+            ><br />
+            <a [href]="'mailto:' + person.email">{{ person.email }}</a>
+          </address>
+        </li>
+      }
+    </ul>
+  </section>
+</main>

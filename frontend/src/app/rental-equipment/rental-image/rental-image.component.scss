@@ -1,0 +1,9 @@
+// No box of its own, so the image fills the parent's positioned box.
+:host {
+  display: contents;
+}
+
+img {
+  object-fit: cover;
+  view-transition-class: rental-image;
+}

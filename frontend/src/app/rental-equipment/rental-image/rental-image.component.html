@@ -1,0 +1,10 @@
+@if (item(); as item) {
+  <img
+    [ngSrc]="item.slug"
+    [fill]="true"
+    [priority]="priority()"
+    [alt]="item.name"
+    [sizes]="sizes()"
+    [style.view-transition-name]="'rental-' + item.id"
+  />
+}

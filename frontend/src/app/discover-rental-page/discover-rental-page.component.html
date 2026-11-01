@@ -1,13 +1,7 @@
-<section>
-  @for (item of equipment; track item.name) {
+<section #scroller>
+  @for (item of equipment.value(); track item.id) {
     <article>
-      <img
-        [ngSrc]="item.slug"
-        [fill]="true"
-        [priority]="$index < 3"
-        [alt]="item.name"
-        sizes="100vw"
-      />
+      <app-rental-image [id]="item.id" [priority]="$index < 3" />
       <div class="rental-content">
         <main>
           <h2>{{ item.name }}</h2>
@@ -35,7 +29,13 @@
               <strong>{{ item.hourlyRate * 8 * 0.5 | currency: 'USD' }}</strong>
             </li>
           </ul>
-          <button type="button" [attr.aria-label]="'Book ' + item.name + ' now'">Book now!</button>
+          <button
+            type="button"
+            [routerLink]="['/', item.id, item.slug]"
+            [attr.aria-label]="'Book ' + item.name + ' now'"
+          >
+            Book now!
+          </button>
         </aside>
       </div>
     </article>

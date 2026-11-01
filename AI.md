@@ -803,3 +803,101 @@
 
 - AI assistance: OpenAI GPT-5.6 Terra reproduced the FastAPI CLI error, identified that the IDE configuration and contributor command omitted the application path, and added the backend `main.py` path to both commands.
 - Author attribution: `@Buzeqq` (verified with `gh api user`).
+
+## 2026-10-31 — Rental discovery page SCSS simplification
+
+- AI assistance: Claude Opus 5.5 simplified `discover-rental-page.component.scss` without changing its look. It flattened the nesting, removed declarations that only restated defaults or the global Material Symbols class, dropped unused font variation axes, the unused `small` rule and the unused Londrina Sketch font, and merged related properties into shorthands. It then reordered and grouped the properties by hand (positioning, layout, box, typography, visuals, interaction), because oxfmt 0.74 cannot sort CSS properties.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+
+## 2026-11-01 — Contact page and app navigation
+
+- AI assistance: Claude Opus 5.5 added a standalone `ContactPageComponent` (`frontend/src/app/contact-page/`) with mock business details, opening hours and two contact people, rendered with `address`, `tel:`/`mailto:` links and a definition list. It registered a `contact` route next to the default rental discovery route and replaced the placeholder `<nav>` in the app root with `routerLink`/`routerLinkActive` links to both pages, keeping the flex layout so the discovery page still fills the remaining viewport. At the user's request, the active link is marked only with an underline (no bold), so the text does not shift.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Verification: `pnpm exec ng build` and `pnpm exec eslint .` pass; files formatted with oxfmt. Not checked in a browser.
+
+## 2026-11-01 — Rental discovery page SCSS nesting
+
+- AI assistance: Claude Opus 5.5 grouped the rules in `discover-rental-page.component.scss` with native CSS nesting that follows the template structure: `img` under `article`, `h2`/`p` under `main` (with `.capacity` as `&.capacity` on `p`), and `ul`/`li`/`strong`/`button` under `.booking-panel`. Declarations are unchanged.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Verification: `pnpm exec ng build` passes and oxfmt reports the file as formatted. Not checked in a browser.
+
+## 2026-11-01 — Rental discovery page dotted overlay
+
+- AI assistance: Claude Opus 5.5 added a black dot pattern (`radial-gradient`, 1px dots on a 6px grid at 60% opacity) as an extra background layer on the blurred gradient overlay (`article::before`) in `discover-rental-page.component.scss`. The existing mask makes the dots fade in together with the blur, from transparent at the top to full at the bottom. This is an experiment the user asked to try.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Verification: `pnpm exec ng build` passes; file formatted with oxfmt. Not checked in a browser.
+- Follow-up: at the user's request, Claude Opus 5.5 removed `backdrop-filter: blur(8px)` from the overlay so the user can judge whether the dots and gradient are enough without the blur. Not checked in a browser.
+- Follow-up: at the user's request, Claude Opus 5.5 changed the overlay mask to `linear-gradient(transparent, #000 50%)`, so the dots reach full strength halfway up the overlay instead of only at the bottom. Not checked in a browser.
+- Follow-up: at the user's request, Claude Opus 5.5 brought the blur back, tried 16px, and settled on `backdrop-filter: blur(10px)` (was 8px). Not checked in a browser.
+
+## 2026-11-01 — Rental discovery page scroll progress bar
+
+- AI assistance: Claude Opus 5.5 added a CSS scroll-driven progress bar to `discover-rental-page.component.scss`, with no fallback, as the user asked. The scrolling `section` defines a named `scroll-timeline` (`--discover-scroll`), `:host` lifts it with `timeline-scope`, and a 4px orange (`#ff8c00`) `:host::before` bar at the top scales from 0 to full width as the section scrolls to its end. No template change was needed. It also added `.claude/launch.json` with a `frontend` dev server entry, used to check the bar in the browser.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Verification: `pnpm exec ng build` passes; file formatted with oxfmt. In Chromium 152 the bar's scale follows the scroll (50% → `0.5`, end → `1`), and a screenshot at 30% scroll shows the bar about 30% wide.
+
+## 2026-11-01 — Book button hover border
+
+- AI assistance: Claude Opus 5.5 removed the `translateY(-1px)` hover lift from the "Book now!" button in `discover-rental-page.component.scss`, so the button no longer moves on hover. As a proposal, it added an animated hover border: the button always has a 3px transparent border (padding reduced by 3px to keep the original size), and on hover a `conic-gradient` streak (orange, white, orange over the brand green) spins around it. The streak is driven by a registered `@property --book-border-angle` animated from 0 to 360deg every 1.5s.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Verification: `pnpm exec ng build` passes; file formatted with oxfmt. In the browser pane the button keeps the same size and position on hover (352 × 47.6px), and the border angle animates.
+
+## 2026-11-01 — Keep the discovery page alive across navigation
+
+- AI assistance: Claude Opus 5.5 added `KeepAliveRouteReuseStrategy` (`frontend/src/app/keep-alive-route-reuse-strategy.ts`), a `BaseRouteReuseStrategy` subclass that detaches and stores the component of any route with `data: { keepAlive: true }`, and reattaches the same instance when the user comes back. It marked the discovery route with `keepAlive` and provided the strategy as `RouteReuseStrategy` in `app.config.ts`.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Verification: `pnpm exec ng build` and eslint pass; files formatted with oxfmt. In the browser pane, navigating Discover → Contact → Discover returns the same `app-discover-rental-page` element. The section's scroll position resets to the top, because the browser drops it while the element is out of the document.
+
+## 2026-11-01 — Window scrolling for built-in scroll restoration
+
+- AI assistance: Claude Opus 5.5 moved the discovery page's scrolling from its inner `section` to the document, so Angular's built-in `withInMemoryScrolling({ scrollPositionRestoration: 'enabled' })` (added in `app.config.ts`) can restore it. The user asked for no hand-written scroll code. Changes:
+  - `styles.scss` defines `--nav-height` (2.75rem) and applies `scroll-snap-type: y mandatory` with `scroll-padding-top` to `html:has(app-discover-rental-page)`, so only the discovery page snaps.
+  - `app.scss` makes the shell `min-height: 100svh` instead of a fixed height and makes the nav a sticky bar of `--nav-height` with a `Canvas` background.
+  - `discover-rental-page.component.scss` drops the section's overflow, snap and named timeline. Articles are `100svh - --nav-height` tall, and the progress bar is `position: fixed` under the nav and driven by `scroll(root)`.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Verification: `pnpm exec ng build` and eslint pass; files formatted with oxfmt. In the browser pane: scroll to the 4th rental → Contact (starts at top) → browser Back returns to the 4th rental at 2172px with the bar at 21%. As Angular designs it, clicking the Discover nav link scrolls to the top instead of restoring.
+- Follow-up: the user found the window-scroll setup too complex for what it gave, since it only restored on browser Back and not when clicking the Discover link. At the user's request, Claude Opus 5.5 reverted all of it (`styles.scss`, `app.scss`, the discovery SCSS and `withInMemoryScrolling`) back to the section-based scrolling. Instead, `DiscoverRentalPageComponent` now listens to router events: on `NavigationStart` it saves the `#scroller` section's `scrollTop` while the section is still in the document, and on `NavigationEnd` it puts it back once the kept-alive page is reattached. Verified in the browser pane: scroll to the 5th rental → Contact → click Discover returns to the 5th rental (2896px), with the progress bar at 29%. `ng build` and eslint pass.
+
+## 2026-11-01 — Router wrapper background
+
+- AI assistance: Claude Opus 5.5 gave the `section` around `<router-outlet>` in `app.scss` a background of `color-mix(in srgb, Canvas, CanvasText 5%)`. This sets the contact page slightly apart from the nav in both light and dark mode, using system colors with no new tokens.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Verification: checked the contact page in the browser pane in dark and light mode; the content area is slightly lighter (dark) or greyer (light) than the nav.
+
+## 2026-11-01 — My reservations page and nav icon
+
+- AI assistance: Claude Opus 5.5 generated `MyReservationsPageComponent` with `ng generate component my-reservations-page --skip-tests` (no spec, per AGENTS.md), so it currently shows the CLI placeholder. It added a `reservations` route titled "My reservations — Rent'n'Sail" and an `event_upcoming` Material Symbols icon link (`aria-label="My reservations"`) pinned to the right of the nav with `margin-left: auto`. It also added `event_upcoming` to the `icon_names` subset in `index.html`, because the font only downloads the icons listed there.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Verification: `pnpm exec ng build` and eslint pass; files formatted with oxfmt. In the browser pane the icon shows in the top-right corner and clicking it opens `/reservations`.
+
+## 2026-11-01 — Mock booking page at /:id/:slug
+
+- AI assistance: Claude Opus 5.5 added a mock booking page for a single rental item.
+  - Moved the equipment list out of `DiscoverRentalPageComponent` into a shared `frontend/src/app/rental-equipment.ts`. It gives each item a numeric `id` (1–15) and adds `findRentalEquipment`, the three rental durations and a `rentalPrice` helper.
+  - Generated `BookingPageComponent` with `ng generate component booking-page --skip-tests`. It shows the item's photo, name and description and a mock form (duration radios with prices, date, start time, people within the item's capacity). Submitting only shows a "mock booking — nothing was reserved" notice. Unknown ids show "Equipment not found".
+  - Routes: `:id/:slug` renders the page with a title resolver ("Book <name> — Rent'n'Sail"). `:id` uses a `redirectTo` function that adds the slug (`/3` → `/3/sailboat`) and sends unknown ids to `/`. The `:id` param reaches the component as an input through `withComponentInputBinding()`.
+  - The discovery page's "Book now!" button now navigates to `/<id>/<slug>` with `routerLink`.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Verification: `pnpm exec ng build` and eslint pass; files formatted with oxfmt. In the browser pane: `/3` redirects to `/3/sailboat`; Book now on the 2nd item opens `/2/stand-up-paddleboard`; choosing Full day updates the button to $80.00; submitting shows the mock notice; `/99` redirects home. A wrong slug for a valid id (e.g. `/3/kayak`) is not corrected.
+
+## 2026-11-01 — Rental equipment service with a resource signal
+
+- AI assistance: Claude Opus 5.5 generated `RentalEquipmentService` with `ng generate service rental-equipment/rental-equipment --skip-tests`, using Angular 22's auto-provided `@Service()` decorator. It moved the data file next to it as `rental-equipment/rental-equipment.ts`, which keeps the types, mock data, durations and `rentalPrice`.
+  - The service exposes `equipment = resource({ loader, defaultValue: [] })`. The loader is a mock `Promise` to be swapped for an HTTP call later. An async `find(id)` serves places that can't read signals.
+  - The discovery page reads `equipment.value()` (now tracked by `id`). The booking page computes its item from the same resource and shows "Equipment not found" only once loading is done.
+  - The `:id` redirect function and the booking title resolver are now async and use `inject(RentalEquipmentService).find(...)`.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Verification: `pnpm exec ng build` and eslint pass; files formatted with oxfmt. In the browser pane, `/5` → `/5/canoe`, the discovery page shows all 15 items, and Book now on the 7th opens `/7/pontoon-boat`. Server-rendered HTML includes all 15 articles on `/` and the "Book Sailboat" heading and title on `/3/sailboat`; `/3` and `/99` get server 302 redirects.
+- Follow-up: at the user's request, Claude Opus 5.5 laid out the booking page header as a two-column grid from 40rem up: the image (spanning two rows) top left, the name and description stacked to its right, and the form or confirmation full width below with 1.5rem of space. The grid applies only when the image exists (`main:has(.hero)`), so "Equipment not found" is unaffected, and narrow screens keep the single column. The image `sizes` were updated to match. Checked in the browser pane at desktop and mobile widths; `ng build` passes.
+
+## 2026-11-01 — Image view transition, rental image component, overscroll
+
+- AI assistance: Claude Opus 5.5 added a shared-element view transition for rental photos between the discovery and booking pages.
+  - Turned on Angular's `withViewTransitions({ skipInitialTransition: true })`. The skip option stops the browser aborting a transition on the first load ("Transition was aborted because of invalid state").
+  - At the user's request, generated `RentalImageComponent` (`rental-equipment/rental-image/`) with `ng generate component ... --skip-tests`. It takes the item `id` (plus optional `priority` and `sizes`), looks the item up in `RentalEquipmentService`, and renders only the `NgOptimizedImage` fill `<img>` with `view-transition-name: rental-<id>` and `view-transition-class: rental-image`. Its host is `display: contents`, so the image still fills the parent's positioned box. Both pages now use it instead of their own `<img>`, and their duplicated image rules were removed.
+  - `styles.scss` keeps the morphing snapshots `object-fit: cover` (`::view-transition-old/new(*.rental-image)`) so they don't stretch.
+  - At the user's request, `styles.scss` sets `overscroll-behavior: none` on every element (`*`), so neither the page nor inner scroll areas bounce, chain scroll or pull to refresh. Follow-up: narrowed to `overscroll-behavior-y: none` so the macOS trackpad swipe back/forward (horizontal overscroll) keeps working.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Verification: `pnpm exec ng build` and eslint pass; files formatted with oxfmt. In the browser pane, Book now runs a view transition with `::view-transition-group(rental-1)` / `(rental-3)` morphing into the booking image; a fresh load logs no errors; computed `overscroll-behavior-y` is `none` on `html`, `body` and the discovery list. During testing, transitions in the browser pane aborted whenever the pane had not drawn a frame yet; this was a testing artifact, not an app bug.
+- Follow-up (view transition looked broken): pausing the transition halfway showed the old and new pages crossfading on top of each other, the discovery card text disappearing under the photo, and the photo doubled because its two snapshots kept different widths. Claude Opus 5.5 changed the transition in `styles.scss`: the old page (`root` and anything with `view-transition-class: fade`) fades out over 150ms, then the new page fades in over 200ms, while the photo group morphs over 350ms. Both photo snapshots are now `width/height: 100%; object-fit: cover`. The discovery card text (`.rental-content`) gets `view-transition-name: match-element` with class `fade`, so it fades out above the photo. The nav has `view-transition-name: site-nav` so it stays still. Checked by pausing the transition at 75, 175 and 300ms in the browser pane. Because the two pages crop the photo differently (full screen vs 16:9), a slight ghost remains while the two snapshots crossfade.
+- Follow-up (transitions only between discover and booking, no photo ghost): Claude Opus 5.5 marked the discovery and booking routes with `data: { rentalImageTransition: true }`. `withViewTransitions`' `onViewTransitionCreated` hook now adds the view transition type `rental-image` when both the leaf `from` and `to` routes have that flag. Skipping other transitions with `transition.skipTransition()` was tried first; it worked, but Angular logged `AbortError: Transition was skipped` in dev mode on every other navigation, so `styles.scss` instead sets `animation: none` on all view-transition pseudo-elements unless `:active-view-transition-type(rental-image)` matches, and scopes the existing fade and morph rules to that type. To remove the ghost, the old photo snapshot (always loaded) is shown unanimated while it moves, and the new snapshot only fades in over the last 100ms. Verified in the browser pane: discover → booking has type `rental-image`, with the photo group (350ms) and root fades (150/200ms), and a single clean photo when paused at 175ms; booking → contact has no type and no animations; no console errors.

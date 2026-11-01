@@ -1,0 +1,62 @@
+<main>
+  @if (item(); as item) {
+    <div class="hero">
+      <app-rental-image
+        [id]="item.id"
+        priority
+        sizes="(min-width: 48rem) 24rem, (min-width: 40rem) 50vw, 100vw"
+      />
+    </div>
+
+    <h1>Book {{ item.name }}</h1>
+    <p>{{ item.description }}</p>
+
+    @if (booked()) {
+      <p class="confirmation" role="status">
+        This is a mock booking — nothing was reserved. <a routerLink="/">Back to discover</a>
+      </p>
+    } @else {
+      <form (submit)="$event.preventDefault(); booked.set(true)">
+        <fieldset>
+          <legend>Duration</legend>
+          @for (option of durations; track option.hours) {
+            <label>
+              <input
+                type="radio"
+                name="duration"
+                [checked]="option === duration()"
+                (change)="duration.set(option)"
+              />
+              <span>{{ option.label }}</span>
+              <strong>{{ price(item, option) | currency: 'USD' }}</strong>
+            </label>
+          }
+        </fieldset>
+
+        <label>
+          Date
+          <input type="date" required [min]="today" />
+        </label>
+        <label>
+          Start time
+          <input type="time" required value="10:00" />
+        </label>
+        <label>
+          People
+          <input
+            type="number"
+            required
+            [min]="item.capacity.min"
+            [max]="item.capacity.max"
+            [value]="item.capacity.min"
+          />
+        </label>
+
+        <button type="submit">Book for {{ price(item, duration()) | currency: 'USD' }}</button>
+      </form>
+    }
+  } @else if (!equipment.isLoading()) {
+    <h1>Equipment not found</h1>
+    <p><a routerLink="/">Back to discover</a></p>
+  }
+</main>
