@@ -26,7 +26,7 @@ Vercel's Angular preset would deploy only the static browser files. This app als
 
 - [`config.json`](https://vercel.com/docs/build-output-api/configuration) has the routes. `handle: filesystem` serves a matching static file first, and every other request goes to the `ssr` function.
 - [`functions/ssr.func/.vc-config.json`](https://vercel.com/docs/build-output-api/primitives) configures that function:
-  - the Node.js 24 runtime, which must match `devEngines.runtime` in `../package.json`;
+  - the Node.js 26 runtime, which must match `devEngines.runtime` in `../package.json`;
   - the handler, `server/server.mjs`;
   - Vercel's Node.js launcher;
   - streamed responses.
