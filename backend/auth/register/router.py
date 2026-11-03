@@ -6,10 +6,12 @@ from authtuna.helpers import create_session_and_set_cookie
 from authtuna.integrations import auth_service
 from fastapi import APIRouter, Header, HTTPException, Request, Response
 
+from auth.display_name import display_name, unique_username
 from auth.passkey import (
     PASSKEY_FLOW_USERNAME_SESSION_KEY,
     PASSKEY_REGISTER_CHALLENGE_SESSION_KEY,
     verify_registration,
+    without_large_blob,
 )
 from auth.register.requests import (
     PasskeyRegistrationCompleteRequest,
@@ -26,12 +28,11 @@ async def register_init(
     request: Request,
 ) -> dict[str, object]:
     """Registration options for a new account. Changes nothing but the session, so the
-    browser can ask for them ahead of the click; the account is created on complete."""
+    browser can ask for them ahead of the click; the account is created on complete.
+    Names needn't be unique: each account is told apart by its own passkey."""
     username = payload.username.strip()
     if not username:
         raise HTTPException(422, "A username is required to register.")
-    if await auth_service.users.get_by_username(username):
-        raise HTTPException(409, "That username is taken. Try another.")
 
     # Only for the authenticator; login finds the account by credential id instead.
     user_handle = secrets.token_urlsafe(24)
@@ -41,7 +42,7 @@ async def register_init(
     request.session[PASSKEY_REGISTER_CHALLENGE_SESSION_KEY] = challenge
     request.session[PASSKEY_FLOW_USERNAME_SESSION_KEY] = username
     logger.info("Passkey registration options generated")
-    return options
+    return without_large_blob(options)
 
 
 @router.post("/complete")
@@ -70,15 +71,14 @@ async def register_complete(
 
     try:
         user, _ = await auth_service.signup(
-            username=username,
+            username=unique_username(username),
             email=f"{secrets.token_urlsafe(24)}@passkey.rent-n-sail.invalid",
             password=secrets.token_urlsafe(48),
             ip_address=request.state.user_ip_address,
         )
     except Exception as error:
-        # Most likely taken between begin and complete.
         logger.exception("Passkey registration signup failed", exc_info=error)
-        raise HTTPException(409, "That username is taken. Try another.") from None
+        raise HTTPException(500, "Couldn't create the account. Try again.") from None
 
     try:
         await auth_service.passkeys.save_new_credential(
@@ -93,4 +93,4 @@ async def register_complete(
         raise HTTPException(400, "Passkey registration failed.") from None
 
     logger.info("Passkey registration succeeded")
-    return {"username": user.username}
+    return {"username": display_name(user)}

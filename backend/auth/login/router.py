@@ -5,8 +5,13 @@ from authtuna.helpers import create_session_and_set_cookie
 from authtuna.integrations import auth_service
 from fastapi import APIRouter, HTTPException, Request, Response
 
+from auth.display_name import display_name
 from auth.login.requests import PasskeyLoginRequest
-from auth.passkey import PASSKEY_AUTH_CHALLENGE_SESSION_KEY, verify_authentication
+from auth.passkey import (
+    PASSKEY_AUTH_CHALLENGE_SESSION_KEY,
+    verify_authentication,
+    without_large_blob,
+)
 
 router = APIRouter(prefix="/passkey")
 logger = logging.getLogger(__name__)
@@ -17,7 +22,7 @@ async def login_init(request: Request) -> dict[str, object]:
     logger.info("Starting passkey login")
     options, challenge = auth_service.passkeys.core.generate_authentication_options()
     request.session[PASSKEY_AUTH_CHALLENGE_SESSION_KEY] = challenge
-    return options
+    return without_large_blob(options)
 
 
 @router.post("/complete")
@@ -62,4 +67,4 @@ async def login_complete(
         user, request, response, auth_service.db_manager.get_db()
     )
     logger.info("Passkey login succeeded")
-    return {"username": user.username}
+    return {"username": display_name(user)}

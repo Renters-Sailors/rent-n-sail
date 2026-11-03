@@ -7,6 +7,8 @@ from authtuna.integrations.fastapi_integration import get_current_user_optional
 from fastapi import APIRouter, Depends, Request, Response
 from pydantic import BaseModel
 
+from auth.display_name import display_name
+
 router = APIRouter(prefix="/session")
 
 
@@ -19,7 +21,7 @@ async def read_session(
     user: Annotated[User | None, Depends(get_current_user_optional)],
 ) -> SessionUser | None:
     """The signed-in user, or null, so signed-out visitors don't get an error."""
-    return SessionUser(username=user.username) if user else None
+    return SessionUser(username=display_name(user)) if user else None
 
 
 @router.delete("", status_code=204)

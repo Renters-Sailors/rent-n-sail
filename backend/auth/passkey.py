@@ -61,3 +61,15 @@ def verify_authentication(
     return auth_service.passkeys.core.verify_authentication(
         response["response"], session_challenge, credential
     )
+
+
+def without_large_blob(options: dict[str, object]) -> dict[str, object]:
+    """Drops AuthTuna's largeBlob extension, which the app doesn't use. Safari rejects
+    `{"read": true}` before showing any prompt ("Both read and write may not be present
+    together in largeBlob")."""
+    extensions = options.get("extensions")
+    if isinstance(extensions, dict):
+        options["extensions"] = {
+            name: value for name, value in extensions.items() if name != "largeBlob"
+        }
+    return options
