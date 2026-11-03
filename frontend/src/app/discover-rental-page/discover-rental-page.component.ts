@@ -1,13 +1,21 @@
-import { CurrencyPipe, I18nPluralPipe } from '@angular/common';
+import { CurrencyPipe, I18nPluralPipe, KeyValuePipe } from '@angular/common';
 import { Component, ElementRef, inject, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, NavigationStart, Router, RouterLink } from '@angular/router';
+import { rentalDurations } from '../rental-equipment/rental-equipment';
 import { RentalEquipmentService } from '../rental-equipment/rental-equipment.service';
 import { RentalImageComponent } from '../rental-equipment/rental-image/rental-image.component';
 import { FormatRangePipe } from './format-range.pipe';
 
 @Component({
-  imports: [CurrencyPipe, FormatRangePipe, I18nPluralPipe, RentalImageComponent, RouterLink],
+  imports: [
+    CurrencyPipe,
+    FormatRangePipe,
+    I18nPluralPipe,
+    KeyValuePipe,
+    RentalImageComponent,
+    RouterLink,
+  ],
   selector: 'app-discover-rental-page',
   styleUrl: './discover-rental-page.component.scss',
   templateUrl: './discover-rental-page.component.html',
@@ -30,6 +38,7 @@ export class DiscoverRentalPageComponent {
   }
 
   protected readonly capacityNoun = { '=1': 'person', other: 'people' };
+  protected readonly durations = rentalDurations;
 
   protected readonly equipment = inject(RentalEquipmentService).equipment;
 }

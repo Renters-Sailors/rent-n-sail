@@ -16,7 +16,7 @@
   <section aria-labelledby="contact-hours">
     <h2 id="contact-hours">Opening hours</h2>
     <dl>
-      @for (entry of openingHours; track entry.days) {
+      @for (entry of openingHours(); track entry.days) {
         <dt>{{ entry.days }}</dt>
         <dd>{{ entry.hours }}</dd>
       }

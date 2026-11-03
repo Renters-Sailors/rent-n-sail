@@ -97,8 +97,8 @@ async def register_complete(
         request.session.pop(PASSKEY_FLOW_USER_ID_SESSION_KEY, None)
     except Exception as error:
         logger.exception("Passkey registration verification failed", exc_info=error)
-        auth_service.users.delete(user_id)  # clean up failed registration process
+        await auth_service.users.delete(user_id)  # clean up failed registration process
         raise HTTPException(400, "Passkey registration failed.") from None
 
     logger.info("Passkey registration succeeded")
-    return {"status": "registered"}
+    return {"username": user.username}

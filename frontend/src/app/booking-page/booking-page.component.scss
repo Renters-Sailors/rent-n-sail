@@ -10,35 +10,35 @@ main {
   width: min(100% - 2rem, 48rem);
   margin: 0 auto;
   padding: 2rem 0;
+}
 
-  // Image top left, name and description to its right, the rest below.
+// Image top left, name and description to its right, the rest below.
+article {
   @media (min-width: 40rem) {
-    &:has(.hero) {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      column-gap: 1.5rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: 1.5rem;
+
+    header {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
 
       h1 {
-        align-self: end;
         margin-top: 0;
       }
+    }
 
-      > p:not(.confirmation) {
-        align-self: start;
-      }
-
-      form,
-      .confirmation {
-        grid-column: 1 / -1;
-        margin-top: 1.5rem;
-      }
+    form {
+      grid-column: 1 / -1;
+      margin-top: 1.5rem;
     }
   }
 }
 
 .hero {
   position: relative;
-  grid-row: span 2;
+  margin: 0;
 
   aspect-ratio: 16 / 9;
   overflow: hidden;
@@ -48,6 +48,9 @@ main {
 form {
   display: grid;
   gap: 1rem;
+
+  // Radios, and the selected day/time in the native pickers.
+  accent-color: #168447;
 }
 
 fieldset {
@@ -77,6 +80,66 @@ label {
 
 input {
   font: inherit;
+
+  &:disabled {
+    opacity: 0.5;
+  }
+}
+
+.error {
+  // Always one line tall, so a message appearing doesn't move the form.
+  min-height: 1lh;
+  color: #e5484d;
+}
+
+.capacity {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+// Quantity counter and Book button joined into one bar.
+.actions {
+  display: flex;
+  gap: 2px;
+
+  > button {
+    flex: 1;
+    border-radius: 0 0.65rem 0.65rem 0;
+
+    // While the booking saves.
+    &:disabled {
+      opacity: 0.7;
+      cursor: progress;
+    }
+  }
+}
+
+.counter {
+  display: flex;
+  align-items: center;
+
+  color: #fff;
+  font-weight: 700;
+
+  background: #168447;
+  border-radius: 0.65rem 0 0 0.65rem;
+
+  button {
+    display: grid;
+    padding: 0.8rem 0.6rem;
+    background: transparent;
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: default;
+    }
+  }
+
+  output {
+    min-width: 2rem;
+    text-align: center;
+  }
 }
 
 button {

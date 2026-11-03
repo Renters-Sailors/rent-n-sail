@@ -1,0 +1,81 @@
+dialog {
+  width: min(100% - 2rem, 26rem);
+  padding: 1.5rem;
+  border: 0;
+  border-radius: 0.65rem;
+
+  color: CanvasText;
+  font-family: 'Google Sans Flex', sans-serif;
+
+  background: Canvas;
+
+  &::backdrop {
+    background: rgb(0 0 0 / 50%);
+    backdrop-filter: blur(4px);
+  }
+}
+
+form {
+  display: grid;
+  gap: 0.75rem;
+}
+
+h2 {
+  margin: 0;
+}
+
+label {
+  display: grid;
+  gap: 0.25rem;
+}
+
+input {
+  font: inherit;
+}
+
+small {
+  opacity: 0.7;
+}
+
+.error {
+  // Always one line tall, so a message appearing doesn't move the buttons.
+  min-height: 1lh;
+  margin: 0;
+  color: #e5484d;
+}
+
+footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+button {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+
+  padding: 0.7rem 1rem;
+  border: 0;
+  border-radius: 0.65rem;
+
+  color: #fff;
+  font: inherit;
+  font-weight: 700;
+  white-space: nowrap;
+
+  background: #168447;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: progress;
+  }
+
+  &.cancel {
+    color: inherit;
+    background: color-mix(in srgb, currentColor 12%, transparent);
+  }
+}

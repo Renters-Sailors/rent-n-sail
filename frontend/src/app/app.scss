@@ -20,9 +20,6 @@
 }
 
 nav {
-  // The nav is the same on every page, so it stays still during view transitions.
-  view-transition-name: site-nav;
-
   display: flex;
   gap: 1.5rem;
 
@@ -39,9 +36,20 @@ nav > a {
     text-decoration: underline;
   }
 
-  // Icon link pinned to the right end of the nav.
+  // Icon and label pinned to the right end of the nav.
   &.reservations {
     display: flex;
+    align-items: center;
+    gap: 0.35rem;
     margin-left: auto;
+
+    // Flex items always inherit the link's underline, so underline only the label.
+    &.active {
+      text-decoration: none;
+
+      .label {
+        text-decoration: underline;
+      }
+    }
   }
 }

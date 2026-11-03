@@ -3,15 +3,12 @@
     Discover
   </a>
   <a routerLink="/contact" routerLinkActive="active">Contact</a>
-  <a
-    class="reservations"
-    routerLink="/reservations"
-    routerLinkActive="active"
-    aria-label="My reservations"
-  >
+  <a class="reservations" routerLink="/reservations" routerLinkActive="active">
+    <span class="label">My reservations</span>
     <span class="material-symbols-outlined" aria-hidden="true">event_upcoming</span>
   </a>
 </nav>
 <section>
   <router-outlet />
 </section>
+<app-auth-dialog />

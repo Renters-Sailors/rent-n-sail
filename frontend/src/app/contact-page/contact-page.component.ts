@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
+import { weekdayNames } from '../opening-hours/opening-hours';
+import { OpeningHoursService } from '../opening-hours/opening-hours.service';
 
 @Component({
   selector: 'app-contact-page',
@@ -16,11 +18,24 @@ export class ContactPageComponent {
     email: 'hello@rent-n-sail.example',
   };
 
-  protected readonly openingHours = [
-    { days: 'Monday – Friday', hours: '08:00 – 20:00' },
-    { days: 'Saturday', hours: '07:00 – 21:00' },
-    { days: 'Sunday', hours: '09:00 – 18:00' },
-  ];
+  private readonly week = inject(OpeningHoursService).week;
+  /** Consecutive days with the same hours share a row, e.g. "Monday – Friday". */
+  protected readonly openingHours = computed(() => {
+    const week = this.week.value();
+    if (!week) return [];
+    const rows: { first: string; last: string; hours: string }[] = [];
+    weekdayNames.forEach((name, index) => {
+      const day = week.find(({ weekday }) => weekday === index + 1);
+      const hours = day ? `${day.opens} – ${day.closes}` : 'Closed';
+      const previous = rows.at(-1);
+      if (previous?.hours === hours) previous.last = name;
+      else rows.push({ first: name, last: name, hours });
+    });
+    return rows.map(({ first, last, hours }) => ({
+      days: first === last ? first : `${first} – ${last}`,
+      hours,
+    }));
+  });
 
   protected readonly people = [
     {

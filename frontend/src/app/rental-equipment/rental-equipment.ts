@@ -3,7 +3,8 @@ export interface RentalEquipment {
   name: string;
   description: string;
   capacity: { min: number; max: number };
-  hourlyRate: number;
+  /** Whole price for one unit, keyed by rental duration id. */
+  prices: Readonly<Record<string, number>>;
   slug: string;
   width: number;
   height: number;
@@ -15,7 +16,7 @@ export const rentalEquipment: readonly RentalEquipment[] = [
     name: 'Kayak',
     description: 'A lightweight boat for exploring lakes, rivers, and coastlines.',
     capacity: { min: 1, max: 2 },
-    hourlyRate: 18,
+    prices: { hour: 18, 'two-hours': 32.4, 'full-day': 72 },
     slug: 'kayak',
     width: 5125,
     height: 3417,
@@ -25,7 +26,7 @@ export const rentalEquipment: readonly RentalEquipment[] = [
     name: 'Stand-up paddleboard',
     description: 'A stable board for paddling while standing or kneeling.',
     capacity: { min: 1, max: 1 },
-    hourlyRate: 20,
+    prices: { hour: 20, 'two-hours': 36, 'full-day': 80 },
     slug: 'stand-up-paddleboard',
     width: 4608,
     height: 2592,
@@ -35,7 +36,7 @@ export const rentalEquipment: readonly RentalEquipment[] = [
     name: 'Sailboat',
     description: 'A wind-powered boat for relaxed sailing and day trips.',
     capacity: { min: 4, max: 6 },
-    hourlyRate: 85,
+    prices: { hour: 85, 'two-hours': 153, 'full-day': 340 },
     slug: 'sailboat',
     width: 4700,
     height: 3133,
@@ -45,7 +46,7 @@ export const rentalEquipment: readonly RentalEquipment[] = [
     name: 'Motorboat',
     description: 'A powered boat for cruising, swimming, and water sports.',
     capacity: { min: 6, max: 8 },
-    hourlyRate: 110,
+    prices: { hour: 110, 'two-hours': 198, 'full-day': 440 },
     slug: 'motorboat',
     width: 6000,
     height: 4000,
@@ -55,7 +56,7 @@ export const rentalEquipment: readonly RentalEquipment[] = [
     name: 'Canoe',
     description: 'An open, narrow boat suited to calm-water trips and paddling together.',
     capacity: { min: 2, max: 2 },
-    hourlyRate: 22,
+    prices: { hour: 22, 'two-hours': 39.6, 'full-day': 88 },
     slug: 'canoe',
     width: 4288,
     height: 2848,
@@ -65,7 +66,7 @@ export const rentalEquipment: readonly RentalEquipment[] = [
     name: 'Jet ski',
     description: 'A personal watercraft for fast rides across open water.',
     capacity: { min: 1, max: 2 },
-    hourlyRate: 95,
+    prices: { hour: 95, 'two-hours': 171, 'full-day': 380 },
     slug: 'jet-ski',
     width: 4899,
     height: 2961,
@@ -75,7 +76,7 @@ export const rentalEquipment: readonly RentalEquipment[] = [
     name: 'Pontoon boat',
     description: 'A spacious, stable boat for groups, picnics, and leisurely cruises.',
     capacity: { min: 8, max: 12 },
-    hourlyRate: 140,
+    prices: { hour: 140, 'two-hours': 252, 'full-day': 560 },
     slug: 'pontoon-boat',
     width: 5184,
     height: 2920,
@@ -85,7 +86,7 @@ export const rentalEquipment: readonly RentalEquipment[] = [
     name: 'Fishing boat',
     description: 'A practical boat equipped for fishing on lakes and coastal waters.',
     capacity: { min: 4, max: 6 },
-    hourlyRate: 75,
+    prices: { hour: 75, 'two-hours': 135, 'full-day': 300 },
     slug: 'fishing-boat',
     width: 3000,
     height: 4000,
@@ -95,7 +96,7 @@ export const rentalEquipment: readonly RentalEquipment[] = [
     name: 'Windsurfing board',
     description: 'A board with a sail for gliding across the water using wind power.',
     capacity: { min: 1, max: 1 },
-    hourlyRate: 45,
+    prices: { hour: 45, 'two-hours': 81, 'full-day': 180 },
     slug: 'windsurfing-board',
     width: 4752,
     height: 3168,
@@ -105,7 +106,7 @@ export const rentalEquipment: readonly RentalEquipment[] = [
     name: 'Wakeboard',
     description: 'A board for riding behind a boat and practicing jumps and tricks.',
     capacity: { min: 1, max: 1 },
-    hourlyRate: 35,
+    prices: { hour: 35, 'two-hours': 63, 'full-day': 140 },
     slug: 'wakeboard',
     width: 6000,
     height: 3375,
@@ -115,7 +116,7 @@ export const rentalEquipment: readonly RentalEquipment[] = [
     name: 'Water skis',
     description: 'A pair of skis for gliding behind a boat across the water.',
     capacity: { min: 1, max: 1 },
-    hourlyRate: 30,
+    prices: { hour: 30, 'two-hours': 54, 'full-day': 120 },
     slug: 'water-skis',
     width: 4687,
     height: 3222,
@@ -125,7 +126,7 @@ export const rentalEquipment: readonly RentalEquipment[] = [
     name: 'Towable tube',
     description: 'An inflatable ride pulled behind a boat for fun on the water.',
     capacity: { min: 1, max: 3 },
-    hourlyRate: 25,
+    prices: { hour: 25, 'two-hours': 45, 'full-day': 100 },
     slug: 'towable-tube',
     width: 4180,
     height: 3062,
@@ -135,7 +136,7 @@ export const rentalEquipment: readonly RentalEquipment[] = [
     name: 'Snorkeling set',
     description: 'A mask, snorkel, and fins for exploring underwater near the shore.',
     capacity: { min: 1, max: 1 },
-    hourlyRate: 15,
+    prices: { hour: 15, 'two-hours': 27, 'full-day': 60 },
     slug: 'snorkeling-set',
     width: 3682,
     height: 2762,
@@ -145,7 +146,7 @@ export const rentalEquipment: readonly RentalEquipment[] = [
     name: 'Kite surfing',
     description: 'A wind-powered board sport steered by a large controllable kite.',
     capacity: { min: 1, max: 1 },
-    hourlyRate: 65,
+    prices: { hour: 65, 'two-hours': 117, 'full-day': 260 },
     slug: 'kite-surfing',
     width: 4681,
     height: 3121,
@@ -155,7 +156,7 @@ export const rentalEquipment: readonly RentalEquipment[] = [
     name: 'Jet boarding',
     description: 'A motorized board for riding quickly across the water.',
     capacity: { min: 1, max: 1 },
-    hourlyRate: 120,
+    prices: { hour: 120, 'two-hours': 216, 'full-day': 480 },
     slug: 'jet-boarding',
     width: 6000,
     height: 4000,
@@ -165,15 +166,11 @@ export const rentalEquipment: readonly RentalEquipment[] = [
 export interface RentalDuration {
   label: string;
   hours: number;
-  discount: number;
 }
 
-export const rentalDurations: readonly RentalDuration[] = [
-  { label: '1 hour', hours: 1, discount: 0 },
-  { label: '2 hours · 10% off/hr', hours: 2, discount: 0.1 },
-  { label: 'Full day · 50% off/hr', hours: 8, discount: 0.5 },
-];
-
-export function rentalPrice(item: RentalEquipment, duration: RentalDuration): number {
-  return item.hourlyRate * duration.hours * (1 - duration.discount);
-}
+/** Rental durations by id, in display order. */
+export const rentalDurations: Readonly<Record<string, RentalDuration>> = {
+  hour: { label: '1 hour', hours: 1 },
+  'two-hours': { label: '2 hours · 10% off/hr', hours: 2 },
+  'full-day': { label: 'Full day · 50% off/hr', hours: 8 },
+};

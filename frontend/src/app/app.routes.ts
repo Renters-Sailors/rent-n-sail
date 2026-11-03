@@ -1,5 +1,6 @@
 import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
+import { authGuard } from './auth/auth.guard';
 import { BookingPageComponent } from './booking-page/booking-page.component';
 import { ContactPageComponent } from './contact-page/contact-page.component';
 import { DiscoverRentalPageComponent } from './discover-rental-page/discover-rental-page.component';
@@ -11,12 +12,13 @@ export const routes: Routes = [
     path: '',
     component: DiscoverRentalPageComponent,
     title: "Rent'n'Sail",
-    data: { keepAlive: true, rentalImageTransition: true },
+    data: { keepAlive: true },
   },
   { path: 'contact', component: ContactPageComponent, title: "Contact — Rent'n'Sail" },
   {
     path: 'reservations',
     component: MyReservationsPageComponent,
+    canActivate: [authGuard],
     title: "My reservations — Rent'n'Sail",
   },
   // `/:id` gets its slug added, e.g. `/1` → `/1/kayak`. Unknown ids go home.
@@ -31,7 +33,6 @@ export const routes: Routes = [
   {
     path: ':id/:slug',
     component: BookingPageComponent,
-    data: { rentalImageTransition: true },
     title: async ({ params }) => {
       const item = await inject(RentalEquipmentService).find(Number(params['id']));
       return `Book ${item?.name ?? 'equipment'} — Rent'n'Sail`;

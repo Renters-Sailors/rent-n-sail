@@ -22,10 +22,12 @@ describe('App', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
     await TestBed.inject(Router).navigateByUrl('/');
-    fixture.detectChanges();
+    // The equipment list loads asynchronously.
+    await fixture.whenStable();
 
     const element = fixture.nativeElement as HTMLElement;
     expect(element.querySelector('app-discover-rental-page')).not.toBeNull();
-    expect(element.querySelector('h2')?.textContent).toContain('Kayak');
+    // Scoped, since the app shell also holds the sign-in dialog's heading.
+    expect(element.querySelector('app-discover-rental-page h2')?.textContent).toContain('Kayak');
   });
 });

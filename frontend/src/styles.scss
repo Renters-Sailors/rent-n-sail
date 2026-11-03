@@ -10,60 +10,49 @@ body {
   overscroll-behavior-y: none;
 }
 
-// View transitions run on every navigation, but only discover ↔ booking ones get
-// the `rental-image` type (see app.config.ts). Everything else swaps instantly.
-:root:not(:active-view-transition-type(rental-image)) {
-  &::view-transition-group(*),
-  &::view-transition-old(*),
-  &::view-transition-new(*) {
-    animation: none;
-  }
-}
+// Text-like fields across the app: sign-in username, booking date and time.
+input:is([type='text'], [type='date'], [type='time']) {
+  font: inherit;
 
-// Discover ↔ booking: the photo (`rental-<id>`) moves into place while the rest of
-// the page fades out, then the new page fades in.
-:root:active-view-transition-type(rental-image) {
-  &::view-transition-group(*.rental-image) {
-    animation-duration: 350ms;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+  border-radius: 0.65rem;
+
+  color: inherit;
+  background: color-mix(in srgb, currentColor 4%, transparent);
+
+  &:hover:not(:disabled) {
+    border-color: color-mix(in srgb, currentColor 40%, transparent);
   }
 
-  // Only the old snapshot (always loaded) is shown while moving; the new one fades
-  // in over the last 100ms, so the two crops never show as a ghost.
-  &::view-transition-old(*.rental-image),
-  &::view-transition-new(*.rental-image) {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    mix-blend-mode: normal;
+  &:focus-visible {
+    outline: 2px solid #168447;
+    outline-offset: 1px;
   }
 
-  &::view-transition-old(*.rental-image) {
-    animation: none;
+  &:user-invalid {
+    border-color: #e5484d;
   }
 
-  &::view-transition-new(*.rental-image) {
-    animation: 100ms ease-in 250ms both view-fade-in;
+  // Chromium and WebKit only: the date/time segments and the picker icon.
+  &::-webkit-datetime-edit-fields-wrapper {
+    padding: 0;
   }
 
-  &::view-transition-old(root),
-  &::view-transition-old(*.fade) {
-    animation: 150ms ease-out both view-fade-out;
+  &::-webkit-datetime-edit-day-field,
+  &::-webkit-datetime-edit-month-field,
+  &::-webkit-datetime-edit-year-field,
+  &::-webkit-datetime-edit-hour-field,
+  &::-webkit-datetime-edit-minute-field {
+    border-radius: 0.25rem;
+
+    &:focus {
+      color: #fff;
+      background: #168447;
+    }
   }
 
-  &::view-transition-new(root),
-  &::view-transition-new(*.fade) {
-    animation: 200ms ease-in 150ms both view-fade-in;
-  }
-}
-
-@keyframes view-fade-out {
-  to {
-    opacity: 0;
-  }
-}
-
-@keyframes view-fade-in {
-  from {
-    opacity: 0;
+  &::-webkit-calendar-picker-indicator {
+    cursor: pointer;
   }
 }

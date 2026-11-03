@@ -2,10 +2,7 @@ import { NgOptimizedImage } from '@angular/common';
 import { booleanAttribute, Component, computed, inject, input } from '@angular/core';
 import { RentalEquipmentService } from '../rental-equipment.service';
 
-/**
- * Photo of one rental item, filling its positioned parent. The same item's photo
- * shares a view-transition name on every page, so it morphs between them.
- */
+/** Photo of one rental item, filling its positioned parent. */
 @Component({
   imports: [NgOptimizedImage],
   selector: 'app-rental-image',
