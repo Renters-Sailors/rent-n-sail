@@ -25,6 +25,7 @@
     "@angular/ssr": "^22.2.4",
     "express": "^5.1.0",
     "rxjs": "~7.8.0",
+    "temporal-polyfill": "^1.0.6",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
@@ -33,7 +34,7 @@
     "@angular/compiler-cli": "^22.2.0",
     "@eslint/js": "^10.0.1",
     "@types/express": "^5.0.1",
-    "@types/node": "^22.12.0",
+    "@types/node": "^26.6.6",
     "angular-eslint": "^22.6.0",
     "eslint": "^10.13.0",
     "eslint-formatter-gha": "^2.0.1",
@@ -44,10 +45,13 @@
     "typescript-eslint": "^8.72.0",
     "vitest": "^5.0.0"
   },
+  "engines": {
+    "node": "26.x"
+  },
   "devEngines": {
     "runtime": {
       "name": "node",
-      "version": "24",
+      "version": "26",
       "onFail": "download"
     }
   },

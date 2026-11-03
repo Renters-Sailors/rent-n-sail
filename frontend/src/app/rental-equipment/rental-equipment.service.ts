@@ -1,5 +1,6 @@
 import { resource, Service } from '@angular/core';
-import { RentalEquipment, rentalEquipment } from './rental-equipment';
+import { RentalEquipment } from './rental-equipment';
+import { rentalEquipment } from './rental-equipment.mock';
 
 @Service()
 export class RentalEquipmentService {

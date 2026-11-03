@@ -22,7 +22,7 @@ import {
   hoursOn,
   isoWeekday,
   OpeningHours,
-  weekdayNames,
+  weekdayName,
   widestHours,
 } from '../opening-hours/opening-hours';
 import { OpeningHoursService } from '../opening-hours/opening-hours.service';
@@ -102,7 +102,7 @@ export class BookingPageComponent {
       validate(path.date, ({ value }) => {
         const date = value();
         return date && this.hoursOn(date) === null
-          ? { kind: 'closed', message: `We're closed on ${weekdayNames[isoWeekday(date) - 1]}s.` }
+          ? { kind: 'closed', message: `We're closed on ${weekdayName(isoWeekday(date))}s.` }
           : undefined;
       });
       // A full day has no start time to pick.

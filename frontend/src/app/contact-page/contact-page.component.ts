@@ -1,5 +1,5 @@
 import { Component, computed, inject } from '@angular/core';
-import { weekdayNames } from '../opening-hours/opening-hours';
+import { isoWeekdays, weekdayName } from '../opening-hours/opening-hours';
 import { OpeningHoursService } from '../opening-hours/opening-hours.service';
 
 @Component({
@@ -24,8 +24,9 @@ export class ContactPageComponent {
     const week = this.week.value();
     if (!week) return [];
     const rows: { first: string; last: string; hours: string }[] = [];
-    weekdayNames.forEach((name, index) => {
-      const day = week.find(({ weekday }) => weekday === index + 1);
+    isoWeekdays.forEach((weekday) => {
+      const name = weekdayName(weekday);
+      const day = week.find((hours) => hours.weekday === weekday);
       const hours = day ? `${day.opens} – ${day.closes}` : 'Closed';
       const previous = rows.at(-1);
       if (previous?.hours === hours) previous.last = name;
