@@ -30,23 +30,38 @@ const promptOptions: Readonly<Record<PasskeyPrompt, CredentialRequestOptions>> =
   immediate: { uiMode: 'immediate' },
 };
 
-/** Passkey ceremonies against the backend; each one ends with a session cookie. */
+/**
+ * Passkey ceremonies against the backend; each one ends with a session cookie. Options are
+ * fetched first, separately, so a click can start the browser prompt before any await:
+ * Safari refuses a prompt that doesn't follow the click closely enough, without showing it.
+ */
 @Service()
 export class PasskeyService {
   private readonly http = inject(HttpClient);
 
-  /**
-   * Signs in with an existing passkey. Resolves null when none was picked.
-   * Rejects with `UnregisteredPasskeyError` when the server doesn't know the passkey.
-   */
-  async signIn(prompt: PasskeyPrompt, signal?: AbortSignal): Promise<SessionUser | null> {
+  /** Options for signing in with any passkey of this site. */
+  async signInOptions(): Promise<PublicKeyCredentialRequestOptions> {
     const options = await firstValueFrom(
       this.http.get<PublicKeyCredentialRequestOptionsJSON>('login/passkey/begin'),
     );
+    return PublicKeyCredential.parseRequestOptionsFromJSON(options);
+  }
+
+  /**
+   * Signs in with an existing passkey; the browser prompt starts before this returns.
+   * Resolves null when none was picked. Rejects with `UnregisteredPasskeyError` when the
+   * server doesn't know the passkey.
+   */
+  async signIn(
+    prompt: PasskeyPrompt,
+    publicKey: PublicKeyCredentialRequestOptions,
+    signal?: AbortSignal,
+  ): Promise<SessionUser | null> {
+    // First, before any await, so it still counts as part of the click.
     const credential = await navigator.credentials.get({
       ...promptOptions[prompt],
       signal,
-      publicKey: PublicKeyCredential.parseRequestOptionsFromJSON(options),
+      publicKey,
     });
     if (!(credential instanceof PublicKeyCredential)) return null;
     try {
@@ -57,7 +72,7 @@ export class PasskeyService {
       if (!(error instanceof HttpErrorResponse && error.status === 404)) throw error;
       // Lets the browser drop the stale passkey, so autofill stops offering it.
       await PublicKeyCredential.signalUnknownCredential?.({
-        rpId: options.rpId ?? location.hostname,
+        rpId: publicKey.rpId ?? location.hostname,
         credentialId: credential.id,
       }).catch(() => undefined);
       throw new UnregisteredPasskeyError();
@@ -70,16 +85,20 @@ export class PasskeyService {
     return capabilities?.['immediateGet'] === true;
   }
 
-  /** Creates an account and its first passkey. */
-  async register(username: string): Promise<SessionUser> {
+  /** Options for a new account; the server only creates it once its passkey is verified. */
+  async registrationOptions(username: string): Promise<PublicKeyCredentialCreationOptions> {
     const options = await firstValueFrom(
       this.http.post<PublicKeyCredentialCreationOptionsJSON>('register/passkey/begin', {
         username,
       }),
     );
-    const credential = await navigator.credentials.create({
-      publicKey: PublicKeyCredential.parseCreationOptionsFromJSON(options),
-    });
+    return PublicKeyCredential.parseCreationOptionsFromJSON(options);
+  }
+
+  /** Creates the account and its first passkey; the browser prompt starts before this returns. */
+  async register(publicKey: PublicKeyCredentialCreationOptions): Promise<SessionUser> {
+    // First, before any await, so it still counts as part of the click.
+    const credential = await navigator.credentials.create({ publicKey });
     if (!(credential instanceof PublicKeyCredential)) {
       throw new Error('Passkey creation was cancelled.');
     }

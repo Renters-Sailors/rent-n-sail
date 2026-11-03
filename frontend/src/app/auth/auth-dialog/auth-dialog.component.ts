@@ -2,9 +2,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 import {
   afterRenderEffect,
   Component,
-  computed,
+  effect,
   ElementRef,
   inject,
+  resource,
   signal,
   untracked,
   viewChild,
@@ -12,10 +13,16 @@ import {
 import { form, FormField, FormRoot, required } from '@angular/forms/signals';
 import { AuthService } from '../auth.service';
 import { PasskeyPrompt, PasskeyService } from '../passkey.service';
+import { SessionUser } from '../session-user';
+
+/** Waits after typing before asking for registration options. */
+const typingPauseMs = 300;
 
 /**
  * Sign-in dialog, open while `AuthService.prompt()` is set. The username field offers saved
  * passkeys as autofill (conditional mediation); a new username creates an account instead.
+ * Passkey options are fetched ahead of time, so each button starts the browser prompt
+ * straight from its click, as Safari requires.
  */
 @Component({
   imports: [FormField, FormRoot],
@@ -31,14 +38,28 @@ export class AuthDialogComponent {
   protected readonly error = signal<string | null>(null);
   /** Username problems show only once Create account was pressed, not on blur. */
   protected readonly createPressed = signal(false);
-  private readonly signingIn = signal(false);
+  protected readonly busy = signal(false);
   private readonly account = signal({ username: '' });
-  protected readonly accountForm = form(
-    this.account,
-    (path) => required(path.username, { message: 'Enter a username to create an account.' }),
-    { submission: { action: () => this.register() } },
+  protected readonly accountForm = form(this.account, (path) =>
+    required(path.username, { message: 'Enter a username to create an account.' }),
   );
-  protected readonly busy = computed(() => this.signingIn() || this.accountForm().submitting());
+
+  /** Sign-in options while the dialog is open; reloaded after each attempt. */
+  private readonly signInOptions = resource({
+    params: () => this.auth.prompt() ?? undefined,
+    loader: () => this.passkeys.signInOptions(),
+  });
+  /** Registration options for the typed username, once typing pauses. */
+  private readonly registration = resource({
+    params: () => {
+      const username = this.account().username.trim();
+      return this.auth.prompt() && username ? username : undefined;
+    },
+    loader: async ({ params: username, abortSignal }) => {
+      await pause(typingPauseMs, abortSignal);
+      return { username, publicKey: await this.passkeys.registrationOptions(username) };
+    },
+  });
 
   /** Cancels the pending autofill sign-in. */
   private autofill = new AbortController();
@@ -57,37 +78,71 @@ export class AuthDialogComponent {
           this.createPressed.set(false);
           this.accountForm().reset({ username: '' });
           dialog.showModal();
-          void this.startAutofill();
         }
       });
     });
+    // Offers saved passkeys in the username field whenever fresh options arrive.
+    effect(() => {
+      const publicKey = this.signInOptions.value();
+      if (publicKey) untracked(() => void this.startAutofill(publicKey));
+    });
   }
 
-  /** Replaces an earlier passkey error with the username check. */
-  protected pressedCreate(): void {
+  /** Runs in the click's submit event, so the passkey prompt can start right away. */
+  protected createAccount(): void {
     this.error.set(null);
     this.createPressed.set(true);
+    const username = this.account().username.trim();
+    if (!username) return;
+    const prepared = this.registration.value();
+    if (this.registration.error()) {
+      this.error.set(messageFor(this.registration.error()));
+      return;
+    }
+    // The browser allows one passkey request at a time, so autofill goes first.
+    this.autofill.abort();
+    void this.register(
+      prepared?.username === username
+        ? this.passkeys.register(prepared.publicKey)
+        : // Clicked before the options arrived. Safari may refuse this later prompt.
+          this.passkeys
+            .registrationOptions(username)
+            .then((publicKey) => this.passkeys.register(publicKey)),
+    );
   }
 
-  protected async signInWithPasskey(): Promise<void> {
-    this.signingIn.set(true);
+  protected signInWithPasskey(): void {
+    const publicKey = this.signInOptions.value();
+    if (!publicKey) {
+      this.error.set(
+        this.signInOptions.error()
+          ? messageFor(this.signInOptions.error())
+          : 'Getting ready. Try again in a moment.',
+      );
+      return;
+    }
     this.error.set(null);
-    await this.signIn('dialog');
-    this.signingIn.set(false);
+    void this.signIn('dialog', publicKey);
   }
 
-  private async startAutofill(): Promise<void> {
+  private async startAutofill(publicKey: PublicKeyCredentialRequestOptions): Promise<void> {
     if (!(await PublicKeyCredential.isConditionalMediationAvailable?.())) return;
-    await this.signIn('autofill');
+    await this.signIn('autofill', publicKey);
   }
 
   /** Signs in, replacing any pending autofill request; the browser allows only one. */
-  private async signIn(prompt: PasskeyPrompt): Promise<void> {
+  private async signIn(
+    prompt: PasskeyPrompt,
+    publicKey: PublicKeyCredentialRequestOptions,
+  ): Promise<void> {
     this.autofill.abort();
     this.autofill = new AbortController();
     const { signal } = this.autofill;
+    // Started synchronously: the browser call comes before the first await inside.
+    const attempt = this.passkeys.signIn(prompt, publicKey, signal);
+    if (prompt !== 'autofill') this.busy.set(true);
     try {
-      const user = await this.passkeys.signIn(prompt, signal);
+      const user = await attempt;
       if (user) return this.auth.finishSignIn(user);
     } catch (error) {
       if (signal.aborted || (prompt === 'autofill' && isNotAllowed(error))) {
@@ -95,36 +150,53 @@ export class AuthDialogComponent {
         // Some browsers do that right away instead of waiting for a pick.
         return;
       }
-      this.error.set(this.messageFor(error));
+      this.error.set(messageFor(error));
+    } finally {
+      if (prompt !== 'autofill') this.busy.set(false);
     }
-    // Offer autofill again after a failed explicit attempt.
-    if (prompt !== 'autofill') void this.startAutofill();
+    // Fresh options for the next try, which also restarts autofill.
+    if (prompt !== 'autofill') this.signInOptions.reload();
   }
 
-  private async register(): Promise<void> {
-    this.autofill.abort();
-    this.error.set(null);
+  private async register(attempt: Promise<SessionUser>): Promise<void> {
+    this.busy.set(true);
     try {
-      this.auth.finishSignIn(await this.passkeys.register(this.account().username.trim()));
+      this.auth.finishSignIn(await attempt);
     } catch (error) {
-      this.error.set(this.messageFor(error));
-      void this.startAutofill();
+      this.error.set(
+        isNotAllowed(error) ? 'No passkey was created. Try again.' : messageFor(error),
+      );
+      this.registration.reload();
+      this.signInOptions.reload();
+    } finally {
+      this.busy.set(false);
     }
   }
+}
 
-  private messageFor(error: unknown): string {
-    if (error instanceof HttpErrorResponse) {
-      const detail: unknown = error.error?.detail;
-      return typeof detail === 'string' ? detail : 'Could not reach the server. Try again.';
-    }
-    if (isNotAllowed(error)) {
-      return 'No passkey was used. Pick one, or enter a username to create an account.';
-    }
-    return error instanceof Error ? error.message : 'Sign-in failed. Try again.';
+function messageFor(error: unknown): string {
+  if (error instanceof HttpErrorResponse) {
+    const detail: unknown = error.error?.detail;
+    return typeof detail === 'string' ? detail : 'Could not reach the server. Try again.';
   }
+  if (isNotAllowed(error)) {
+    return 'No passkey was used. Pick one, or enter a username to create an account.';
+  }
+  return error instanceof Error ? error.message : 'Sign-in failed. Try again.';
 }
 
 /** The passkey prompt was dismissed, timed out, or refused by the browser. */
 function isNotAllowed(error: unknown): boolean {
   return error instanceof DOMException && error.name === 'NotAllowedError';
+}
+
+/** Resolves after `ms`, or rejects once `signal` aborts. */
+function pause(ms: number, signal: AbortSignal): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(resolve, ms);
+    signal.addEventListener('abort', () => {
+      clearTimeout(timer);
+      reject(signal.reason);
+    });
+  });
 }

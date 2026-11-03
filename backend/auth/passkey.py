@@ -28,7 +28,7 @@ class AttestationAuthenticatorResult(TypedDict):
 # don't change anything below, unless you want to break the auth flow
 PASSKEY_AUTH_CHALLENGE_SESSION_KEY = "passkey_authentication_challenge"
 PASSKEY_REGISTER_CHALLENGE_SESSION_KEY = "passkey_registration_challenge"
-PASSKEY_FLOW_USER_ID_SESSION_KEY = "passkey_flow_user_id"
+PASSKEY_FLOW_USERNAME_SESSION_KEY = "passkey_flow_username"
 
 
 class AuthenticatorAttestationResponse(TypedDict):

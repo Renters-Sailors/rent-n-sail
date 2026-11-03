@@ -1,5 +1,5 @@
 <dialog #dialog aria-labelledby="auth-dialog-title" (close)="auth.cancelSignIn()">
-  <form [formRoot]="accountForm" (submit)="pressedCreate()">
+  <form [formRoot]="accountForm" (submit)="createAccount()">
     <h2 id="auth-dialog-title">{{ auth.prompt() }}</h2>
 
     <label>

@@ -55,7 +55,7 @@ export class AuthService {
   private async signInImmediately(): Promise<boolean> {
     if (!(await this.passkeys.supportsImmediate())) return false;
     try {
-      const user = await this.passkeys.signIn('immediate');
+      const user = await this.passkeys.signIn('immediate', await this.passkeys.signInOptions());
       if (user) this.user.set(user);
       return user !== null;
     } catch {
