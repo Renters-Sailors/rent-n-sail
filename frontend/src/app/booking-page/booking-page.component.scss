@@ -50,7 +50,7 @@ form {
   gap: 1rem;
 
   // Radios, and the selected day/time in the native pickers.
-  accent-color: #168447;
+  accent-color: var(--color-brand);
 }
 
 fieldset {
@@ -89,7 +89,7 @@ input {
 .error {
   // Always one line tall, so a message appearing doesn't move the form.
   min-height: 1lh;
-  color: #e5484d;
+  color: var(--color-danger);
 }
 
 .capacity {
@@ -119,10 +119,10 @@ input {
   display: flex;
   align-items: center;
 
-  color: #fff;
+  color: var(--color-white);
   font-weight: 700;
 
-  background: #168447;
+  background: var(--color-brand);
   border-radius: 0.65rem 0 0 0.65rem;
 
   button {
@@ -147,16 +147,16 @@ button {
   border: 0;
   border-radius: 0.65rem;
 
-  color: #fff;
+  color: var(--color-white);
   font: inherit;
   font-size: 1.1rem;
   font-weight: 700;
 
-  background: #168447;
+  background: var(--color-brand);
 
   cursor: pointer;
 }
 
 a {
-  color: #168447;
+  color: var(--color-brand);
 }

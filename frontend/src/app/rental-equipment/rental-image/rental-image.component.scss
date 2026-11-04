@@ -6,3 +6,30 @@
 img {
   object-fit: cover;
 }
+
+// Fills the same box as the image while it loads or when it can't be shown.
+.placeholder {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+
+  color: color-mix(in srgb, currentColor 40%, transparent);
+  background: color-mix(in srgb, currentColor 8%, transparent);
+}
+
+.loading {
+  animation: pulse 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+  to {
+    opacity: 0.4;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading {
+    animation: none;
+  }
+}

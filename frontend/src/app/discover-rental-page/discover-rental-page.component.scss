@@ -16,7 +16,7 @@
 
     height: 4px;
 
-    background: #ff8c00;
+    background: var(--color-accent);
 
     transform-origin: left;
     animation: discover-scroll-progress linear both;
@@ -58,8 +58,12 @@ article {
     z-index: 1;
 
     background:
-      radial-gradient(rgb(0 0 0 / 60%) 1px, transparent 1.5px) 0 0 / 6px 6px,
-      linear-gradient(transparent, rgb(0 0 0 / 30%));
+      radial-gradient(
+          color-mix(in srgb, var(--color-black) 60%, transparent) 1px,
+          transparent 1.5px
+        )
+        0 0 / 6px 6px,
+      linear-gradient(transparent, color-mix(in srgb, var(--color-black) 30%, transparent));
     backdrop-filter: blur(10px);
     mask-image: linear-gradient(transparent, #000 50%);
 
@@ -89,11 +93,11 @@ main {
     width: 60%;
     margin-bottom: 0;
 
-    color: #000;
+    color: var(--color-black);
     font:
       900 xxx-large 'Londrina Solid',
       sans-serif;
-    -webkit-text-stroke: 5px #fff;
+    -webkit-text-stroke: 5px var(--color-white);
     paint-order: stroke fill;
   }
 
@@ -101,11 +105,11 @@ main {
     width: min(100%, 40rem);
     margin: 0.5em 0 0;
 
-    color: #fff;
+    color: var(--color-white);
     font-family: 'Gabriela', serif;
     font-size: x-large;
     text-wrap: balance;
-    -webkit-text-stroke: 3px #000;
+    -webkit-text-stroke: 3px var(--color-black);
     paint-order: stroke fill;
 
     &.capacity {
@@ -141,10 +145,10 @@ main {
 
     padding: 0.55rem 0;
 
-    color: #ff8c00;
+    color: var(--color-accent);
     font-size: x-large;
     text-align: right;
-    -webkit-text-stroke: 5px #000;
+    -webkit-text-stroke: 5px var(--color-black);
     paint-order: stroke fill;
 
     strong {
@@ -160,35 +164,35 @@ main {
     border: 3px solid transparent;
     border-radius: 0.65rem;
 
-    color: #fff;
+    color: var(--color-white);
     font: inherit;
     font-size: 1.1rem;
     font-weight: 700;
 
     background:
-      linear-gradient(#168447) padding-box,
-      linear-gradient(#168447) border-box;
+      linear-gradient(var(--color-brand)) padding-box,
+      linear-gradient(var(--color-brand)) border-box;
 
     cursor: pointer;
 
     // On hover an orange-and-white streak circles the border.
     &:hover {
       background:
-        linear-gradient(#0f6d39) padding-box,
+        linear-gradient(var(--color-brand-dark)) padding-box,
         conic-gradient(
             from var(--book-border-angle),
-            #168447,
-            #ff8c00 20%,
-            #fff 30%,
-            #ff8c00 40%,
-            #168447 60%
+            var(--color-brand),
+            var(--color-accent) 20%,
+            var(--color-white) 30%,
+            var(--color-accent) 40%,
+            var(--color-brand) 60%
           )
           border-box;
       animation: book-border-spin 1.5s linear infinite;
     }
 
     &:focus-visible {
-      outline: 3px solid #fff;
+      outline: 3px solid var(--color-white);
       outline-offset: 3px;
     }
   }

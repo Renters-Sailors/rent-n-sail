@@ -4,13 +4,15 @@ dialog {
   border: 0;
   border-radius: 0.65rem;
 
+  // CSS system colors: Canvas is the page background and CanvasText the text on it, so the
+  // dialog follows the browser's light or dark scheme without colors of its own.
   color: CanvasText;
   font-family: 'Google Sans Flex', sans-serif;
 
   background: Canvas;
 
   &::backdrop {
-    background: rgb(0 0 0 / 50%);
+    background: color-mix(in srgb, var(--color-black) 50%, transparent);
     backdrop-filter: blur(4px);
   }
 }
@@ -38,10 +40,12 @@ small {
 }
 
 .error {
-  // Always one line tall, so a message appearing doesn't move the buttons.
-  min-height: 1lh;
+  // Room for the longest message, so one appearing doesn't move the buttons: two lines while the
+  // dialog is narrower than its 26rem (viewports under 28rem), one line once it's full width.
+  // The multiplied difference is far below 1lh or above 2lh, so clamp picks one of the two.
+  min-height: clamp(1lh, (28rem - 100vw) * 1000, 2lh);
   margin: 0;
-  color: #e5484d;
+  color: var(--color-danger);
 }
 
 footer {
@@ -61,12 +65,12 @@ button {
   border: 0;
   border-radius: 0.65rem;
 
-  color: #fff;
+  color: var(--color-white);
   font: inherit;
   font-weight: 700;
   white-space: nowrap;
 
-  background: #168447;
+  background: var(--color-brand);
   cursor: pointer;
 
   &:disabled {

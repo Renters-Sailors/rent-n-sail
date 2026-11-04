@@ -94,6 +94,8 @@ li {
 
   padding: 0.75rem 1rem;
 
+  // `li + li`: every row that follows another row, i.e. all but the first, gets a divider above
+  // it, so the list has lines between rows but none at the top or bottom.
   & + & {
     border-top: 1px solid color-mix(in srgb, currentColor 12%, transparent);
   }
@@ -166,8 +168,8 @@ figure {
   border: 0;
   border-radius: 0.65rem;
 
-  color: #e5484d;
-  background: color-mix(in srgb, #e5484d 12%, transparent);
+  color: var(--color-danger);
+  background: color-mix(in srgb, var(--color-danger) 12%, transparent);
   cursor: pointer;
 
   &:disabled {
@@ -177,5 +179,5 @@ figure {
 }
 
 a {
-  color: #168447;
+  color: var(--color-brand);
 }

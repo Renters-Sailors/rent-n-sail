@@ -1,26 +1,28 @@
 import { resource, Service } from '@angular/core';
-import { NewReservation, Reservation } from './reservation';
+import { NewReservation, parseReservations, Reservation, ReservationJson } from './reservation';
 
 /** Pretend network latency for the mock calls. */
 const delay = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 
 @Service()
 export class ReservationService {
-  // Mock backend storage; lives only until the page reloads.
-  private stored: readonly Reservation[] = [];
+  // Mock backend storage, in the JSON shape the API would send; lives until the page reloads.
+  private stored: readonly ReservationJson[] = [];
   private lastId = 0;
 
-  /** The user's reservations, newest first; empty until loaded. */
+  /**
+   * The user's reservations, newest first; empty until loaded. Once the API exists this becomes
+   * `httpResource(() => 'reservations', { parse: parseReservations, defaultValue: [] })`.
+   */
   readonly reservations = resource({ loader: () => this.fetchAll(), defaultValue: [] });
 
   /** Saves a reservation and reloads the list. */
-  async save(reservation: NewReservation): Promise<Reservation> {
+  async save(reservation: NewReservation): Promise<void> {
     // Mock backend call; swap for HttpClient once the API exists.
     await delay(300);
-    const saved: Reservation = { ...reservation, id: ++this.lastId };
+    const saved = { ...reservation, id: ++this.lastId, date: reservation.date.toString() };
     this.stored = [saved, ...this.stored];
     this.reservations.reload();
-    return saved;
   }
 
   /** Cancels a reservation and reloads the list. */
@@ -34,6 +36,6 @@ export class ReservationService {
   // Mock backend call; swap for HttpClient once the API exists.
   private async fetchAll(): Promise<readonly Reservation[]> {
     await delay(150);
-    return this.stored;
+    return parseReservations(this.stored);
   }
 }

@@ -1,3 +1,13 @@
+:root {
+  // The app's colors. Shades and tints are mixed from these or from currentColor.
+  --color-brand: #168447;
+  --color-brand-dark: #0f6d39;
+  --color-accent: #ff8c00;
+  --color-danger: #e5484d;
+  --color-white: #fff;
+  --color-black: #000;
+}
+
 html,
 body {
   margin: 0;
@@ -26,12 +36,12 @@ input:is([type='text'], [type='date'], [type='time']) {
   }
 
   &:focus-visible {
-    outline: 2px solid #168447;
+    outline: 2px solid var(--color-brand);
     outline-offset: 1px;
   }
 
   &:user-invalid {
-    border-color: #e5484d;
+    border-color: var(--color-danger);
   }
 
   // Chromium and WebKit only: the date/time segments and the picker icon.
@@ -47,8 +57,8 @@ input:is([type='text'], [type='date'], [type='time']) {
     border-radius: 0.25rem;
 
     &:focus {
-      color: #fff;
-      background: #168447;
+      color: var(--color-white);
+      background: var(--color-brand);
     }
   }
 

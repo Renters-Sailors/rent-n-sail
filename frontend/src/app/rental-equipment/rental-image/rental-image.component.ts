@@ -1,5 +1,5 @@
 import { NgOptimizedImage } from '@angular/common';
-import { booleanAttribute, Component, computed, inject, input } from '@angular/core';
+import { booleanAttribute, Component, inject, input, resource } from '@angular/core';
 import { RentalEquipmentService } from '../rental-equipment.service';
 
 /** Photo of one rental item, filling its positioned parent. */
@@ -14,8 +14,9 @@ export class RentalImageComponent {
   readonly priority = input(false, { transform: booleanAttribute });
   readonly sizes = input('100vw');
 
-  private readonly equipment = inject(RentalEquipmentService).equipment;
-  protected readonly item = computed(() =>
-    this.equipment.value().find((item) => item.id === this.id()),
-  );
+  private readonly equipment = inject(RentalEquipmentService);
+  protected readonly item = resource({
+    params: () => ({ id: this.id() }),
+    loader: ({ params }) => this.equipment.getById(params.id),
+  });
 }

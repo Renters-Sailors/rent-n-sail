@@ -16,7 +16,7 @@
     @for (day of days(); track day.key) {
       <section [attr.aria-labelledby]="'day-' + day.key">
         <h2 [id]="'day-' + day.key">
-          <time [attr.datetime]="day.key">{{ day.date | date: 'fullDate' : 'UTC' }}</time>
+          <time [attr.datetime]="day.key">{{ day.label }}</time>
         </h2>
         <ol>
           @for (booking of day.bookings; track booking.reservation.id) {

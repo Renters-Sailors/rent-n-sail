@@ -8,13 +8,7 @@
       <small>Pick your passkey here, or enter a new username to create an account.</small>
     </label>
 
-    <p class="error" role="alert">
-      @if (error(); as error) {
-        {{ error }}
-      } @else if (createPressed() && accountForm.username().errors()[0]; as invalid) {
-        {{ invalid.message }}
-      }
-    </p>
+    <p class="error" role="alert">{{ error() }}</p>
 
     <footer>
       <button type="submit" [disabled]="busy()">Create account</button>

@@ -10,7 +10,7 @@ import {
   untracked,
   viewChild,
 } from '@angular/core';
-import { form, FormField, FormRoot, required } from '@angular/forms/signals';
+import { form, FormField, FormRoot } from '@angular/forms/signals';
 import { AuthService } from '../auth.service';
 import { PasskeyPrompt, PasskeyService } from '../passkey.service';
 import { SessionUser } from '../session-user';
@@ -36,13 +36,9 @@ export class AuthDialogComponent {
   private readonly dialog = viewChild.required<ElementRef<HTMLDialogElement>>('dialog');
 
   protected readonly error = signal<string | null>(null);
-  /** Username problems show only once Create account was pressed, not on blur. */
-  protected readonly createPressed = signal(false);
   protected readonly busy = signal(false);
   private readonly account = signal({ username: '' });
-  protected readonly accountForm = form(this.account, (path) =>
-    required(path.username, { message: 'Enter a username to create an account.' }),
-  );
+  protected readonly accountForm = form(this.account);
 
   /** Sign-in options while the dialog is open; reloaded after each attempt. */
   private readonly signInOptions = resource({
@@ -75,7 +71,6 @@ export class AuthDialogComponent {
           if (dialog.open) dialog.close();
         } else if (!dialog.open) {
           this.error.set(null);
-          this.createPressed.set(false);
           this.accountForm().reset({ username: '' });
           dialog.showModal();
         }
@@ -90,9 +85,9 @@ export class AuthDialogComponent {
 
   /** Runs in the click's submit event, so the passkey prompt can start right away. */
   protected createAccount(): void {
-    this.error.set(null);
-    this.createPressed.set(true);
     const username = this.account().username.trim();
+    // Checked only here, so the message doesn't show on blur.
+    this.error.set(username ? null : 'Enter a username to create an account.');
     if (!username) return;
     const prepared = this.registration.value();
     if (this.registration.error()) {
@@ -180,7 +175,7 @@ function messageFor(error: unknown): string {
     return typeof detail === 'string' ? detail : 'Could not reach the server. Try again.';
   }
   if (isNotAllowed(error)) {
-    return 'No passkey was used. Pick one, or enter a username to create an account.';
+    return 'No passkey was used. Pick one, or create an account.';
   }
   return error instanceof Error ? error.message : 'Sign-in failed. Try again.';
 }

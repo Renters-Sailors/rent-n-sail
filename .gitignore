@@ -51,6 +51,3 @@ __pycache__/
 # System files
 .DS_Store
 Thumbs.db
-
-# Source images are kept locally; optimized image formats use Git LFS
-*.jpg

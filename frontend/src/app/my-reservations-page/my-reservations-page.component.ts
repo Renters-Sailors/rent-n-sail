@@ -1,4 +1,4 @@
-import { CurrencyPipe, DatePipe, I18nPluralPipe } from '@angular/common';
+import { CurrencyPipe, I18nPluralPipe } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
@@ -20,9 +20,14 @@ interface Booking {
 interface BookingDay {
   /** "YYYY-MM-DD", for tracking and `datetime`. */
   key: string;
-  date: Date;
+  /** e.g. "Tuesday, November 10, 2026". */
+  label: string;
   bookings: Booking[];
 }
+
+/** English, so the server and the browser render the same text. */
+const dayLabel = (date: Temporal.PlainDate): string =>
+  date.toLocaleString('en-US', { dateStyle: 'full' });
 
 /** "HH:MM" plus whole hours. */
 const addHours = (time: string, hours: number): string => {
@@ -32,7 +37,7 @@ const addHours = (time: string, hours: number): string => {
 
 /** Lists the user's booked rentals as an agenda: by day, then by start time. */
 @Component({
-  imports: [CurrencyPipe, DatePipe, I18nPluralPipe, RentalImageComponent, RouterLink],
+  imports: [CurrencyPipe, I18nPluralPipe, RentalImageComponent, RouterLink],
   selector: 'app-my-reservations-page',
   styleUrl: './my-reservations-page.component.scss',
   templateUrl: './my-reservations-page.component.html',
@@ -56,8 +61,8 @@ export class MyReservationsPageComponent {
       if (!item) continue;
       const { hours } = rentalDurations[reservation.durationId];
       const { startTime } = reservation;
-      const key = reservation.date.toISOString().slice(0, 10);
-      const day = days.get(key) ?? { key, date: reservation.date, bookings: [] };
+      const key = reservation.date.toString();
+      const day = days.get(key) ?? { key, label: dayLabel(reservation.date), bookings: [] };
       day.bookings.push({
         reservation,
         item,

@@ -1,0 +1,13 @@
+:host {
+  display: block;
+  height: 100%;
+  overflow-y: auto;
+
+  font-family: 'Google Sans Flex', sans-serif;
+}
+
+main {
+  width: min(100% - 2rem, 48rem);
+  margin: 0 auto;
+  padding: 2rem 0;
+}

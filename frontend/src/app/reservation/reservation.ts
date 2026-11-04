@@ -1,10 +1,10 @@
-/** A booked rental, as the backend would return it. */
+/** A booked rental. */
 export interface Reservation {
   id: number;
   equipmentId: number;
   durationId: string;
-  /** Rental day at UTC midnight, as date inputs report it. */
-  date: Date;
+  /** The rental day. */
+  date: Temporal.PlainDate;
   /** "HH:MM", or null for a full day. */
   startTime: string | null;
   quantity: number;
@@ -13,3 +13,13 @@ export interface Reservation {
 
 /** What the booking form sends; the backend assigns the id. */
 export type NewReservation = Omit<Reservation, 'id'>;
+
+/** A reservation as the backend sends it, with the date as "YYYY-MM-DD". */
+export type ReservationJson = Omit<Reservation, 'date'> & { date: string };
+
+/** Turns the backend's reservations into ours; meant for `httpResource`'s `parse` option. */
+export const parseReservations = (json: unknown): Reservation[] =>
+  (json as ReservationJson[]).map((reservation) => ({
+    ...reservation,
+    date: Temporal.PlainDate.from(reservation.date),
+  }));

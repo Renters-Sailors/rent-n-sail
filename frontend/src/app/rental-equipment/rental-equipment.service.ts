@@ -7,8 +7,8 @@ export class RentalEquipmentService {
   /** All rental equipment; empty until loaded. */
   readonly equipment = resource({ loader: () => this.fetchAll(), defaultValue: [] });
 
-  /** For places that can't read a signal, such as route redirects and titles. */
-  async find(id: number): Promise<RentalEquipment | undefined> {
+  /** One item, or undefined when no item has that id. */
+  async getById(id: number): Promise<RentalEquipment | undefined> {
     return (await this.fetchAll()).find((item) => item.id === id);
   }
 

@@ -145,7 +145,10 @@ export class BookingPageComponent {
     await this.reservations.save({
       equipmentId: this.id(),
       durationId,
-      date,
+      // Date inputs report the picked day at UTC midnight.
+      date: Temporal.Instant.fromEpochMilliseconds(date.getTime())
+        .toZonedDateTimeISO('UTC')
+        .toPlainDate(),
       // A full day has no start time; its field is disabled.
       startTime: this.bookingForm.startTime().disabled() ? null : startTime,
       quantity,
