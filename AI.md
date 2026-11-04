@@ -1055,3 +1055,7 @@
   - `Reservation.date` is a `Temporal.PlainDate`. `parseReservations()` turns the API's JSON (date as "YYYY-MM-DD") into reservations, written for `httpResource`'s `parse` option; the mock stores JSON and runs it through the same function. The booking page converts the date input's value; My reservations groups by `date.toString()` and labels days with `toLocaleString('en-US', { dateStyle: 'full' })` instead of `DatePipe`.
   - Answered without changes: one Google Fonts URL for both families works, but `icon_names` then applies to the whole request, so Google Sans Flex came back as a single 17.6 kB file instead of the full 136 kB Latin font; the links stay separate. `id: string` would only drop the `Number()` calls on route params, so it's better decided with the backend's ids.
 - Verification: eslint, oxfmt 0.74 and 0.76 checks, `tsc`, `ng test` (4 tests) and `ng build` pass. In the browser pane, two bookings made out of order list as Tuesday, November 10, 2026 then Wednesday, November 11, 2026 with photos, the `:root` variables resolve to the old values, the discover page looks unchanged, and the `hide_image` icon renders as a 24px glyph; no console errors.
+
+## Commit review feedback and reply to review comments on #24 (@ElectroluxV2)
+
+Claude Code (Claude Opus 5.5) committed and pushed both review batches as 9cf882e, then posted a reply to each of the 20 review comments on PR #24, explaining the change or answering the question.
