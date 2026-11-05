@@ -1,5 +1,5 @@
 <main>
-  @if (item(); as item) {
+  @if (item.value(); as item) {
     <article>
       <figure class="hero">
         <app-rental-image
@@ -36,11 +36,7 @@
         <label>
           Date
           <input type="date" [formField]="bookingForm.date" />
-          <small class="error" aria-live="polite">
-            @if (bookingForm.date().touched() && bookingForm.date().errors()[0]; as error) {
-              {{ error.message }}
-            }
-          </small>
+          <small class="error" aria-live="polite">{{ bookingForm.date | fieldError }}</small>
         </label>
         <label>
           Start time
@@ -50,14 +46,7 @@
             [attr.max]="latestStart()"
             [formField]="bookingForm.startTime"
           />
-          <small class="error" aria-live="polite">
-            @if (
-              bookingForm.startTime().touched() && bookingForm.startTime().errors()[0];
-              as error
-            ) {
-              {{ error.message }}
-            }
-          </small>
+          <small class="error" aria-live="polite">{{ bookingForm.startTime | fieldError }}</small>
         </label>
         @let quantity = bookingForm.quantity();
         <div class="actions">
@@ -86,7 +75,7 @@
         </div>
       </form>
     </article>
-  } @else if (!equipment.isLoading()) {
+  } @else if (!item.isLoading()) {
     <h1>Equipment not found</h1>
     <p><a routerLink="/">Back to discover</a></p>
   }

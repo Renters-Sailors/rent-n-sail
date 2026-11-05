@@ -1,6 +1,5 @@
-import { HttpClient } from '@angular/common/http';
 import { computed, inject, Service, signal } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
+import { ApiService } from '../api/api.service';
 import { PasskeyService } from './passkey.service';
 import { SessionUser } from './session-user';
 
@@ -13,7 +12,7 @@ interface SignInPrompt {
 /** Who is signed in, and asking for sign-in only when something needs it. */
 @Service()
 export class AuthService {
-  private readonly http = inject(HttpClient);
+  private readonly api = inject(ApiService);
   private readonly passkeys = inject(PasskeyService);
 
   /** `undefined` until the server has been asked; `null` when signed out. */
@@ -30,9 +29,14 @@ export class AuthService {
    * only show passkey prompts right after one.
    */
   async ensureSignedIn(reason: string): Promise<boolean> {
-    if ((await this.loadUser()) || (await this.signInImmediately())) return true;
+    if (await this.loadUser()) return true;
+    if (await this.signInImmediately()) return true;
+    // Waits for the dialog, which settles it through `finishSignIn` or `cancelSignIn`. A dialog
+    // that's already open is answered false first, since this one replaces it.
     this.settle(false);
-    return new Promise((resolve) => this.pending.set({ reason, resolve }));
+    const dialog = Promise.withResolvers<boolean>();
+    this.pending.set({ reason, resolve: dialog.resolve });
+    return await dialog.promise;
   }
 
   /** Called by the sign-in dialog. */
@@ -47,7 +51,7 @@ export class AuthService {
   }
 
   async signOut(): Promise<void> {
-    await firstValueFrom(this.http.delete<void>('session'));
+    await this.api.delete<void>('session');
     this.user.set(null);
   }
 
@@ -73,8 +77,7 @@ export class AuthService {
   private async loadUser(): Promise<SessionUser | null> {
     if (this.user() === undefined) {
       try {
-        const request = this.http.get<SessionUser | null>('session', { transferCache: false });
-        this.user.set(await firstValueFrom(request));
+        this.user.set(await this.api.get<SessionUser | null>('session', { transferCache: false }));
       } catch {
         // Unknown; ask again next time. The dialog will show any real backend error.
         return null;

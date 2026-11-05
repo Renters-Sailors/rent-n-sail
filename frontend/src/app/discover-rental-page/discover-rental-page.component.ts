@@ -2,7 +2,7 @@ import { CurrencyPipe, I18nPluralPipe, KeyValuePipe } from '@angular/common';
 import { Component, ElementRef, inject, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, NavigationStart, Router, RouterLink } from '@angular/router';
-import { rentalDurations } from '../rental-equipment/rental-equipment';
+import { capacityNoun, rentalDurations } from '../rental-equipment/rental-equipment';
 import { RentalEquipmentService } from '../rental-equipment/rental-equipment.service';
 import { RentalImageComponent } from '../rental-equipment/rental-image/rental-image.component';
 import { FormatRangePipe } from './format-range.pipe';
@@ -37,7 +37,7 @@ export class DiscoverRentalPageComponent {
       });
   }
 
-  protected readonly capacityNoun = { '=1': 'person', other: 'people' };
+  protected readonly capacityNoun = capacityNoun;
   protected readonly durations = rentalDurations;
 
   protected readonly equipment = inject(RentalEquipmentService).equipment;

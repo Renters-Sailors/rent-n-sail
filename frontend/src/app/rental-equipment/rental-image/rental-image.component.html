@@ -7,9 +7,9 @@
     [sizes]="sizes()"
   />
 } @else if (item.isLoading()) {
-  <div class="placeholder loading" role="img" aria-label="Loading photo"></div>
+  <progress class="placeholder loading" aria-label="Loading photo"></progress>
 } @else {
-  <div class="placeholder" role="img" aria-label="Photo unavailable">
+  <span class="placeholder" role="img" aria-label="Photo unavailable">
     <span class="material-symbols-outlined" aria-hidden="true">hide_image</span>
-  </div>
+  </span>
 }

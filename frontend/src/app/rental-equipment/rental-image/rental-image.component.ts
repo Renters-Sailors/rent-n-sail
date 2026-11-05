@@ -12,6 +12,10 @@ import { RentalEquipmentService } from '../rental-equipment.service';
 export class RentalImageComponent {
   readonly id = input.required<number>();
   readonly priority = input(false, { transform: booleanAttribute });
+  /**
+   * How wide the image is shown at each viewport width, so the browser picks the smallest
+   * file that's sharp enough: https://web.dev/learn/design/responsive-images#sizes
+   */
   readonly sizes = input('100vw');
 
   private readonly equipment = inject(RentalEquipmentService);

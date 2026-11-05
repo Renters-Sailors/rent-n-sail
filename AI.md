@@ -1059,3 +1059,7 @@
 ## Commit review feedback and reply to review comments on #24 (@ElectroluxV2)
 
 Claude Code (Claude Opus 5.5) committed and pushed both review batches as 9cf882e, then posted a reply to each of the 20 review comments on PR #24, explaining the change or answering the question.
+
+## Apply the third batch of review comments on #24 (@ElectroluxV2)
+
+Claude Code (Claude Opus 5.5) applied the third review batch: a promise-based `ApiService` with an interceptor that retries transient failures of idempotent requests; reservations through `httpResource` with `parse` and a mock interceptor; a simpler auth guard and `ensureSignedIn` (`Promise.withResolvers`); a `fieldError` pipe for form errors; Temporal for today's date and time arithmetic; item lookup by id instead of `find`; the agenda logic as a pure `agenda()` function with unit tests (asked for in the review); a shared, documented `capacityNoun`; priority loading only for the first photo; `<progress>` and `<span>` placeholders with motion only when allowed; a centred 404 page; the TypeScript lib bumped to ES2024 so `formatRange` needs no hand-written type; comments for `tabular-nums` and `sizes`; and removed the date picker cursor rule that had no effect.

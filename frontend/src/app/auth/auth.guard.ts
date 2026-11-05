@@ -6,8 +6,8 @@ import { AuthService } from './auth.service';
 export const authGuard: CanActivateFn = async () => {
   const auth = inject(AuthService);
   const router = inject(Router);
-  return (
-    (await auth.ensureSignedIn('Sign in to see your reservations')) ||
-    (router.navigated ? false : router.parseUrl('/'))
-  );
+  const signedIn = await auth.ensureSignedIn('Sign in to see your reservations');
+  if (signedIn) return true;
+  const firstLoad = !router.navigated;
+  return firstLoad ? router.parseUrl('/') : false;
 };

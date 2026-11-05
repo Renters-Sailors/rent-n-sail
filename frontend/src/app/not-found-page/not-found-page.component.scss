@@ -6,8 +6,17 @@
   font-family: 'Google Sans Flex', sans-serif;
 }
 
+// Centred in the space below the header.
 main {
-  width: min(100% - 2rem, 48rem);
-  margin: 0 auto;
-  padding: 2rem 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  box-sizing: border-box;
+  min-height: 100%;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+h1 {
+  margin-top: 0;
 }

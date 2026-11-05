@@ -12,7 +12,7 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "ES2022",
-    "lib": ["ES2022", "DOM", "DOM.Iterable", "ESNext.Temporal"],
+    "lib": ["ES2024", "DOM", "DOM.Iterable", "ESNext.Temporal"],
     "module": "preserve"
   },
   "angularCompilerOptions": {

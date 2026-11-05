@@ -1,5 +1,13 @@
 import { CurrencyPipe, I18nPluralPipe, KeyValuePipe } from '@angular/common';
-import { Component, computed, inject, input, linkedSignal, numberAttribute } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  linkedSignal,
+  numberAttribute,
+  resource,
+} from '@angular/core';
 import {
   disabled,
   form,
@@ -13,7 +21,12 @@ import {
 } from '@angular/forms/signals';
 import { Router, RouterLink } from '@angular/router';
 import { FormatRangePipe } from '../discover-rental-page/format-range.pipe';
-import { RentalDuration, rentalDurations } from '../rental-equipment/rental-equipment';
+import { FieldErrorPipe } from '../forms/field-error.pipe';
+import {
+  capacityNoun,
+  RentalDuration,
+  rentalDurations,
+} from '../rental-equipment/rental-equipment';
 import { RentalEquipmentService } from '../rental-equipment/rental-equipment.service';
 import { AuthService } from '../auth/auth.service';
 import { RentalImageComponent } from '../rental-equipment/rental-image/rental-image.component';
@@ -35,16 +48,17 @@ interface BookingModel {
 }
 
 /** Latest start time ("HH:MM") so the rental is back by closing time. */
-const latestStartFor = (closes: string, duration: RentalDuration): string => {
-  const [hours, minutes] = closes.split(':');
-  return `${String(Number(hours) - duration.hours).padStart(2, '0')}:${minutes}`;
-};
+const latestStartFor = (closes: string, duration: RentalDuration): string =>
+  Temporal.PlainTime.from(closes)
+    .subtract({ hours: duration.hours })
+    .toString({ smallestUnit: 'minute' });
 
-/** Today's local date at UTC midnight, which is how date inputs report their value. */
-const today = (): Date => {
-  const now = new Date();
-  return new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
-};
+/**
+ * Today's local date at UTC midnight. It stays a `Date`, because that's how date inputs report
+ * their value and what `minDate` compares against.
+ */
+const today = (): Date =>
+  new Date(Temporal.Now.plainDateISO().toZonedDateTime('UTC').epochMilliseconds);
 
 const initialBooking = (): BookingModel => ({
   durationId: 'hour',
@@ -57,6 +71,7 @@ const initialBooking = (): BookingModel => ({
 @Component({
   imports: [
     CurrencyPipe,
+    FieldErrorPipe,
     FormatRangePipe,
     FormField,
     FormRoot,
@@ -73,10 +88,11 @@ export class BookingPageComponent {
   /** Route parameter `:id`, bound by `withComponentInputBinding`. */
   readonly id = input.required({ transform: numberAttribute });
 
-  protected readonly equipment = inject(RentalEquipmentService).equipment;
-  protected readonly item = computed(() =>
-    this.equipment.value().find((item) => item.id === this.id()),
-  );
+  private readonly equipment = inject(RentalEquipmentService);
+  protected readonly item = resource({
+    params: () => ({ id: this.id() }),
+    loader: ({ params }) => this.equipment.getById(params.id),
+  });
   private readonly auth = inject(AuthService);
   private readonly reservations = inject(ReservationService);
   private readonly router = inject(Router);
@@ -93,7 +109,7 @@ export class BookingPageComponent {
   }
 
   /** Resets to the initial booking whenever the item changes. */
-  private readonly booking = linkedSignal({ source: this.item, computation: initialBooking });
+  private readonly booking = linkedSignal({ source: this.item.value, computation: initialBooking });
   protected readonly bookingForm = form(
     this.booking,
     (path) => {
@@ -129,7 +145,7 @@ export class BookingPageComponent {
   /** Price of the whole booking: the chosen duration's price times the quantity. */
   protected readonly total = computed(() => {
     const { durationId, quantity } = this.booking();
-    return (this.item()?.prices[durationId] ?? 0) * quantity;
+    return (this.item.value()?.prices[durationId] ?? 0) * quantity;
   });
   /** Hours for the start time picker's limits. */
   protected readonly dayHours = computed(() => this.hoursOn(this.booking().date));
@@ -137,7 +153,7 @@ export class BookingPageComponent {
     const hours = this.dayHours();
     return hours ? latestStartFor(hours.closes, rentalDurations[this.booking().durationId]) : null;
   });
-  protected readonly capacityNoun = { '=1': 'person', other: 'people' };
+  protected readonly capacityNoun = capacityNoun;
 
   private async reserve(): Promise<void> {
     const { durationId, date, startTime, quantity } = this.booking();

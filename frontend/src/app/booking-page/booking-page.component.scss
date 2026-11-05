@@ -87,8 +87,10 @@ input {
 }
 
 .error {
-  // Always one line tall, so a message appearing doesn't move the form.
-  min-height: 1lh;
+  // Room for the message, so it appearing doesn't move the form: two lines on phones, where it
+  // may wrap, and one otherwise. Below 28rem the middle value is positive and huge, so the
+  // clamp picks 2lh; above it, it's negative, so 1lh.
+  min-height: clamp(1lh, (28rem - 100vw) * 1000, 2lh);
   color: var(--color-danger);
 }
 

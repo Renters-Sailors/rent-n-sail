@@ -1,6 +1,6 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
+import { ApiService } from '../api/api.service';
 import { SessionUser } from './session-user';
 
 /** The picked passkey isn't known to the server, e.g. after its account was removed. */
@@ -37,13 +37,12 @@ const promptOptions: Readonly<Record<PasskeyPrompt, CredentialRequestOptions>> =
  */
 @Service()
 export class PasskeyService {
-  private readonly http = inject(HttpClient);
+  private readonly api = inject(ApiService);
 
   /** Options for signing in with any passkey of this site. */
   async signInOptions(): Promise<PublicKeyCredentialRequestOptions> {
-    const options = await firstValueFrom(
-      this.http.get<PublicKeyCredentialRequestOptionsJSON>('login/passkey/begin'),
-    );
+    const options =
+      await this.api.get<PublicKeyCredentialRequestOptionsJSON>('login/passkey/begin');
     return PublicKeyCredential.parseRequestOptionsFromJSON(options);
   }
 
@@ -65,9 +64,9 @@ export class PasskeyService {
     });
     if (!(credential instanceof PublicKeyCredential)) return null;
     try {
-      return await firstValueFrom(
-        this.http.post<SessionUser>('login/passkey/complete', { assertion: credential.toJSON() }),
-      );
+      return await this.api.post<SessionUser>('login/passkey/complete', {
+        assertion: credential.toJSON(),
+      });
     } catch (error) {
       if (!(error instanceof HttpErrorResponse && error.status === 404)) throw error;
       // Lets the browser drop the stale passkey, so autofill stops offering it.
@@ -87,10 +86,9 @@ export class PasskeyService {
 
   /** Options for a new account; the server only creates it once its passkey is verified. */
   async registrationOptions(username: string): Promise<PublicKeyCredentialCreationOptions> {
-    const options = await firstValueFrom(
-      this.http.post<PublicKeyCredentialCreationOptionsJSON>('register/passkey/begin', {
-        username,
-      }),
+    const options = await this.api.post<PublicKeyCredentialCreationOptionsJSON>(
+      'register/passkey/begin',
+      { username },
     );
     return PublicKeyCredential.parseCreationOptionsFromJSON(options);
   }
@@ -102,10 +100,8 @@ export class PasskeyService {
     if (!(credential instanceof PublicKeyCredential)) {
       throw new Error('Passkey creation was cancelled.');
     }
-    return firstValueFrom(
-      this.http.post<SessionUser>('register/passkey/complete', {
-        attestation: credential.toJSON(),
-      }),
-    );
+    return this.api.post<SessionUser>('register/passkey/complete', {
+      attestation: credential.toJSON(),
+    });
   }
 }

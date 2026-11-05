@@ -1,12 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-interface NumberFormatWithRange extends Intl.NumberFormat {
-  formatRange(start: number, end: number): string;
-}
-
-@Pipe({ name: 'formatRange', standalone: true })
+/** Formats a number range, such as "2–4". */
+@Pipe({ name: 'formatRange' })
 export class FormatRangePipe implements PipeTransform {
   transform(start: number, end: number): string {
-    return (new Intl.NumberFormat() as NumberFormatWithRange).formatRange(start, end);
+    return new Intl.NumberFormat().formatRange(start, end);
   }
 }

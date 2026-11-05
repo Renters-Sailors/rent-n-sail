@@ -17,7 +17,7 @@ export type NewReservation = Omit<Reservation, 'id'>;
 /** A reservation as the backend sends it, with the date as "YYYY-MM-DD". */
 export type ReservationJson = Omit<Reservation, 'date'> & { date: string };
 
-/** Turns the backend's reservations into ours; meant for `httpResource`'s `parse` option. */
+/** `httpResource`'s `parse` step: turns the backend's reservations into ours. */
 export const parseReservations = (json: unknown): Reservation[] =>
   (json as ReservationJson[]).map((reservation) => ({
     ...reservation,

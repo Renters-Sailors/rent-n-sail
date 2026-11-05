@@ -61,8 +61,4 @@ input:is([type='text'], [type='date'], [type='time']) {
       background: var(--color-brand);
     }
   }
-
-  &::-webkit-calendar-picker-indicator {
-    cursor: pointer;
-  }
 }

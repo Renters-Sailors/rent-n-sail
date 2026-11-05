@@ -1,7 +1,7 @@
 <section #scroller>
   @for (item of equipment.value(); track item.id) {
     <article>
-      <app-rental-image [id]="item.id" [priority]="$index < 3" />
+      <app-rental-image [id]="item.id" [priority]="$first" />
       <div class="rental-content">
         <main>
           <h2>{{ item.name }}</h2>

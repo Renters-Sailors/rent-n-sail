@@ -157,6 +157,7 @@ figure {
 
 .total {
   grid-area: total;
+  // Every digit as wide as the others, so totals of the same length line up row to row.
   font-variant-numeric: tabular-nums;
 }
 
