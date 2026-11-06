@@ -1,0 +1,82 @@
+<main>
+  @if (item.value(); as item) {
+    <article>
+      <figure class="hero">
+        <app-rental-image
+          [id]="item.id"
+          [priority]="true"
+          sizes="(min-width: 48rem) 24rem, (min-width: 40rem) 50vw, 100vw"
+        />
+      </figure>
+
+      <header>
+        <h1>Book {{ item.name }}</h1>
+        <p>{{ item.description }}</p>
+        <p class="capacity">
+          <span class="material-symbols-outlined" aria-hidden="true">people_size_increase</span>
+          <span>
+            {{ item.capacity.min | formatRange: item.capacity.max }}
+            {{ item.capacity.max | i18nPlural: capacityNoun }}
+          </span>
+        </p>
+      </header>
+
+      <form [formRoot]="bookingForm">
+        <fieldset>
+          <legend>Duration</legend>
+          @for (option of durations | keyvalue: null; track option.key) {
+            <label>
+              <input type="radio" [formField]="bookingForm.durationId" [value]="option.key" />
+              <span>{{ option.value.label }}</span>
+              <strong>{{ item.prices[option.key] | currency: 'USD' }}</strong>
+            </label>
+          }
+        </fieldset>
+
+        <label>
+          Date
+          <input type="date" [formField]="bookingForm.date" />
+          <small class="error" aria-live="polite">{{ bookingForm.date | fieldError }}</small>
+        </label>
+        <label>
+          Start time
+          <input
+            type="time"
+            [attr.min]="dayHours()?.opens ?? null"
+            [attr.max]="latestStart()"
+            [formField]="bookingForm.startTime"
+          />
+          <small class="error" aria-live="polite">{{ bookingForm.startTime | fieldError }}</small>
+        </label>
+        @let quantity = bookingForm.quantity();
+        <div class="actions">
+          <div class="counter" role="group" aria-label="Quantity">
+            <button
+              type="button"
+              aria-label="Decrease quantity"
+              [disabled]="quantity.value() <= (quantity.min?.() ?? 1)"
+              (click)="quantity.value.update((count) => count - 1)"
+            >
+              <span class="material-symbols-outlined" aria-hidden="true">remove</span>
+            </button>
+            <output aria-live="polite">{{ quantity.value() }}</output>
+            <button
+              type="button"
+              aria-label="Increase quantity"
+              [disabled]="quantity.value() >= (quantity.max?.() ?? 1)"
+              (click)="quantity.value.update((count) => count + 1)"
+            >
+              <span class="material-symbols-outlined" aria-hidden="true">add</span>
+            </button>
+          </div>
+          <button type="submit" [disabled]="bookingForm().submitting()">
+            Book for {{ total() | currency: 'USD' }}
+          </button>
+        </div>
+      </form>
+    </article>
+  } @else if (!item.isLoading()) {
+    <h1>Equipment not found</h1>
+    <p><a routerLink="/">Back to discover</a></p>
+  }
+</main>

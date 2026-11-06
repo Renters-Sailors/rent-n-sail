@@ -1,0 +1,66 @@
+<main>
+  <header>
+    <h1>My reservations</h1>
+    <p>
+      Signed in as <strong>{{ auth.username() }}</strong>
+      <button type="button" (click)="signOut()">
+        <span class="material-symbols-outlined" aria-hidden="true">logout</span>
+        Sign out
+      </button>
+    </p>
+  </header>
+
+  @if (reservations.isLoading() && !days().length) {
+    <p class="status" role="status">Loading reservations…</p>
+  } @else {
+    @for (day of days(); track day.key) {
+      <section [attr.aria-labelledby]="'day-' + day.key">
+        <h2 [id]="'day-' + day.key">
+          <time [attr.datetime]="day.key">{{ day.label }}</time>
+        </h2>
+        <ol>
+          @for (booking of day.bookings; track booking.reservation.id) {
+            @let reservation = booking.reservation;
+            <li>
+              <p class="time">
+                @if (reservation.startTime; as startTime) {
+                  <span>
+                    <time>{{ startTime }}</time> – <time>{{ booking.endTime }}</time>
+                  </span>
+                  <small>{{ booking.hours | i18nPlural: hoursNoun }}</small>
+                } @else {
+                  <span>All day</span>
+                  <small>Full day</small>
+                }
+              </p>
+              <figure>
+                <app-rental-image [id]="booking.item.id" sizes="3rem" />
+              </figure>
+              <p class="name">
+                <a [routerLink]="['/', booking.item.id, booking.item.slug]">{{
+                  booking.item.name
+                }}</a>
+                @if (reservation.quantity > 1) {
+                  <span class="quantity">× {{ reservation.quantity }}</span>
+                }
+              </p>
+              <p class="total">{{ reservation.total | currency: 'USD' }}</p>
+              <button
+                type="button"
+                class="cancel"
+                title="Cancel reservation"
+                [attr.aria-label]="'Cancel ' + booking.item.name + ' reservation'"
+                [disabled]="cancelling().has(reservation.id)"
+                (click)="cancel(reservation.id, booking.item.name)"
+              >
+                <span class="material-symbols-outlined" aria-hidden="true">event_busy</span>
+              </button>
+            </li>
+          }
+        </ol>
+      </section>
+    } @empty {
+      <p class="status">No reservations yet. <a routerLink="/">Discover something to rent</a></p>
+    }
+  }
+</main>

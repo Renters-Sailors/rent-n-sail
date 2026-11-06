@@ -1,5 +1,205 @@
 # AI usage docs
 
+## 2026-10-31 — Fetch Git LFS images for frontend deployments
+
+- AI assistance: Junie (gpt-6-luna) enabled Git LFS checkout in the frontend deployment workflow so optimized image files are available to the build instead of being deployed as pointer files. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Fix rental discovery frontend CI and lint failures
+
+- AI assistance: Junie (gpt-6-luna) removed obsolete backend/form behavior from the root app, updated the existing app test to verify the default rental route, formatted `app.html`, and made `FormatRangePipe` implement `PipeTransform` to pass the frontend quality gates. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Ignore JPGs and use Git LFS for other raster images
+
+- AI assistance: Junie (gpt-6-luna) added a `.jpg` ignore rule and configured common non-JPG raster image formats for Git LFS. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Start full-width rental blur at heading
+
+- AI assistance: Junie (gpt-6-luna) removed the fixed blur breakpoint and anchored the full-width rental-card blur overlay to each card's heading, with a full-card fallback for browsers without anchor positioning. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Make rental image preconnect deployment-independent
+
+- AI assistance: Junie (gpt-6-luna) replaced the hard-coded rental image preconnect host with a root-relative URL that resolves to the current deployment origin. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Prioritize first three rental images
+
+- AI assistance: Junie (gpt-6-luna) limited high-priority loading to the first three rental images and added a preconnect hint for `https://frontend.localhost`. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Use fill mode for cropped rental images
+
+- AI assistance: Junie (gpt-6-luna) switched rental card images to `NgOptimizedImage` fill mode so their intentional `object-fit: cover` crops do not trigger aspect-ratio mismatch warnings. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Format rental capacity ranges with Intl
+
+- AI assistance: Junie (gpt-6-luna) added a standalone `FormatRangePipe` that uses `Intl.NumberFormat.formatRange()` for locale-aware rental capacity ranges. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Pluralize rental capacity with Angular
+
+- AI assistance: Junie (gpt-6-luna) converted mock passenger capacities to numeric ranges and used Angular's `I18nPluralPipe` to select the singular or plural passenger label. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Enlarge rental capacity text
+
+- AI assistance: Junie (gpt-6-luna) reverted the black text with white outline on the rental capacity label to white text and increased its font size to 1.25rem. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Add white outline to rental capacity
+
+- AI assistance: Junie (gpt-6-luna) styled the rental capacity label with black text and a white outline. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Move rental capacity below description
+
+- AI assistance: Junie (gpt-6-luna) moved each rental's passenger capacity icon and label to the bottom-left details area beneath its description. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Show rental passenger capacity
+
+- AI assistance: Junie (gpt-6-luna) added mock passenger capacity to each rental listing and displayed it beside the Material Symbols people icon above pricing. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Balance rental descriptions
+
+- AI assistance: Junie (gpt-6-luna) applied balanced text wrapping to rental descriptions so paragraphs distribute more evenly across lines. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Fix rental image and card sizing
+
+- AI assistance: Junie (gpt-6-luna) constrained the routed page and rental card grid to the available area below navigation so images with different intrinsic dimensions consistently fill each card. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Size rental articles below navigation
+
+- AI assistance: Junie (gpt-6-luna) sized the app shell to the viewport and made rental articles fill the remaining space below the navigation. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Scope rental scroll snapping to discover page
+
+- AI assistance: Junie (gpt-6-luna) removed document-wide scroll snapping and made the discovery section the local vertical snap scroller, keeping navigation scrolling independent. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Restore rental page scroll snapping
+
+- AI assistance: Junie (gpt-6-luna) moved vertical scroll snapping to the document viewport, the active page scroller, while preserving snap alignment on rental cards. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Remove full-day duration note
+
+- AI assistance: Junie (gpt-6-luna) removed the full-day duration note from rental booking panels. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Wrap rental details and pricing with flexbox
+
+- AI assistance: Junie (gpt-6-luna) grouped each rental card's text and pricing under a wrapping flex parent, replacing breakpoint-specific stacking with intrinsic flex wrapping. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Remove dividers between rental prices
+
+- AI assistance: Junie (gpt-6-luna) removed the divider lines between the rental pricing rows. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Right-align rental pricing
+
+- AI assistance: Junie (gpt-6-luna) aligned the rental pricing text to the right within each pricing row. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Style rental pricing with orange text and purple outline
+
+- AI assistance: Junie (gpt-6-luna) styled the rental pricing labels and amounts with orange text and a purple outline. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Remove rental pricing panel container
+
+- AI assistance: Junie (gpt-6-luna) removed the rental pricing panel's background container styling and moved the full-day duration note below the booking button. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Use Google Sans Flex for rental page text
+
+- AI assistance: Junie (gpt-6-luna) loaded Google Sans Flex in the app document and applied it as the rental discovery page's base font, preserving the existing heading and description fonts while avoiding Angular's inline-font budget. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Set full-day rental discount to 50%
+
+- AI assistance: Junie (gpt-6-luna) changed the full-day rental discount from 90% to 50% and updated the displayed total accordingly. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Add rental pricing and booking buttons
+
+- AI assistance: Junie (gpt-6-luna) added per-item mock hourly rates, discounted two-hour and eight-hour-day totals, and a styled booking button to rental cards. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Explain rental image blur mask
+
+- AI assistance: Junie (gpt-6-luna) explained that the rental image `mask-image` fades the `backdrop-filter` blur from the 70% breakpoint to the bottom, while the background gradient independently fades the tint. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Confirm backdrop-filter for rental image blur
+
+- AI assistance: Junie (gpt-6-luna) confirmed the rental image overlay already uses `backdrop-filter` to blur the image behind it, and recommended keeping it for this effect. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Restore full-image rental blur
+
+- AI assistance: Junie (gpt-6-luna) moved the fading backdrop blur and gradient from the listing text container back across each rental image. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Extract rental blur breakpoint into an SCSS variable
+
+- AI assistance: Junie (gpt-6-luna) replaced the repeated 70% blur-gradient breakpoint in the rental discovery stylesheet with an SCSS variable. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Nest rental discovery styles
+
+- AI assistance: Junie (gpt-6-luna) converted the rental discovery page stylesheet to native CSS nesting without changing its styles. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Confine rental blur to listing text
+
+- AI assistance: Junie (gpt-6-luna) confined the fading backdrop blur and gradient to the rental listing text container instead of applying it across the full image. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Add a fading blur and gradient to rental images
+
+- AI assistance: Junie (gpt-6-luna) added a bottom-fading backdrop blur and 30% black gradient to rental images, beginning at 70% from the top. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Add a black outline to rental descriptions
+
+- AI assistance: Junie (gpt-6-luna) added a black text outline to rental listing descriptions. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Apply Gabriela to rental descriptions
+
+- AI assistance: Junie (gpt-6-luna) loaded the Gabriela Google Font and applied its regular style to rental listing descriptions. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Add white outlines to rental headings
+
+- AI assistance: Junie (gpt-6-luna) styled rental listing headings with black text and a white outline. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Set rental headings to 60% image width
+
+- AI assistance: Junie (gpt-6-luna) set rental listing `h2` headings to 60% of the image width. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Apply Londrina Sketch to rental headings
+
+- AI assistance: Junie (gpt-6-luna) loaded the Londrina Sketch Google Font and applied it to rental listing `h2` headings. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Snap rental articles while scrolling
+
+- AI assistance: Junie (gpt-6-luna) made the rental listing section a vertical scroll-snap container and aligned each article to its start edge. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Overlay rental listing text on images
+
+- AI assistance: Junie (gpt-6-luna) changed each rental article to a grid and positioned its grouped heading and description at the image's bottom-left corner. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Set rental images to viewport height
+
+- AI assistance: Junie (gpt-6-luna) set discovery-page rental images to `100svh` height and `100%` width. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Rotate the fishing boat image
+
+- AI assistance: Junie (gpt-6-luna) rotated the fishing boat JPEG 90 degrees clockwise, regenerated its responsive AVIF/WebP variants, and updated its catalog dimensions. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Configure a local rental image loader
+
+- AI assistance: Junie (gpt-6-luna) configured `NgOptimizedImage` with a custom loader for the existing responsive WebP rental images, replacing the template-built AVIF/WebP `srcset` markup. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Optimize rental catalog images
+
+- AI assistance: Junie (gpt-6-luna) converted each rental image into responsive AVIF and WebP variants, retained the JPEG originals as fallbacks, and updated `DiscoverRentalPageComponent` to use `NgOptimizedImage`. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Update mock water equipment catalog
+
+- AI assistance: Junie (gpt-6-luna) removed the wetsuit listing and added kite surfing and jet boarding listings to `DiscoverRentalPageComponent`. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Render rental equipment listings
+
+- AI assistance: Junie (gpt-6-luna) updated `DiscoverRentalPageComponent` to render each mock equipment entry as an article with its name and description. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Expand mock water equipment catalog
+
+- AI assistance: Junie (gpt-6-luna) added mock listings for a pontoon boat, fishing boat, windsurfing board, wakeboard, water skis, towable tube, snorkeling set, and wetsuit to `DiscoverRentalPageComponent`. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Add mock water equipment listings
+
+- AI assistance: Junie (gpt-6-luna) added a mock array of commonly rented water equipment with brief descriptions to `DiscoverRentalPageComponent`. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
+## 2026-10-31 — Add the default rental discovery page
+
+- AI assistance: Junie (gpt-6-luna) generated `DiscoverRentalPageComponent` with Angular CLI, routed the default URL to it, and placed a router outlet in the app template. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
+
 ## 2026-10-31 — Trust the forwarded client IP header only in Angular dev mode
 
 - AI assistance: Junie (gpt-6-luna) configured Angular's SSR engine to trust only `X-Forwarded-For` in dev mode, leaving all proxy headers untrusted in production, and prepared the change as the first layer in a `gh-stack` stack. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
@@ -603,3 +803,275 @@
 
 - AI assistance: OpenAI GPT-5.6 Terra reproduced the FastAPI CLI error, identified that the IDE configuration and contributor command omitted the application path, and added the backend `main.py` path to both commands.
 - Author attribution: `@Buzeqq` (verified with `gh api user`).
+
+## 2026-10-31 — Rental discovery page SCSS simplification
+
+- AI assistance: Claude Opus 5.5 simplified `discover-rental-page.component.scss` without changing its look. It flattened the nesting, removed declarations that only restated defaults or the global Material Symbols class, dropped unused font variation axes, the unused `small` rule and the unused Londrina Sketch font, and merged related properties into shorthands. It then reordered and grouped the properties by hand (positioning, layout, box, typography, visuals, interaction), because oxfmt 0.74 cannot sort CSS properties.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+
+## 2026-11-01 — Contact page and app navigation
+
+- AI assistance: Claude Opus 5.5 added a standalone `ContactPageComponent` (`frontend/src/app/contact-page/`) with mock business details, opening hours and two contact people, rendered with `address`, `tel:`/`mailto:` links and a definition list. It registered a `contact` route next to the default rental discovery route and replaced the placeholder `<nav>` in the app root with `routerLink`/`routerLinkActive` links to both pages, keeping the flex layout so the discovery page still fills the remaining viewport. At the user's request, the active link is marked only with an underline (no bold), so the text does not shift.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Verification: `pnpm exec ng build` and `pnpm exec eslint .` pass; files formatted with oxfmt. Not checked in a browser.
+
+## 2026-11-01 — Rental discovery page SCSS nesting
+
+- AI assistance: Claude Opus 5.5 grouped the rules in `discover-rental-page.component.scss` with native CSS nesting that follows the template structure: `img` under `article`, `h2`/`p` under `main` (with `.capacity` as `&.capacity` on `p`), and `ul`/`li`/`strong`/`button` under `.booking-panel`. Declarations are unchanged.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Verification: `pnpm exec ng build` passes and oxfmt reports the file as formatted. Not checked in a browser.
+
+## 2026-11-01 — Rental discovery page dotted overlay
+
+- AI assistance: Claude Opus 5.5 added a black dot pattern (`radial-gradient`, 1px dots on a 6px grid at 60% opacity) as an extra background layer on the blurred gradient overlay (`article::before`) in `discover-rental-page.component.scss`. The existing mask makes the dots fade in together with the blur, from transparent at the top to full at the bottom. This is an experiment the user asked to try.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Verification: `pnpm exec ng build` passes; file formatted with oxfmt. Not checked in a browser.
+- Follow-up: at the user's request, Claude Opus 5.5 removed `backdrop-filter: blur(8px)` from the overlay so the user can judge whether the dots and gradient are enough without the blur. Not checked in a browser.
+- Follow-up: at the user's request, Claude Opus 5.5 changed the overlay mask to `linear-gradient(transparent, #000 50%)`, so the dots reach full strength halfway up the overlay instead of only at the bottom. Not checked in a browser.
+- Follow-up: at the user's request, Claude Opus 5.5 brought the blur back, tried 16px, and settled on `backdrop-filter: blur(10px)` (was 8px). Not checked in a browser.
+
+## 2026-11-01 — Rental discovery page scroll progress bar
+
+- AI assistance: Claude Opus 5.5 added a CSS scroll-driven progress bar to `discover-rental-page.component.scss`, with no fallback, as the user asked. The scrolling `section` defines a named `scroll-timeline` (`--discover-scroll`), `:host` lifts it with `timeline-scope`, and a 4px orange (`#ff8c00`) `:host::before` bar at the top scales from 0 to full width as the section scrolls to its end. No template change was needed. It also added `.claude/launch.json` with a `frontend` dev server entry, used to check the bar in the browser.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Verification: `pnpm exec ng build` passes; file formatted with oxfmt. In Chromium 152 the bar's scale follows the scroll (50% → `0.5`, end → `1`), and a screenshot at 30% scroll shows the bar about 30% wide.
+
+## 2026-11-01 — Book button hover border
+
+- AI assistance: Claude Opus 5.5 removed the `translateY(-1px)` hover lift from the "Book now!" button in `discover-rental-page.component.scss`, so the button no longer moves on hover. As a proposal, it added an animated hover border: the button always has a 3px transparent border (padding reduced by 3px to keep the original size), and on hover a `conic-gradient` streak (orange, white, orange over the brand green) spins around it. The streak is driven by a registered `@property --book-border-angle` animated from 0 to 360deg every 1.5s.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Verification: `pnpm exec ng build` passes; file formatted with oxfmt. In the browser pane the button keeps the same size and position on hover (352 × 47.6px), and the border angle animates.
+
+## 2026-11-01 — Keep the discovery page alive across navigation
+
+- AI assistance: Claude Opus 5.5 added `KeepAliveRouteReuseStrategy` (`frontend/src/app/keep-alive-route-reuse-strategy.ts`), a `BaseRouteReuseStrategy` subclass that detaches and stores the component of any route with `data: { keepAlive: true }`, and reattaches the same instance when the user comes back. It marked the discovery route with `keepAlive` and provided the strategy as `RouteReuseStrategy` in `app.config.ts`.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Verification: `pnpm exec ng build` and eslint pass; files formatted with oxfmt. In the browser pane, navigating Discover → Contact → Discover returns the same `app-discover-rental-page` element. The section's scroll position resets to the top, because the browser drops it while the element is out of the document.
+
+## 2026-11-01 — Window scrolling for built-in scroll restoration
+
+- AI assistance: Claude Opus 5.5 moved the discovery page's scrolling from its inner `section` to the document, so Angular's built-in `withInMemoryScrolling({ scrollPositionRestoration: 'enabled' })` (added in `app.config.ts`) can restore it. The user asked for no hand-written scroll code. Changes:
+  - `styles.scss` defines `--nav-height` (2.75rem) and applies `scroll-snap-type: y mandatory` with `scroll-padding-top` to `html:has(app-discover-rental-page)`, so only the discovery page snaps.
+  - `app.scss` makes the shell `min-height: 100svh` instead of a fixed height and makes the nav a sticky bar of `--nav-height` with a `Canvas` background.
+  - `discover-rental-page.component.scss` drops the section's overflow, snap and named timeline. Articles are `100svh - --nav-height` tall, and the progress bar is `position: fixed` under the nav and driven by `scroll(root)`.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Verification: `pnpm exec ng build` and eslint pass; files formatted with oxfmt. In the browser pane: scroll to the 4th rental → Contact (starts at top) → browser Back returns to the 4th rental at 2172px with the bar at 21%. As Angular designs it, clicking the Discover nav link scrolls to the top instead of restoring.
+- Follow-up: the user found the window-scroll setup too complex for what it gave, since it only restored on browser Back and not when clicking the Discover link. At the user's request, Claude Opus 5.5 reverted all of it (`styles.scss`, `app.scss`, the discovery SCSS and `withInMemoryScrolling`) back to the section-based scrolling. Instead, `DiscoverRentalPageComponent` now listens to router events: on `NavigationStart` it saves the `#scroller` section's `scrollTop` while the section is still in the document, and on `NavigationEnd` it puts it back once the kept-alive page is reattached. Verified in the browser pane: scroll to the 5th rental → Contact → click Discover returns to the 5th rental (2896px), with the progress bar at 29%. `ng build` and eslint pass.
+
+## 2026-11-01 — Router wrapper background
+
+- AI assistance: Claude Opus 5.5 gave the `section` around `<router-outlet>` in `app.scss` a background of `color-mix(in srgb, Canvas, CanvasText 5%)`. This sets the contact page slightly apart from the nav in both light and dark mode, using system colors with no new tokens.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Verification: checked the contact page in the browser pane in dark and light mode; the content area is slightly lighter (dark) or greyer (light) than the nav.
+
+## 2026-11-01 — My reservations page and nav icon
+
+- AI assistance: Claude Opus 5.5 generated `MyReservationsPageComponent` with `ng generate component my-reservations-page --skip-tests` (no spec, per AGENTS.md), so it currently shows the CLI placeholder. It added a `reservations` route titled "My reservations — Rent'n'Sail" and an `event_upcoming` Material Symbols icon link (`aria-label="My reservations"`) pinned to the right of the nav with `margin-left: auto`. It also added `event_upcoming` to the `icon_names` subset in `index.html`, because the font only downloads the icons listed there.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Verification: `pnpm exec ng build` and eslint pass; files formatted with oxfmt. In the browser pane the icon shows in the top-right corner and clicking it opens `/reservations`.
+
+## 2026-11-01 — Mock booking page at /:id/:slug
+
+- AI assistance: Claude Opus 5.5 added a mock booking page for a single rental item.
+  - Moved the equipment list out of `DiscoverRentalPageComponent` into a shared `frontend/src/app/rental-equipment.ts`. It gives each item a numeric `id` (1–15) and adds `findRentalEquipment`, the three rental durations and a `rentalPrice` helper.
+  - Generated `BookingPageComponent` with `ng generate component booking-page --skip-tests`. It shows the item's photo, name and description and a mock form (duration radios with prices, date, start time, people within the item's capacity). Submitting only shows a "mock booking — nothing was reserved" notice. Unknown ids show "Equipment not found".
+  - Routes: `:id/:slug` renders the page with a title resolver ("Book <name> — Rent'n'Sail"). `:id` uses a `redirectTo` function that adds the slug (`/3` → `/3/sailboat`) and sends unknown ids to `/`. The `:id` param reaches the component as an input through `withComponentInputBinding()`.
+  - The discovery page's "Book now!" button now navigates to `/<id>/<slug>` with `routerLink`.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Verification: `pnpm exec ng build` and eslint pass; files formatted with oxfmt. In the browser pane: `/3` redirects to `/3/sailboat`; Book now on the 2nd item opens `/2/stand-up-paddleboard`; choosing Full day updates the button to $80.00; submitting shows the mock notice; `/99` redirects home. A wrong slug for a valid id (e.g. `/3/kayak`) is not corrected.
+
+## 2026-11-01 — Rental equipment service with a resource signal
+
+- AI assistance: Claude Opus 5.5 generated `RentalEquipmentService` with `ng generate service rental-equipment/rental-equipment --skip-tests`, using Angular 22's auto-provided `@Service()` decorator. It moved the data file next to it as `rental-equipment/rental-equipment.ts`, which keeps the types, mock data, durations and `rentalPrice`.
+  - The service exposes `equipment = resource({ loader, defaultValue: [] })`. The loader is a mock `Promise` to be swapped for an HTTP call later. An async `find(id)` serves places that can't read signals.
+  - The discovery page reads `equipment.value()` (now tracked by `id`). The booking page computes its item from the same resource and shows "Equipment not found" only once loading is done.
+  - The `:id` redirect function and the booking title resolver are now async and use `inject(RentalEquipmentService).find(...)`.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Verification: `pnpm exec ng build` and eslint pass; files formatted with oxfmt. In the browser pane, `/5` → `/5/canoe`, the discovery page shows all 15 items, and Book now on the 7th opens `/7/pontoon-boat`. Server-rendered HTML includes all 15 articles on `/` and the "Book Sailboat" heading and title on `/3/sailboat`; `/3` and `/99` get server 302 redirects.
+- Follow-up: at the user's request, Claude Opus 5.5 laid out the booking page header as a two-column grid from 40rem up: the image (spanning two rows) top left, the name and description stacked to its right, and the form or confirmation full width below with 1.5rem of space. The grid applies only when the image exists (`main:has(.hero)`), so "Equipment not found" is unaffected, and narrow screens keep the single column. The image `sizes` were updated to match. Checked in the browser pane at desktop and mobile widths; `ng build` passes.
+
+## 2026-11-01 — Image view transition, rental image component, overscroll
+
+- AI assistance: Claude Opus 5.5 added a shared-element view transition for rental photos between the discovery and booking pages.
+  - Turned on Angular's `withViewTransitions({ skipInitialTransition: true })`. The skip option stops the browser aborting a transition on the first load ("Transition was aborted because of invalid state").
+  - At the user's request, generated `RentalImageComponent` (`rental-equipment/rental-image/`) with `ng generate component ... --skip-tests`. It takes the item `id` (plus optional `priority` and `sizes`), looks the item up in `RentalEquipmentService`, and renders only the `NgOptimizedImage` fill `<img>` with `view-transition-name: rental-<id>` and `view-transition-class: rental-image`. Its host is `display: contents`, so the image still fills the parent's positioned box. Both pages now use it instead of their own `<img>`, and their duplicated image rules were removed.
+  - `styles.scss` keeps the morphing snapshots `object-fit: cover` (`::view-transition-old/new(*.rental-image)`) so they don't stretch.
+  - At the user's request, `styles.scss` sets `overscroll-behavior: none` on every element (`*`), so neither the page nor inner scroll areas bounce, chain scroll or pull to refresh. Follow-up: narrowed to `overscroll-behavior-y: none` so the macOS trackpad swipe back/forward (horizontal overscroll) keeps working.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Verification: `pnpm exec ng build` and eslint pass; files formatted with oxfmt. In the browser pane, Book now runs a view transition with `::view-transition-group(rental-1)` / `(rental-3)` morphing into the booking image; a fresh load logs no errors; computed `overscroll-behavior-y` is `none` on `html`, `body` and the discovery list. During testing, transitions in the browser pane aborted whenever the pane had not drawn a frame yet; this was a testing artifact, not an app bug.
+- Follow-up (view transition looked broken): pausing the transition halfway showed the old and new pages crossfading on top of each other, the discovery card text disappearing under the photo, and the photo doubled because its two snapshots kept different widths. Claude Opus 5.5 changed the transition in `styles.scss`: the old page (`root` and anything with `view-transition-class: fade`) fades out over 150ms, then the new page fades in over 200ms, while the photo group morphs over 350ms. Both photo snapshots are now `width/height: 100%; object-fit: cover`. The discovery card text (`.rental-content`) gets `view-transition-name: match-element` with class `fade`, so it fades out above the photo. The nav has `view-transition-name: site-nav` so it stays still. Checked by pausing the transition at 75, 175 and 300ms in the browser pane. Because the two pages crop the photo differently (full screen vs 16:9), a slight ghost remains while the two snapshots crossfade.
+- Follow-up (transitions only between discover and booking, no photo ghost): Claude Opus 5.5 marked the discovery and booking routes with `data: { rentalImageTransition: true }`. `withViewTransitions`' `onViewTransitionCreated` hook now adds the view transition type `rental-image` when both the leaf `from` and `to` routes have that flag. Skipping other transitions with `transition.skipTransition()` was tried first; it worked, but Angular logged `AbortError: Transition was skipped` in dev mode on every other navigation, so `styles.scss` instead sets `animation: none` on all view-transition pseudo-elements unless `:active-view-transition-type(rental-image)` matches, and scopes the existing fade and morph rules to that type. To remove the ghost, the old photo snapshot (always loaded) is shown unanimated while it moves, and the new snapshot only fades in over the last 100ms. Verified in the browser pane: discover → booking has type `rental-image`, with the photo group (350ms) and root fades (150/200ms), and a single clean photo when paused at 175ms; booking → contact has no type and no animations; no console errors.
+- Follow-up (ghosting "sometimes"): pausing booking → discover showed the cause. The last-100ms fade blended the booking page's 16:9 crop with the discovery page's full-screen crop; snapshots are images of the already-cropped element, so they can't line up. Claude Opus 5.5 changed the route data to `rentalImageTransition: 'discover' | 'booking'`, and the hook now adds a `from-discover` or `from-booking` type next to `rental-image`. `styles.scss` shows only the discovery page's snapshot in both directions (`opacity: 0` on the other, no animations on either), since that page is kept alive and its photo is full size and loaded. Testing also showed the neighbouring discovery photo's edge appearing over the nav, because named photos are lifted out of the scroll list. Photos without a partner (`:only-child` old/new) are now hidden. Verified with the 3rd item in both directions, paused at 100, 200 and 300ms: one clean photo, no strip over the nav, no console errors.
+- Follow-up (other elements "going bananas"): stepping through the transition showed the neighbouring card's text ("1 person", its Book now button) over the nav. Every card's `.rental-content` had `view-transition-name: match-element`, which lifted all 15 out of the scroll list, including off-screen ones. Claude Opus 5.5 made each `article` a `container-type: scroll-state` container and moved the naming into `@container scroll-state(snapped: y)`, so only the card snapped into view is captured on its own; the rest stay in the page snapshot, clipped by the list. Verified in the browser pane with the 3rd item: only "Sailboat" text is named; going to booking shows no neighbour content over the nav; going back has only the root, nav and `rental-3` groups. `ng build` passes.
+- Follow-up (card text popped in "in one frame" on the transition back from booking), reported by @ElectroluxV2: logging the captured groups showed the back transition had no group for the card text. The `@container scroll-state(snapped: y)` naming no longer matched when the kept-alive page was reattached: Chrome works out the snapped state again only a frame after the new snapshot is taken. The text therefore stayed in the root snapshot under the moving photo and appeared when the photo finished. Claude Opus 5.5 switched to nested view transition groups: the discovery `section` is now `view-transition-name: discover-list; view-transition-class: fade; view-transition-group: contain`, every `.rental-content` always has `view-transition-name: match-element; view-transition-class: fade`, and `styles.scss` clips `::view-transition-group-children(discover-list)` with `overflow: clip`, so off-screen cards can't spill over the nav. The scroll-state container is removed. (A scroll-driven, then snap-triggered, fade-in was tried first after a misunderstanding and reverted.) Verified in Chrome 152 in the browser pane with the 3rd item: forward, paused at 100ms, the text fades out above the photo with nothing over the nav; back has `new(match-element)` groups fading in from 150 to 350ms, with scroll restored afterwards. `ng build` passes.
+- Follow-up (dotted and blurred card background appeared in one frame after the back transition), requested by @ElectroluxV2: the overlay is the card's `article::before`. It belongs to the list snapshot, drawn under the nested photo group, and a snapshot can't keep a `backdrop-filter` blur on its own, so it could only reappear when the real page came back. Claude Opus 5.5 gave it `transition: opacity 250ms ease-out 350ms` with `@starting-style { opacity: 0 }`. The kept-alive discovery page is re-inserted into the DOM on the way back, so the overlay starts hidden and fades in after the 350ms photo morph. It also fades in on the first load and after other navigations to discovery. Verified in the browser pane by sampling every 60ms going back from the 3rd item: opacity 0 while the transition runs, then 0.40 → 0.72 → 0.94 → 1 after it ends. `ng build` passes. Going to booking, the overlay still vanishes as soon as the transition starts, for the same reason.
+- Follow-up (fade the dotted and blurred overlay out going to booking), requested by @ElectroluxV2: Claude Opus 5.5 replaced `article::before` with a real `<div class="overlay" aria-hidden="true">` in the discovery template. A capture of `::before` was tried first, but the run in the browser pane was skipped before anything could be checked. The overlay keeps the same styles plus `view-transition-name: match-element; view-transition-class: fade`, so it is captured on its own and fades out with the card text. A snapshot can't keep a `backdrop-filter`, so only the dots and darkening fade; the blur drops when the transition starts. The `@starting-style` fade-in for the way back stays. Pausing the forward transition showed that the photo was drawn over the list's nested groups (the overlay, and also the card text since the earlier nesting change), because going forward the photo is placed by where it sits on the booking page, outside the list. `styles.scss` now gives `::view-transition-group(discover-list)` `z-index: 1`. Everything visible in the list is captured on its own, so this covers nothing else. Verified in the browser pane: at 60ms going forward, the text and dots are above the photo and fading; going back, 30 `new(match-element)` groups (overlay and text for each card) and the overlay ends at opacity 1; one forward and back run logged no console errors. `ng build` passes.
+- Follow-up (remove view transitions): while fixing the photo stutter going to booking, measurements showed that capturing all 15 blurred overlays separately caused 100–160ms frame stalls. Before that fix was verified, @ElectroluxV2 asked to drop the view transition work entirely and keep the image component. Claude Opus 5.5 removed `withViewTransitions` (and its type-tagging hook and helper) from `app.config.ts`; the `rentalImageTransition` route data; all view-transition rules and keyframes from `styles.scss` (the app-wide `overscroll-behavior-y: none` stays); the nav's `view-transition-name`; the discovery list's nested-group setup, the card text naming, and the `.overlay` element, which went back to `article::before` without the `@starting-style` fade; and the `view-transition-name` binding and `view-transition-class` from `RentalImageComponent`, which otherwise stays as is. `ng build` and eslint pass. In the browser pane, Book now and back start no view transitions, the overlay renders, and scroll is restored.
+
+## 2026-11-01 — Booking page people count
+
+- AI assistance: at the user's request, Claude Opus 5.5 removed the "People" number input from the booking form and replaced it with a read-only count, the same one the discovery page shows (the `people_size_increase` icon and e.g. "4–6 people", using `FormatRangePipe` and `I18nPluralPipe`). Added a small `.capacity` style to the booking page.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Verification: `ng build` passes.
+- Follow-up (capacity under description, people counter next to Book), requested by @ElectroluxV2: Claude Opus 5.5 moved the capacity line out of the form into a `.details` block with the description (the desktop grid now targets `.details` instead of `> p`). The form ends with an `.actions` bar: a `role="group"` people counter (−, "N people" `<output>`, +) joined to the Book button. The count is a `linkedSignal` that resets to the item's minimum capacity, and the buttons disable at the min/max. `add` and `remove` were added to the Material Symbols `icon_names` subset in `index.html`, because the icons were showing as text. Verified in the browser pane: the sailboat goes 4 → 5 → 6 and stops at 6, with − disabled at 4; the kayak at phone width shows "1 person" with no horizontal scroll; no console errors. `ng build` passes.
+- Follow-up (counter is for item quantity, not people), clarified by @ElectroluxV2: Claude Opus 5.5 turned the counter into a quantity of the same item. `quantity` is a `linkedSignal` that resets to 1 when the item changes. − is disabled at 1, and there is no upper limit because the mock data has no stock count. The `<output>` shows just the number, labelled "Quantity", and the Book button price is multiplied by the quantity. The capacity line under the description stays. Verified in the browser pane on the sailboat: 1 → $85, 3 → $255, back to 2 → $170; no console errors. `ng build` passes.
+- Follow-up (cap quantity), requested by @ElectroluxV2: Claude Opus 5.5 added `maxQuantity = 10` to the booking page and disabled the + button at it. Verified in the browser pane: 12 clicks on + stop at 10 ($850 for the sailboat). `ng build` passes.
+- Follow-up (signal form, hide start time for a full day), requested by @ElectroluxV2: Claude Opus 5.5 rebuilt the booking form with Angular 22 signal forms (`@angular/forms/signals`). The model `{ durationId, date, startTime, quantity }` is a `linkedSignal` that resets when the item changes. `form()` uses a schema with `required(date)`, `minDate(date, today)`, `hidden(startTime)` when `durationId === 'full-day'`, `required(startTime)`, and `min/max(quantity, 1/10)`, plus a `submission.action` that sets `booked`. The template uses `[formRoot]` on the `<form>` and `[formField]` on the radios, date and time inputs. Start time is rendered only while `startTime().hidden()` is false, and hidden fields skip validation. The quantity buttons read `quantity().min/max()` from the schema, which replaces the separate `maxQuantity`. Each `RentalDuration` got an `id` (`hour | two-hours | full-day`), because radio fields compare by string value. `[formRoot]` turns off browser validation, so a "Pick a date from today on." message shows under Date once it is touched and invalid. While testing, the native date `min` came out a day early because Angular formats it in UTC. The minimum is now today's local date at UTC midnight, which matches how date inputs report their value. Verified in the browser pane: Full day hides Start time ($340); submitting with no date shows the error and doesn't book; yesterday is rejected and today is accepted; booking then works; 2 hours × 2 = $306; no console errors after a fresh load; server-rendered HTML still has the form. `ng build` passes.
+- Follow-up (disable start time instead of hiding it), requested by @ElectroluxV2: Claude Opus 5.5 swapped the `hidden()` rule for `disabled()` with the same full-day condition. The Start time input is always rendered, and `[formField]` sets its native `disabled` (styled at 50% opacity). Disabled fields skip validation, so a full-day booking still submits. Verified in the browser pane: Full day disables Start time, and switching back to 1 hour re-enables it with 10:00 kept; a full-day booking goes through; no console errors. `ng build` passes.
+- Follow-up (opening hours for start time), requested by @ElectroluxV2: Claude Opus 5.5 added opening (08:00) and closing (21:00) times to the booking page. A `validate()` rule on `startTime` requires a start between opening time and the latest start that still returns the rental by closing time (closing minus the duration: 20:00 for 1 hour, 19:00 for 2 hours). The start time stays an `"HH:MM"` string compared as text. The built-in `min()`/`max()` rules only take numbers or dates, and Angular only formats native min/max for date inputs, so `[min]`/`[max]` are bound on the time input directly to give the picker the limits. The message (e.g. "Pick a start time from 08:00 to 19:00.") shows under Start time once it is touched. Full day still disables the field, which skips the rule. Verified in the browser pane: 07:30 is rejected; 20:00 passes for 1 hour but fails after switching to 2 hours, and the form will not submit; 19:00 passes; a full-day booking submits; no console errors. `ng build` passes.
+- Follow-up (no layout shift from errors), requested by @ElectroluxV2: Claude Opus 5.5 made the Date and Start time error lines always render as `<small class="error" aria-live="polite">`, with the message inside conditionally, and gave `.error` `min-height: 1lh`. Verified in the browser pane: the Start time input and Book button stay at the same positions with no errors, one error and both errors (each line 17px tall). `ng build` passes. A message that wraps to two lines on a narrow screen would still add one line.
+- Follow-up (numeric route id), asked by @ElectroluxV2: Claude Opus 5.5 changed the booking page `id` input to `input.required({ transform: numberAttribute })`, so the `:id` route string arrives as a number and the item lookup compares `item.id === this.id()` without `Number(...)`. Verified in the browser pane: `/3/sailboat` shows "Book Sailboat", `/99/nothing` shows "Equipment not found", and Book now from the discovery page opens `/3/sailboat` with no console errors. `ng build` passes.
+- Follow-up (whole prices from the backend contract), requested by @ElectroluxV2: Claude Opus 5.5 replaced `hourlyRate` on `RentalEquipment` with `prices: Record<RentalDuration['id'], number>`, the whole price of one unit for each duration. The mock data returned by `RentalEquipmentService` now holds these values, worked out once from the old rates and discounts, so all 15 items show the same prices as before. `rentalPrice()` and `RentalDuration.discount` were removed; durations keep `id`, `label` and `hours` (hours still sets the latest start time). The booking page reads `item.prices[option.id]`, and Book shows `item.prices[duration().id] * quantity`. The discovery page's pricing list, which had the rate math hard-coded per row, now loops over `rentalDurations` and reads `item.prices`. Verified in the browser pane: kayak 18 / 32.40 / 72 and sailboat 85 / 153 / 340 on the discovery page; the booking page matches, and 2 hours × 2 sailboats = $306; no console errors. `ng build`, eslint and oxfmt pass.
+- Follow-up (durations as an object), requested by @ElectroluxV2: Claude Opus 5.5 changed `rentalDurations` from an array of `{ id, label, hours }` to an object keyed by id (`hour`, `two-hours`, `full-day`) with `as const satisfies Record<string, RentalDuration>`. `RentalDuration` is now just `{ label, hours }`, and the new `RentalDurationId` type (`keyof typeof rentalDurations`) is used for `prices` and the booking model. Both pages loop with `durations | keyvalue: null` (`null` keeps insertion order instead of sorting by key) and use `.key` / `.value.label`. The booking page's `durationById` helper and `duration` computed were removed: lookups are `rentalDurations[id]`, and the Book price reads `item.prices[bookingForm.durationId().value()]`. Verified in the browser pane: same order and prices on both pages; 1 hour $85 (latest start 20:00), 2 hours $153 (19:00), Full day $340 with Start time disabled; no console errors. `ng build`, eslint and oxfmt pass.
+- Follow-up (plain string duration ids), requested by @ElectroluxV2: Claude Opus 5.5 removed the `RentalDurationId` type. `rentalDurations` is typed `Readonly<Record<string, RentalDuration>>` (no `as const satisfies`), `RentalEquipment.prices` is `Readonly<Record<string, number>>`, and the booking model's `durationId` is a `string`. Lookups still use brackets, as `noPropertyAccessFromIndexSignature` requires, and `noUncheckedIndexedAccess` is off, so `rentalDurations[id]` stays typed as `RentalDuration`. A misspelled id is no longer a compile error. Verified in the browser pane: same order and prices on both pages; $85 / $153 / $340 with latest starts 20:00 / 19:00 and Start time disabled for a full day; no console errors. `ng build`, eslint and oxfmt pass.
+- Follow-up (booking total as a computed), requested by @ElectroluxV2: Claude Opus 5.5 moved the Book button's inline `item.prices[bookingForm.durationId().value()] * quantity.value()` into a `total` computed in the component. It reads `durationId` and `quantity` from the booking model signal and the price from `item()`, falling back to 0 when there is no item. The button now shows `{{ total() | currency: 'USD' }}`. Verified in the browser pane on the sailboat: $85 → 2 hours $153 → quantity 2 $306 → Full day $680; no console errors. `ng build`, eslint and oxfmt pass.
+- Follow-up (semantic HTML on the booking page), requested by @ElectroluxV2: Claude Opus 5.5 wrapped the item in an `<article>`, turned the image wrapper into a `<figure class="hero">`, and grouped the title, description and capacity in a `<header>` (replacing the `.details` div). The desktop two-column grid moved from `main:has(.hero)` to `article`; the header is a centred flex column, so the image no longer spans two rows, and the figure's default margin is reset. Verified in the browser pane on the sailboat: same layout, article children are `FIGURE, HEADER, FORM`; no console errors. `ng build` passes.
+- Follow-up (save bookings and list them on My reservations), requested by @ElectroluxV2: Claude Opus 5.5 added a `reservation/` slice with a `Reservation` model (`equipmentId`, `durationId`, `date`, `startTime` or null for a full day, `quantity`, `total`) and a mock `ReservationService`. Like `RentalEquipmentService`, it exposes the list as a `resource` (`reservations`, newest first) and has an async `save()` that waits 300ms, stores the reservation in memory, reloads the resource and returns the saved item. The data is lost on a page reload until a real API replaces the mock calls. The booking page no longer has the `booked` signal or the "mock booking" message: the signal form's `submission.action` calls `save()` and then navigates to `/reservations`, and the Book button is disabled while `bookingForm().submitting()`. The My reservations page joins each reservation with its equipment and lists them in an `<ol>` of `<article>`s with the photo, a link back to the item, and a `<dl>` of date, duration (plus start time), quantity and total, or "No reservations yet" with a link to Discover. Verified in the browser pane: a full-day sailboat booking and a 2-hour kayak booking (quantity 2, $64.80) both appear, newest first; the Book button is disabled while saving; no console errors. `ng build`, eslint and oxfmt pass.
+
+## 2026-11-01 — Passkey sign-in only when booking or opening My reservations
+
+- AI assistance: at the user's request, Claude Opus 5.5 proposed and built passkey auth that is asked for only when booking or opening `/reservations`. Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Backend: new `auth/session/` slice. `GET /session` returns `{ username }` or `null` (so signed-out visitors don't get an error), using AuthTuna's `get_current_user_optional`. `DELETE /session` ends the AuthTuna session and clears its cookie. `register/passkey/complete` now returns `{ username }` like login does. (@ElectroluxV2 added the missing `await` on the failed-registration `users.delete` cleanup.)
+- Frontend: new `auth/` slice. `PasskeyService` runs the login and register ceremonies with the browser's `PublicKeyCredential.parseRequestOptionsFromJSON` / `parseCreationOptionsFromJSON` and `credential.toJSON()`, replacing the hand-written base64url code, and turns a 404 from login complete into an `UnregisteredPasskeyError`. `AuthService.ensureSignedIn(reason)` asks `GET session` once, from the browser only (`transferCache: false`), and otherwise opens the sign-in dialog and resolves true or false. `authGuard` uses it on `/reservations`; on cancel it stays put, or goes home on a first load. The booking page calls it before saving. `/reservations` renders on the client only (`RenderMode.Client`). `AuthDialogComponent` is a native `<dialog>` in the app shell, opened with `afterRenderEffect`. Its username field has `autocomplete="username webauthn"` and a conditional-mediation `credentials.get()` runs while it's open, so saved passkeys show in autofill. A new username plus Create account registers instead. "Use a passkey" runs a regular passkey prompt (for a phone or security key), and Cancel or Esc closes it. My reservations shows "Signed in as …" with a Sign out button. The old `web-auth-flow` component was removed, and `passkey` and `logout` were added to the Material Symbols subset.
+- Verification: `ng build`, eslint, oxfmt and ruff pass. With FastAPI's test client, `GET /session` returns `null` and `DELETE /session` clears the cookie; the running backend serves `/session`. In the browser pane, the backend's real login options and an AuthTuna-shaped registration options object both parse with the native helpers, and conditional mediation is available. The dialog opens on a direct `/reservations` load (cancel goes home), from the nav (Esc stays on Discover), and from Book ("Sign in to book"; Book stays disabled while it's open and is re-enabled on cancel). An empty username shows "Enter a username to create an account." A full sign-in or registration was not tested: the local proxy had no app registered for `backend.localhost` (the backend ran via `fastapi dev` on port 8000), and the browser pane has no authenticator.
+- Follow-up (try sign-in without the dialog first), asked by @ElectroluxV2: Claude Opus 5.5 explained that a fully silent passkey sign-in isn't possible (`mediation: 'silent'` doesn't cover passkeys) and added Chrome's immediate UI mode. `AuthService.ensureSignedIn` now checks the session cookie, then, where `PublicKeyCredential.getClientCapabilities()` reports `immediateGet`, calls `navigator.credentials.get({ uiMode: 'immediate' })`. If this device has a passkey for the site, Chrome shows its own sheet and the app dialog is skipped. Otherwise, or on dismissal, an unknown passkey, or a browser without support, it falls back to the dialog. `mediation: 'immediate'` was tried first. Chrome 152 rejects it as an invalid enum value: it was the 2025 origin-trial form, and Chrome 149 shipped `uiMode` instead (found in Chrome's immediate UI mode docs). `PasskeyService.signIn` now takes a `PasskeyPrompt` (`autofill | dialog | immediate`) mapped to request options, and `CredentialRequestOptions` gets a `uiMode?: 'immediate'` global type addition until TypeScript's DOM types have it. When login complete returns 404, it also calls `PublicKeyCredential.signalUnknownCredential()`, so the browser drops the stale passkey. Verified in the browser pane (Chrome 152): Chrome accepts `uiMode: 'immediate'`; with a real click and no passkey it rejects with `NotAllowedError` in 37ms and shows no UI. Clicking My reservations runs `GET /session` (200, signed out), `login/passkey/begin` for the immediate try, then opens the dialog with autofill; no console errors. `ng build` and eslint pass. A sign-in with an existing passkey was not tested, because the pane has no authenticator.
+
+## 2026-11-03 — Styling date and time inputs (question)
+
+- AI assistance: @ElectroluxV2 asked whether `<input type="date">` and `<input type="time">` can be styled. Claude Opus 5.5 explained what CSS can reach (the box, text, `color-scheme`, `accent-color`, and in Chromium/WebKit the `::-webkit-datetime-edit*` and `::-webkit-calendar-picker-indicator` pseudo-elements), that the popup picker can't be styled, and the options for a fully custom picker. No code changed.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Follow-up (style the fields and add accent-color), requested by @ElectroluxV2: Claude Opus 5.5 set `accent-color: #168447` on the booking `form`, so the duration radios and the native pickers use the brand green. The date and time inputs got padding, a rounded border and a faint background matching the duration fieldset, a stronger border on hover, a green `:focus-visible` outline and a red border on `:user-invalid`. In Chromium and WebKit, the focused day/month/year/hour/minute segment is highlighted green (`::-webkit-datetime-edit-*-field:focus`) and the picker icon shows a pointer cursor. Firefox gets only the box styles. Dark mode already comes from the global `color-scheme: light dark`. Verified in the browser pane (dark mode) on the sailboat: radios computed `accent-color` is `rgb(22, 132, 71)`, the date field shows the new border and radius, and the focused segment is green; no console errors.
+
+## 2026-11-03 — Cancel a reservation
+
+- AI assistance: at the user's request, Claude Opus 5.5 added a "Cancel reservation" button to each booking on My reservations. `ReservationService.cancel(id)` is a mock call like `save()`: it waits 300ms, removes the reservation from memory and reloads the list. Ids now come from a `lastId` counter instead of `stored.length + 1`, which would repeat an id after a cancellation. The page asks first with the native `confirm()` ("Cancel your Kayak reservation?"), keeps a `cancelling` set of ids, and while one is in flight its button is disabled and reads "Cancelling…". The button is red, uses the `event_busy` icon (added to the Material Symbols subset in `index.html`), and on wide screens sits under the details next to the photo, which now spans three rows.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Verification: `ng build`, eslint and oxfmt pass. In the browser pane, the session was marked signed in from the console (no authenticator is available) and two reservations were saved through the service. With `confirm` stubbed: answering No kept both; Yes disabled the button with "Cancelling…" and then removed the Kayak; cancelling the last one showed "No reservations yet"; no console errors. The real `confirm()` dialog itself was not shown during testing.
+- Follow-up (center the empty state), requested by @ElectroluxV2: Claude Opus 5.5 gave the "No reservations yet" item an `empty` class and made `main` a full-height flex column (`min-height: 100%`, `box-sizing: border-box`). `ol:has(> .empty)` takes the remaining space (`flex: 1`) and centres the message with `place-content: center` and `text-align: center`. A list with reservations is unchanged. Verified in the browser pane (signed in from the console as before): the message is centred horizontally and in the space below the header, with no scrollbar; no console errors.
+- Follow-up (center the loading message too), requested by @ElectroluxV2: Claude Opus 5.5 gave "Loading reservations…" a `loading` class and added it to the same rule as the empty state, which now also sets `display: grid` and `margin: 0` so the `<p>` centres like the list. Verified in the browser pane by reloading the reservations resource: the loading message and the "No reservations yet" message that replaces it have the same centre, so nothing jumps; no console errors.
+
+## 2026-11-03 — Style the sign-in username field
+
+- AI assistance: @ElectroluxV2 noted the sign-in dialog's username input was unstyled. Claude Opus 5.5 moved the date/time field styles from the booking page into `styles.scss` as one global rule, `input:is([type='text'], [type='date'], [type='time'])`, so the username field gets the same padding, rounded border, faint background, hover border, green focus outline and red `:user-invalid` border. The `-webkit-` date/time segment rules moved with it. The booking page keeps only its `font: inherit` and disabled-opacity rule for inputs.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Verification: `ng build` and oxfmt pass. In the browser pane, the sign-in dialog opened from a direct `/reservations` load, and the username field has the same computed border, radius and padding as the booking date and time fields, which are unchanged; no console errors. The dialog showed "No passkey was used…" as soon as it opened; this message comes from existing sign-in code and wasn't changed.
+- Follow-up (error shown as soon as the sign-in dialog opens), requested by @ElectroluxV2: Claude Opus 5.5 found that the dialog's background autofill request (`mediation: 'conditional'`) is rejected by the browser pane's Chrome with `NotAllowedError` about 25ms after it starts, even with an `autocomplete="username webauthn"` field focused and `conditionalGet` reported as supported. The dialog treated that like a dismissed prompt and showed "No passkey was used…". `AuthDialogComponent.signIn` now ignores `NotAllowedError` when the prompt is `autofill`, since the user didn't start it. Errors from an explicit "Use a passkey" attempt, unknown passkeys and server errors still show. A small `isNotAllowed()` helper is shared with `messageFor`. Verified in the browser pane: opening the dialog from `/reservations` shows no error; clicking "Use a passkey" still sets the "No passkey was used…" error. `ng build`, eslint and oxfmt pass.
+- Found while testing, not changed: clicking "Use a passkey" blurs the username field, which marks it touched, and the template prefers the "Enter a username to create an account." validation message over the passkey error, so the passkey message is hidden.
+- Follow-up (passkey message hidden by the username message), requested by @ElectroluxV2: Claude Opus 5.5 made the dialog show the message for the latest action. The template now shows `error()` first and the username validation message only when there is no error. Create account clears `error()` through a `(submit)` listener on the form, so an empty username then shows "Enter a username to create an account."; "Use a passkey" clears it before trying. Verified in the browser pane: "Use a passkey" shows "No passkey was used…"; Create account with an empty username then shows the username message; "Use a passkey" again shows the passkey message. `ng build`, eslint and oxfmt pass.
+- Follow-up (username message only after Create account), requested by @ElectroluxV2: Claude Opus 5.5 added a `createPressed` signal to `AuthDialogComponent`. The form's `(submit)` now calls `pressedCreate()`, which clears any passkey error and sets it. The username message shows when `createPressed()` and the field has an error, instead of when the field is touched, so leaving the field or clicking "Use a passkey" no longer shows it. It goes away once a username is typed, and `createPressed` resets each time the dialog opens. Verified in the browser pane: no message on open or after leaving the field; Create account with an empty username shows "Enter a username to create an account."; typing "sailor" removes it; reopening the dialog shows no message; no console errors. `ng build`, eslint and oxfmt pass.
+
+## 2026-11-03 — "My reservations" label in the nav
+
+- AI assistance: at the user's request, Claude Opus 5.5 added the text "My reservations" after the `event_upcoming` icon in the app nav. The link's `aria-label` was removed because the visible text now names it, and `app.scss` centres the icon and label with a small gap.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Verification: in the browser pane the label shows at the right end of the nav, and at 375px wide the page has no horizontal scroll.
+
+## 2026-11-03 — Opening hours from the API, per weekday in the booking form
+
+- AI assistance: at the user's request, Claude Opus 5.5 moved the opening hours to the backend and made the booking form use the picked day's hours.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Backend: new `opening_hours/` slice with one `APIRouter`, mounted in `main.py`. `GET /opening-hours` returns `[{ weekday, opens, closes }]` (ISO weekday 1–7, `"HH:MM"` strings checked by a pydantic pattern); weekdays missing from the list are closed. The hours are fixed in code for now and match what the Contact page showed: Monday–Friday 08:00–20:00, Saturday 07:00–21:00, Sunday 09:00–18:00.
+- Frontend: new `opening-hours/` slice with the `OpeningHours` model, `weekdayNames`, `isoWeekday()` (a date input's value is the picked day at UTC midnight, so it uses `getUTCDay()`) and `hoursOn()`, plus `OpeningHoursService` exposing `week` as an `httpResource`. It is fetched during SSR, and hydration's HTTP transfer cache hands the response to the browser, so the browser makes no request on a server-rendered page. The Contact page now builds its Opening hours list from the API, joining consecutive days with the same hours ("Monday – Friday") and showing missing days as "Closed". It shows no rows until the hours load.
+- Booking form: the fixed 08:00/21:00 were removed. A new `validate()` on `date` rejects closed days ("We're closed on Sundays."), and the date error line now shows the field's first error message (the `minDate` rule got its "Pick a date from today on." message). The start time rule uses the picked day's `opens` and `closes` minus the duration, and is skipped until a date is picked and the hours have loaded. The time input's limits come from a `dayHours` computed and are bound with `[attr.min]`/`[attr.max]`, so they are removed when there is no day yet; plain `[min]`/`[max]` had set them to the text "null".
+- Verification: backend ruff passes; `GET /opening-hours` returns the 7 days through FastAPI's test client, the running backend and the frontend's `/api` proxy. `ng build`, eslint and oxfmt pass. `curl` of `/contact` shows the three rows in the server-rendered HTML, and both `/contact` and `/3/sailboat` embed the `opening-hours` response; the browser pane made no `opening-hours` request on either page. On the booking form: Monday 07:30 is rejected (08:00–19:00 for 1 hour), Monday 19:00 passes for 1 hour and fails for 2 hours (latest 18:00), Saturday 07:30 passes (07:00–19:00 for 2 hours), Sunday 16:30 fails for 2 hours (latest 16:00) and passes for 1 hour. The closed-day path was tested by removing Sunday, then Saturday, from the loaded hours in the page: "We're closed on Sundays." shows, the form doesn't submit, and the time limits are removed. No console errors.
+- Follow-up ("My reservations" nav icon on the right), requested by @ElectroluxV2: Claude Opus 5.5 moved the `event_upcoming` icon after the "My reservations" text in `app.html`. Verified in the browser pane: the label comes first with the icon on its right; no console errors.
+- Follow-up (icon not underlined on the active link), requested by @ElectroluxV2: the active link's `text-decoration: underline` carries into the link's flex items, and a child can't turn it off. Claude Opus 5.5 wrapped the text in `<span class="label">`, and `app.scss` now removes the underline from the active My reservations link and underlines only `.label`. Verified in the browser pane on `/reservations` (signed in from the console): the label is underlined and the icon isn't; no console errors.
+- Follow-up (start time error before a date is picked), requested by @ElectroluxV2: the start time rule was skipped until a date was picked. Claude Opus 5.5 added `widestHours()` to the opening-hours slice (earliest opening to latest closing of the week), and the booking page checks the start time against it until a date is picked, then against that day's hours. The time picker's limits follow the same hours. Verified in the browser pane: with no date, 06:30 shows "Pick a start time from 07:00 to 20:00." (1 hour) as soon as the field is left, and 07:30 passes; picking a Monday then rejects 07:30 (08:00–19:00), and 10:00 passes; no console errors. `ng build`, eslint and oxfmt pass.
+
+## 2026-11-03 — My reservations layout proposal
+
+- AI assistance: @ElectroluxV2 said My reservations is confusing when the same item is booked at different start times, and asked for a better layout. Claude Opus 5.5 proposed (as an inline mockup, no code changed) an agenda layout: reservations grouped under a day heading and sorted by start time instead of booking order, each row led by its time range ("10:00 – 11:00", or "All day"), followed by a small photo, the item name with the quantity, the total and a compact Cancel button.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Follow-up (build the agenda layout), requested by @ElectroluxV2: Claude Opus 5.5 rebuilt My reservations as an agenda. A `days` computed groups reservations by date (soonest first) and sorts each day with full-day bookings first, then by start time, so the list no longer follows booking order. Each day is a `<section>` with a date heading and a bordered `<ol>`. Each row shows the time range in bold (the end time is the start plus the duration's hours) with "1 hour" / "2 hours" under it, or "All day" / "Full day"; a square photo; the item name, now linking to its booking page, with "× 2" when the quantity is above 1; the total; and an icon-only red cancel button (`aria-label` "Cancel Kayak reservation", tooltip "Cancel reservation") that still asks to confirm. The quantity is shown as "× N" because names like "Water skis" and "Kite surfing" don't pluralize cleanly. Below 30rem, the time and total sit on the first line and the photo, name and cancel button on the second. The loading and empty messages share one centred `.status` rule.
+- Verification: `ng build`, eslint and oxfmt pass. In the browser pane (signed in from the console), four reservations saved out of order (Kayak 11 Nov 09:00, Kayak 10 Nov 14:00 for 2 hours, Kayak 10 Nov 10:00 × 2, Sailboat 10 Nov full day) show as Tuesday: All day Sailboat, 10:00 – 11:00 Kayak × 2, 14:00 – 16:00 Kayak; Wednesday: 09:00 – 10:00 Kayak. At 375px there is no horizontal scroll and all cancel buttons are the same 37px wide (they had stretched to the price's width before `justify-self: end`). Cancelling the 10:00 Kayak (with `confirm` stubbed) disables its button and removes only that row; cancelling the rest shows "No reservations yet". No console errors.
+- Follow-up (default the booking date to today), requested by @ElectroluxV2: Claude Opus 5.5 added a `today()` helper to the booking page (today's local date at UTC midnight, matching date inputs) and used it for the initial `date` in the booking model and for the `minDate` rule. Verified in the browser pane on 3 November 2026: the date field shows 2026-11-03 with no error, and the start time limits follow Tuesday's hours (08:00–19:00 for 1 hour); no console errors. The server-rendered `<input>` has no `value` attribute, because the form sets the value property; the date appears once the page hydrates. `ng build`, eslint and oxfmt pass.
+
+## 2026-11-03 — Commit, push and CI
+
+- AI assistance: at the user's request, Claude Opus 5.5 ran the CI checks locally before committing and pushing the branch for PR #24. The existing `app.spec.ts` test failed: it read the first `<h2>` in the app, which is now the sign-in dialog's empty title, and it checked before the equipment list (an async `resource`) had rendered. The test now waits with `await fixture.whenStable()` and reads `app-discover-rental-page h2`. No new tests were added.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Verification: locally, backend ruff check, ruff format check and pytest pass; frontend eslint, oxfmt check, `ng test` (4 tests) and `ng build` pass.
+
+## 2026-11-03 — Passkey sign-in and registration in Safari
+
+- AI assistance: @ElectroluxV2 reported that sign-in and registration fail in Safari on the Vercel preview: the dialog shows "No passkey was used…" and, as they confirmed, Safari never shows its passkey sheet. The preview's relying-party ID matches its domain, so Claude Opus 5.5 traced it to timing: both buttons awaited a backend request (`login/passkey/begin`, or `register/passkey/begin`, which also created the account and hashed a password) before calling `navigator.credentials.get()`/`create()`, and Safari refuses a passkey prompt that doesn't follow the click closely enough. Safari couldn't be driven from this session (computer use only allows reading browsers), so the fix couldn't be checked in Safari itself.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Backend: `register/passkey/begin` no longer creates the account. It returns 409 for a taken username, otherwise generates options with a random user handle (login finds accounts by credential id, so the handle isn't used) and stores the username and challenge in the session. `register/passkey/complete` verifies the passkey, then creates the account, saves the passkey and starts the session; it returns 409 if the username was taken in the meantime and deletes the account if saving the passkey fails. The unused `PASSKEY_FLOW_USER_ID_SESSION_KEY` was replaced by `PASSKEY_FLOW_USERNAME_SESSION_KEY`.
+- Frontend: `PasskeyService` now has `signInOptions()` / `registrationOptions(username)` and `signIn(prompt, options, signal)` / `register(options)`, which call the browser before any `await`. The sign-in dialog loads sign-in options in a `resource` while it is open (reloaded after each attempt, which also restarts autofill through an `effect`) and registration options in a `resource` keyed on the typed username, 300ms after typing stops. Create account (in the form's `submit` event) and "Use a passkey" (in its `click`) cancel the pending autofill request and then start the prompt synchronously with those options. If Create account is pressed before the options arrive, it still fetches them first, and Safari may then refuse. A taken username shows the server's message, and a cancelled registration now says "No passkey was created. Try again." The signal form no longer has a `submission` action; `busy` is a plain signal.
+- Verification: backend ruff, ruff format check and pytest pass; with FastAPI's test client, `begin` returns options without creating an account, and a failed `complete` leaves no account. Frontend eslint, oxfmt check, `ng test` and `ng build` pass. In the browser pane (Chromium) with `navigator.credentials` wrapped: typing a 16-character username sent one `register/passkey/begin`; Create account called `create()` while the `submit` event was being dispatched, and "Use a passkey" called `get()` during the `click` event, each after aborting autofill, which restarted afterwards; no console errors. Not yet checked in Safari, and the taken-username path wasn't exercised.
+- Follow-up (still "No passkey was created. Try again." in Safari after the fix), reported by @ElectroluxV2: Safari still rejects `create()` without showing its sheet. To reproduce locally with the user, Claude Opus 5.5 added temporary, uncommitted debugging: a `traced()` wrapper in `PasskeyService` logs each `get`/`create` call to the console with its options (rp, user id length, algorithms, authenticator selection, extensions), whether it ran during an event, `navigator.userActivation.isActive`, focus and origin, then how it ended (error name and message, time taken). `?noAutofill` on the URL turns off the background autofill request, to test whether it is what makes Safari refuse. Verified in the browser pane that the logs appear on `https://frontend.localhost/reservations` and that `?noAutofill` skips autofill.
+- Follow-up (Safari console output shared by @ElectroluxV2): the debug log showed Safari rejecting the passkey request within 2ms with "NotAllowedError: Both read and write may not be present together in largeBlob." AuthTuna adds a `largeBlob` extension to both ceremonies (`{"read": true}` for sign-in, `{"support": "preferred"}` for registration), which the app doesn't use. Claude Opus 5.5 added `without_large_blob()` to `auth/passkey.py` and applied it to the options returned by `login/passkey/begin` and `register/passkey/begin`; `credProps` and `credProtect` are kept. Verified with FastAPI's test client and the running local backend: sign-in options now have `"extensions": {}` and registration options `{"credProps": true, "credProtect": 2}`. Ruff and pytest pass. Waiting on a retry in Safari; the temporary debug logging stays in place until then.
+- Follow-up (second Safari log from @ElectroluxV2): with `largeBlob` gone, Safari's autofill request now waits normally (rejected after 5.3s with "not allowed … possibly because the user denied permission", as when its suggestions are dismissed), but the log has no `create` call, so Create account never reached `navigator.credentials.create()`. Claude Opus 5.5 added a temporary `[passkey] Create account pressed` log with the typed username, which username the prepared options are for, and the options resource's status and error, to see which path the click takes.
+- Follow-up ("409 dropped", reported by @ElectroluxV2): the backend runs from Rider, so its log wasn't readable here. Claude Opus 5.5 ruled out the account-creation step (AuthTuna `signup` with the same arguments works) and checked the local `authtuna_dev.db`: account `wedewdewd` was created at 20:10:33 with a passkey saved from Safari 27 in the same second, so Safari registration worked once `largeBlob` was removed. A 409 is what `register/passkey/begin` returns for a username that already exists, as after that registration. Also found: `gdkchhjkcgkhcg` (19:02, before the registration change) is an account with no passkey left by the old flow. No code changed in this step; the temporary debug logging is still in place.
+- Follow-up (same username, different passkeys), requested by @ElectroluxV2, who chose separate accounts over adding a passkey to an existing account (which would let anyone who knows a username add their own passkey to it). AuthTuna requires unique usernames and has no display-name column, so Claude Opus 5.5 added `backend/auth/display_name.py`: `unique_username()` stores the chosen name with a random suffix ("Anna#3fa91c") and `display_name()` shows it without one (accounts from before suffixes show their full username). `register/passkey/begin` no longer returns 409 for a taken name; `complete` signs up with `unique_username()` and now returns 500 "Couldn't create the account. Try again." if signup fails. Registration, login and `GET /session` return the display name. The registration request's `username` is limited to 73 characters so the stored name fits AuthTuna's 80. The passkey itself still carries the chosen name. The temporary Safari debugging (`traced()`, `?noAutofill`, the Create account log) was removed by restoring both frontend files to the last commit.
+- Verification: backend ruff, ruff format check and pytest pass. With FastAPI's test client and AuthTuna: `begin` for the existing name "wedewdewd" returns 200; a 74-character name returns 422; two "Anna" accounts are stored as `Anna#25c072` and `Anna#a439e8` and both display as "Anna"; the longest name is stored in exactly 80 characters; the existing "wedewdewd" still displays unchanged. AuthTuna logs "Role 'User' not found" on every signup; that comes from its default role setup, not from this change. Not yet tried in Safari.
+
+## 2026-11-03 — Mark mock data files
+
+- AI assistance: @ElectroluxV2 asked to mark all mock data files with `.mock.ts`. Claude Opus 5.5 found one mock data set, the hard-coded `rentalEquipment` catalogue, which lived in `rental-equipment.ts` next to the real `RentalEquipment` and `RentalDuration` types and the `rentalDurations` config. It moved the catalogue to `frontend/src/app/rental-equipment/rental-equipment.mock.ts` and pointed `RentalEquipmentService` at it. The in-memory storage in `ReservationService` is mock logic inside a real service, not a data file, so it was left as is.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Verification: `tsc --noEmit` on the frontend app, eslint and oxfmt check pass.
+
+## 2026-11-03 — Temporal and Intl in opening hours
+
+- AI assistance: @ElectroluxV2 asked to use the Temporal and Intl APIs in `frontend/src/app/opening-hours/opening-hours.ts`. Claude Opus 5.5 replaced the hard-coded `weekdayNames` list with names built by `Temporal.PlainDate#toLocaleString('en', { weekday: 'long' })` from a known Monday (fixed to English so the server and browser render the same text and the "closed on Mondays" message still reads right), `isoWeekday` now reads `dayOfWeek` from the date as a UTC `Temporal.Instant`, and `widestHours` compares "HH:MM" strings with `Temporal.PlainTime.compare` instead of as text. Callers didn't change.
+- Temporal support: Node 24 (SSR, Vercel) has no Temporal and Safari doesn't ship it yet, so `temporal-polyfill` 1.0.6 was added. It installs only when native Temporal is missing. It is in `angular.json`'s `polyfills` for the browser and tests, and imported first in `main.server.ts`, because `polyfills` doesn't reach the server bundle (the route extraction failed with "Temporal is not defined"). Types come from TypeScript's own `ESNext.Temporal` lib, added to `tsconfig.json`.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Verification: eslint, oxfmt check, `ng test` (4 tests) and `ng build` pass. In the browser pane (Chrome 152, native Temporal, so the polyfill is skipped) and in the server-rendered HTML, the contact page shows "Monday – Friday", "Saturday", "Sunday"; the booking page limits today's (Tuesday) start time to 08:00–19:00; no console errors. Run in Node with the polyfill and `TZ=Pacific/Auckland`, the helpers return weekday 2 for 2026-11-03, 7 for 2026-11-08 and 1 for 2026-11-09, null for a closed day, and 07:00–21:00 as the widest hours. Not tried in Safari.
+- Follow-up (Node 26 and polyfill only where needed), requested by @ElectroluxV2 with Vercel's "Node.js 26 LTS is now generally available" changelog: Claude Opus 5.5 set `devEngines.runtime` to Node 26 (pnpm now uses 26.13.0 locally and in CI, which has Temporal built in) and added `engines.node: "26.x"`, which Vercel reads ahead of the project's `nodeVersion: 24.x` setting; `@types/node` went to 26. The server no longer loads the polyfill, and the `polyfills` entry in `angular.json` was removed. `main.ts` now runs `await import('temporal-polyfill/global')` only when `Temporal` is missing, which is feature detection rather than a Safari/iOS user-agent check, so the 18.5 kB polyfill is a lazy chunk that other browsers never download. A first version imported the app dynamically after the polyfill, but that delayed the app code by a round trip for every browser, so the imports stayed static and `opening-hours.ts` no longer calls Temporal while loading: `weekdayNames` became `weekdayName(weekday)` plus `isoWeekdays`, used by the contact and booking pages.
+- Verification: eslint, oxfmt check, `tsc`, `ng test` (4 tests, Node 26) and `ng build` pass; the build shows the polyfill only as a lazy chunk. In the browser pane (Chrome 152) the contact page loads no polyfill and shows "Monday – Friday", "Saturday", "Sunday", also in the server-rendered HTML. Loading the booking page in a frame with `Temporal` deleted first downloads `temporal-polyfill`, hydrates, and limits the start time to 08:00–19:00. Not tried in a real Safari or on a Vercel deployment.
+
+## 2026-11-03 — Green CI and the review stack
+
+- AI assistance: @ElectroluxV2 asked to get CI/CD green and publish the stacked pull requests (#21 → #22 → #24) for review. The frontend job on #24 failed at the formatting check: the oxfmt action runs the latest oxfmt (0.76.0), which wants `engines` after `devEngines` in `frontend/package.json`; the pinned 0.74 accepted either order. Claude Opus 5.5 reordered the keys, which both versions accept.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Verification: locally, oxfmt 0.74 and 0.76 checks, eslint, `ng test` and `ng build` pass.
+- Follow-up (deployed runtime): CI deploys with `vercel deploy --prebuilt`, so the SSR function's runtime comes from `frontend/vercel-output/functions/ssr.func/.vc-config.json`, not from `engines`. It still said `nodejs24.x`, which has no Temporal, so Claude Opus 5.5 changed it to `nodejs26.x` and updated `vercel-output/README.md`. `CONTRIBUTING.md` on `main` (from #27) still says `pnpm runtime set node 24 -g`; it was left alone here because that line isn't on this branch and editing it would conflict.
+
+## 2026-11-03 — Opening hours missing from server-rendered pages on Vercel
+
+- AI assistance: @ElectroluxV2 reported that opening hours flash in after the page loads, as if SSR weren't working. Claude Opus 5.5 found the preview's HTML had the opening-hours response in the transfer state but an empty `<dl>`, and the Vercel function logs (`vercel logs --deployment`) showed `ReferenceError: Temporal is not defined` on every `/contact` render on the `nodejs26.x` runtime: Vercel's Node 26 doesn't expose Temporal, though Node 26.13 locally does. `weekdayName` threw inside the contact page's `openingHours` computed, so the server rendered the list empty and the browser filled it in on hydration; the booking page's closed-day check would throw the same way. Running the production server with `node --no-harmony-temporal` reproduced it. The fix restores `import 'temporal-polyfill/global'` at the top of `main.server.ts`; it installs only when Temporal is missing, and the browser still loads it only when needed.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Verification: with the production build, `node --no-harmony-temporal` and plain `node` both render "Monday – Friday" on `/contact` and `min="08:00" max="19:00"` on the Kayak booking page, with no errors in the server log. eslint, oxfmt 0.74 and 0.76 checks, `ng test` and `ng build` pass. Not yet deployed to the preview.
+- Follow-up (Vercel's changelog says Node 26 has Temporal), raised by @ElectroluxV2: to check, Claude Opus 5.5 deployed a throwaway probe function (`nodejs26.x`, prebuilt, preview URLs `rent-n-sail-g5efo6tpw-rent-n-sail.vercel.app` and `rent-n-sail-ki9lsiejb-rent-n-sail.vercel.app`, no aliases). Vercel runs Node v26.13.0 with V8 14.6.202.34, the same as locally, with no flag that disables Temporal, but `typeof Temporal` is "undefined": `process.config.variables` shows Vercel's own build (GCC, shared OpenSSL) with `v8_enable_temporal_support: 0`, while the official build has `1`. So the server polyfill stays; its comment now says why.
+- Verification on Vercel (requested by @ElectroluxV2: watch CI/CD and make sure SSR works): the Stack CI/CD run for `3a363a9` passed and deployed the frontend preview. Its server-rendered HTML has the opening hours on `/contact` ("Monday – Friday 08:00 – 20:00"), the start-time limits (`min="08:00" max="19:00"`) on `/1/kayak` and the equipment on `/`. In the browser pane the contact page hydrates without requesting `opening-hours` again (the transfer cache supplied it) and with no console errors. The deployment's Vercel logs from the last 5 minutes have no errors, only Angular's warnings about untrusted `x-forwarded-*` headers, which #21 deals with.
+
+## 2026-11-04 — Review of #24, first files
+
+- AI assistance: @ElectroluxV2 reviewed the first files of #24 and asked Claude Opus 5.5 to apply the review. Changes:
+  - `.claude/launch.json` is no longer tracked (kept locally and listed in `.git/info/exclude`).
+  - The `linguist-generated` rule moved from the root `.gitattributes` to `.github/actions/.gitattributes` (`_shared/vendor/dist/**`); `git check-attr` still marks `sdk.cjs` as generated.
+  - The `*.jpg` ignore moved from the root `.gitignore` to `frontend/public/img/.gitignore`. `angular.json` now skips `**/.gitignore` and `**/*.jpg` when copying `public/`, so neither the ignore file nor the local source photos end up in the build.
+  - Sign-in dialog: the error line shows one `error()` signal; an empty username sets "Enter a username to create an account." when Create account is pressed, replacing the `required` validator, `createPressed` and `errors()[0]`. A comment explains the `Canvas`/`CanvasText` system colors. The error line reserves `clamp(1lh, (28rem - 100vw) * 1000, 2lh)`: two lines below a 28rem viewport (where the dialog is narrower than its 26rem), one above. Measured: every message fits one line at full width except "No passkey was used. Pick one, or enter a username to create an account.", which took two lines at every width, so it was shortened to "No passkey was used. Pick one, or create an account." (one line from 28rem up).
+  - 404 page: `NotFoundPageComponent` on a `**` route, which sets the response status to 404 through `RESPONSE_INIT` during SSR. `/:id` and `/:id/:slug` get a `canMatch` that only matches existing equipment, so unknown ids show the 404 page at their own URL instead of redirecting home. `/:id`'s redirect moved into an empty-path child, because Angular rejects `redirectTo` with `canMatch` on one route (NG04014).
+- Answers to review questions (no code changes): checkout is already shallow (`fetch-depth: 1`, and the change detection uses `--filter=blob:none`), so a treeless clone wouldn't save anything at depth 1, and all LFS files are frontend images the build needs. AuthTuna 0.2.4 indexes `users.username` (unique, `ix_users_username`) and `passkey_credentials.user_id`; a passkey's credential id is the table's primary key, which login looks up. `IMAGE_LOADER`/`IMAGE_CONFIG` only build image URLs and run the same during SSR and in the browser, so neither a server-only provider nor HttpClient is needed. The dialog title's id is used by `aria-labelledby`. A subagent traced the login router history: `login/passkey/begin` and `/complete` are unchanged since Miłosz Chojnacki's d6f0219 except for `without_large_blob` (c9aa18f); the later "feat: alembic migrations" (6f8dbcb, only on `feat/alembic`) doesn't touch login, and in its `backend/main.py` `app.include_router(api_router)` runs before the login and register routers are added to `api_router`, so they would not be registered.
+- Author attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Verification: eslint, oxfmt 0.74 and 0.76 checks, `tsc`, `ng test` (4 tests) and `ng build` pass. With the dev server, `/999`, `/foo`, `/999/kayak` and `/a/b/c` return 404 with "Page not found", `/1` redirects to `/1/kayak`, and `/1/kayak` and `/contact` return 200. In the browser pane at 375px the error line is 40px (two lines) and showing the message doesn't move the buttons; at 1024px it is 20px.
+- Follow-up (second batch of review comments on #24), applied by Claude Opus 5.5:
+  - `main.server.ts` now loads the polyfill like `main.ts`: `if (!('Temporal' in globalThis)) await import('temporal-polyfill/global')`, so it is a lazy chunk in the server bundle too. Angular's `polyfills` option only reaches the browser bundle, so `main.server.ts` is the place for it. With the production build, `node --no-harmony-temporal` and plain `node` both render the opening hours with no errors.
+  - Colors: `styles.scss` defines `--color-brand`, `--color-brand-dark`, `--color-accent`, `--color-danger`, `--color-white` and `--color-black` on `:root`, and every literal color in the component styles uses them (`rgb(0 0 0 / n%)` became `color-mix` with `--color-black`). Left as is: colors mixed from `currentColor` or `Canvas`, and the `#000` in the discover page's `mask-image`, which only sets alpha.
+  - The `& + &` rule on reservation rows got a comment (a divider above every row but the first).
+  - `RentalEquipmentService.find` is now `getById`. `RentalImageComponent` loads its item with `resource()` and shows the photo, a pulsing placeholder while loading, or a "Photo unavailable" placeholder with the `hide_image` icon (added to the Material Symbols `icon_names`). SSR still renders all 15 photos on `/`, and a frame that recorded DOM changes from the start of hydration saw no placeholder and no photo removed.
+  - `Reservation.date` is a `Temporal.PlainDate`. `parseReservations()` turns the API's JSON (date as "YYYY-MM-DD") into reservations, written for `httpResource`'s `parse` option; the mock stores JSON and runs it through the same function. The booking page converts the date input's value; My reservations groups by `date.toString()` and labels days with `toLocaleString('en-US', { dateStyle: 'full' })` instead of `DatePipe`.
+  - Answered without changes: one Google Fonts URL for both families works, but `icon_names` then applies to the whole request, so Google Sans Flex came back as a single 17.6 kB file instead of the full 136 kB Latin font; the links stay separate. `id: string` would only drop the `Number()` calls on route params, so it's better decided with the backend's ids.
+- Verification: eslint, oxfmt 0.74 and 0.76 checks, `tsc`, `ng test` (4 tests) and `ng build` pass. In the browser pane, two bookings made out of order list as Tuesday, November 10, 2026 then Wednesday, November 11, 2026 with photos, the `:root` variables resolve to the old values, the discover page looks unchanged, and the `hide_image` icon renders as a 24px glyph; no console errors.
+
+## Commit review feedback and reply to review comments on #24 (@ElectroluxV2)
+
+Claude Code (Claude Opus 5.5) committed and pushed both review batches as 9cf882e, then posted a reply to each of the 20 review comments on PR #24, explaining the change or answering the question.
+
+## Apply the third batch of review comments on #24 (@ElectroluxV2)
+
+Claude Code (Claude Opus 5.5) applied the third review batch: a promise-based `ApiService` with an interceptor that retries transient failures of idempotent requests; reservations through `httpResource` with `parse` and a mock interceptor; a simpler auth guard and `ensureSignedIn` (`Promise.withResolvers`); a `fieldError` pipe for form errors; Temporal for today's date and time arithmetic; item lookup by id instead of `find`; the agenda logic as a pure `agenda()` function with unit tests (asked for in the review); a shared, documented `capacityNoun`; priority loading only for the first photo; `<progress>` and `<span>` placeholders with motion only when allowed; a centred 404 page; the TypeScript lib bumped to ES2024 so `formatRange` needs no hand-written type; comments for `tabular-nums` and `sizes`; and removed the date picker cursor rule that had no effect.
+
+## Commit the third review batch and reply on #24 (@ElectroluxV2)
+
+Claude Code (Claude Opus 5.5) committed and pushed the third review batch as b17e6e7, then posted replies to the 23 new review threads on PR #24.
+
+## Split the contact page's opening hours into a tested pure function (@ElectroluxV2)
+
+Claude Code (Claude Opus 5.5) applied Miłosz Chojnacki's (@Buzeqq) review comment on PR #24: the grouping of consecutive days with the same hours moved from the contact page's `computed` into a pure `weeklyHours()` in `contact-page/weekly-hours.ts`, with 3 unit tests (requested in the review). The component's `computed` now only reads the resource and calls it. eslint, oxfmt, `tsc`, `ng test` (10 tests) and `ng build` pass; not checked in a browser, since the local proxy wasn't running.
+
+## Rebase and squash-merge the stack (@ElectroluxV2)
+
+Claude Code (Claude Opus 5.5) rebased the gh-stack (#21 → #22 → #24) on main, resolving a `CONTRIBUTING.md` conflict with #27 by keeping its `pnpm runtime set node` command with Node 26. After lint, tests and build passed locally and CI passed on all three PRs, it squash-merged #21 and #22 with `gh stack merge 22 --squash`. #24 lost its approvals when the rebased branch was pushed, so it was rebased onto the new main and left for re-review.

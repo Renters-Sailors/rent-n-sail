@@ -1,0 +1,55 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100svh;
+}
+
+:host > section {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+
+  // Slightly shifted from the nav's page background, in light and dark mode.
+  background: color-mix(in srgb, Canvas, CanvasText 5%);
+}
+
+:host > section > :not(router-outlet) {
+  flex: 1;
+  min-height: 0;
+}
+
+nav {
+  display: flex;
+  gap: 1.5rem;
+
+  padding: 0.75rem 1rem;
+
+  font-family: 'Google Sans Flex', sans-serif;
+}
+
+nav > a {
+  color: inherit;
+  text-decoration: none;
+
+  &.active {
+    text-decoration: underline;
+  }
+
+  // Icon and label pinned to the right end of the nav.
+  &.reservations {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-left: auto;
+
+    // Flex items always inherit the link's underline, so underline only the label.
+    &.active {
+      text-decoration: none;
+
+      .label {
+        text-decoration: underline;
+      }
+    }
+  }
+}

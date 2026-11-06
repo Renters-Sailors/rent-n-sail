@@ -1,0 +1,2 @@
+# Source photos stay local; the optimized AVIF and WebP versions are committed with Git LFS.
+*.jpg

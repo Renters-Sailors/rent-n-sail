@@ -6,10 +6,12 @@ from authtuna.helpers import create_session_and_set_cookie
 from authtuna.integrations import auth_service
 from fastapi import APIRouter, Header, HTTPException, Request, Response
 
+from auth.display_name import display_name, unique_username
 from auth.passkey import (
-    PASSKEY_FLOW_USER_ID_SESSION_KEY,
+    PASSKEY_FLOW_USERNAME_SESSION_KEY,
     PASSKEY_REGISTER_CHALLENGE_SESSION_KEY,
     verify_registration,
+    without_large_blob,
 )
 from auth.register.requests import (
     PasskeyRegistrationCompleteRequest,
@@ -25,40 +27,22 @@ async def register_init(
     payload: PasskeyRegistrationInitRequest,
     request: Request,
 ) -> dict[str, object]:
+    """Registration options for a new account. Changes nothing but the session, so the
+    browser can ask for them ahead of the click; the account is created on complete.
+    Names needn't be unique: each account is told apart by its own passkey."""
     username = payload.username.strip()
     if not username:
         raise HTTPException(422, "A username is required to register.")
 
-    user_id = request.session.get(PASSKEY_FLOW_USER_ID_SESSION_KEY)
-    if user_id is None:
-        logger.info("Creating account for passkey registration")
-        email = f"{secrets.token_urlsafe(24)}@passkey.rent-n-sail.invalid"
-        password = secrets.token_urlsafe(48)
-        user, _ = await auth_service.signup(
-            username=username,
-            email=email,
-            password=password,
-            ip_address=request.state.user_ip_address,
-        )
-        user_id = user.id
-        request.session[PASSKEY_FLOW_USER_ID_SESSION_KEY] = user_id
-
-    user = await auth_service.users.get_by_id(user_id)
-    if user is None:
-        request.session.pop(PASSKEY_FLOW_USER_ID_SESSION_KEY, None)
-        logger.warning(
-            "Passkey registration initialization failed: pending user missing"
-        )
-        raise HTTPException(404, "Registration expired. Try again.")
-
+    # Only for the authenticator; login finds the account by credential id instead.
+    user_handle = secrets.token_urlsafe(24)
     options, challenge = auth_service.passkeys.core.generate_registration_options(
-        user_id=user.id,
-        username=user.username,
-        existing_credentials=await auth_service.passkeys.get_for_user(user.id),
+        user_id=user_handle, username=username, existing_credentials=[]
     )
     request.session[PASSKEY_REGISTER_CHALLENGE_SESSION_KEY] = challenge
+    request.session[PASSKEY_FLOW_USERNAME_SESSION_KEY] = username
     logger.info("Passkey registration options generated")
-    return options
+    return without_large_blob(options)
 
 
 @router.post("/complete")
@@ -69,11 +53,9 @@ async def register_complete(
     user_agent: Annotated[str | None, Header()] = None,
 ) -> dict[str, str]:
     challenge = request.session.pop(PASSKEY_REGISTER_CHALLENGE_SESSION_KEY, None)
-    user_id = request.session.get(PASSKEY_FLOW_USER_ID_SESSION_KEY)
-    if challenge is None or user_id is None:
-        logger.warning(
-            "Passkey registration rejected: challenge or pending user missing"
-        )
+    username = request.session.pop(PASSKEY_FLOW_USERNAME_SESSION_KEY, None)
+    if challenge is None or username is None:
+        logger.warning("Passkey registration rejected: challenge or username missing")
         raise HTTPException(400, "Passkey registration expired. Start again.")
     if user_agent is None:
         logger.warning("Passkey registration rejected: user_agent missing")
@@ -83,22 +65,32 @@ async def register_complete(
         credential_data = verify_registration(
             response=payload.to_authentication_response(), session_challenge=challenge
         )
-        await auth_service.passkeys.save_new_credential(
-            user_id=user_id,
-            cred_data=credential_data,
-            nickname=user_agent,
+    except Exception as error:
+        logger.exception("Passkey registration verification failed", exc_info=error)
+        raise HTTPException(400, "Passkey registration failed.") from None
+
+    try:
+        user, _ = await auth_service.signup(
+            username=unique_username(username),
+            email=f"{secrets.token_urlsafe(24)}@passkey.rent-n-sail.invalid",
+            password=secrets.token_urlsafe(48),
+            ip_address=request.state.user_ip_address,
         )
-        user = await auth_service.users.get_by_id(user_id)
-        if user is None:
-            raise HTTPException(404, "New user was not found.")
+    except Exception as error:
+        logger.exception("Passkey registration signup failed", exc_info=error)
+        raise HTTPException(500, "Couldn't create the account. Try again.") from None
+
+    try:
+        await auth_service.passkeys.save_new_credential(
+            user_id=user.id, cred_data=credential_data, nickname=user_agent
+        )
         await create_session_and_set_cookie(
             user, request, response, auth_service.db_manager.get_db()
         )
-        request.session.pop(PASSKEY_FLOW_USER_ID_SESSION_KEY, None)
     except Exception as error:
-        logger.exception("Passkey registration verification failed", exc_info=error)
-        auth_service.users.delete(user_id)  # clean up failed registration process
+        logger.exception("Passkey registration failed after signup", exc_info=error)
+        await auth_service.users.delete(user.id)  # don't leave an account without a key
         raise HTTPException(400, "Passkey registration failed.") from None
 
     logger.info("Passkey registration succeeded")
-    return {"status": "registered"}
+    return {"username": display_name(user)}

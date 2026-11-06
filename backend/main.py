@@ -44,6 +44,8 @@ auth_settings = init_settings(
 
 from auth.login.router import router as login_router  # noqa: I001, E402
 from auth.register.router import router as register_router  # noqa: I001, E402
+from auth.session.router import router as session_router  # noqa: I001, E402
+from opening_hours.router import router as opening_hours_router  # noqa: I001, E402
 from authtuna.core import database as authtuna_database  # noqa: E402
 from authtuna.middlewares import DatabaseSessionMiddleware  # noqa: E402
 
@@ -76,6 +78,8 @@ def boats(session: Annotated[Session, Depends(get_session)]):
 
 api_router.include_router(register_router, prefix="/register")
 api_router.include_router(login_router, prefix="/login")
+api_router.include_router(session_router)
+api_router.include_router(opening_hours_router)
 
 
 def create_app():

@@ -1,0 +1,22 @@
+<dialog #dialog aria-labelledby="auth-dialog-title" (close)="auth.cancelSignIn()">
+  <form [formRoot]="accountForm" (submit)="createAccount()">
+    <h2 id="auth-dialog-title">{{ auth.prompt() }}</h2>
+
+    <label>
+      Username
+      <input type="text" autocomplete="username webauthn" [formField]="accountForm.username" />
+      <small>Pick your passkey here, or enter a new username to create an account.</small>
+    </label>
+
+    <p class="error" role="alert">{{ error() }}</p>
+
+    <footer>
+      <button type="submit" [disabled]="busy()">Create account</button>
+      <button type="button" [disabled]="busy()" (click)="signInWithPasskey()">
+        <span class="material-symbols-outlined" aria-hidden="true">passkey</span>
+        Use a passkey
+      </button>
+      <button type="button" class="cancel" (click)="dialog.close()">Cancel</button>
+    </footer>
+  </form>
+</dialog>
