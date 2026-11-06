@@ -30,6 +30,7 @@ from auth.login.router import router as login_router  # noqa: I001, E402
 from auth.register.router import router as register_router  # noqa: I001, E402
 from auth.session.router import router as session_router  # noqa: I001, E402
 from opening_hours.router import router as opening_hours_router  # noqa: I001, E402
+from rental_equipment.router import router as rental_equipment_router # noqa: I001, E402
 
 app = FastAPI()
 init_app(app)
@@ -38,6 +39,7 @@ api_router = APIRouter()
 app.include_router(api_router)
 api_router.include_router(register_router, prefix="/register")
 api_router.include_router(login_router, prefix="/login")
+api_router.include_router(rental_equipment_router)
 add_scalar_reference(app)
 
 @api_router.get("/")

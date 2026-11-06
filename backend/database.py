@@ -1,7 +1,9 @@
+from typing import Annotated
+
 import os
 from collections.abc import Iterator
 
-from fastapi import HTTPException
+from fastapi import HTTPException, Depends
 from sqlalchemy import create_engine
 from sqlalchemy.engine import make_url
 from sqlalchemy.orm import Session
@@ -21,3 +23,5 @@ def get_session() -> Iterator[Session]:
             yield session
     finally:
         engine.dispose()
+
+SessionDep = Annotated[Session, Depends(get_session)]
