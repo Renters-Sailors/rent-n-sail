@@ -217,6 +217,15 @@
 - AI assistance: OpenCode (GPT-6.1 Terra) explained SQL numeric precision and scale for rental equipment prices and how to configure SQLAlchemy composite columns. Attribution: `@Buzeqq` (Miłosz Chojnacki, verified with `gh api user`).
 - Follow-up: corrected the suggested dataclass metadata approach and explained explicit composite columns. Attribution: `@Buzeqq` (Miłosz Chojnacki, verified with `gh api user`).
 
+## 2026-11-06 — Map rental equipment seed data
+
+- AI assistance: OpenCode (GPT-6.1 Terra) mapped the supplied TypeScript rental equipment objects into SQL insert values. Attribution: `@Buzeqq` (Miłosz Chojnacki, verified with `gh api user`).
+
+## 2026-11-06 — Explain monetary precision
+
+- AI assistance: OpenCode (GPT-6.1 Terra) explained SQL numeric precision and scale for rental equipment prices and how to configure SQLAlchemy composite columns. Attribution: `@Buzeqq` (Miłosz Chojnacki, verified with `gh api user`).
+- Follow-up: corrected the suggested dataclass metadata approach and explained explicit composite columns. Attribution: `@Buzeqq` (Miłosz Chojnacki, verified with `gh api user`).
+
 ## 2026-10-28 — Delete previews of branches without an open pull request
 
 - AI assistance: OpenCode (Claude Opus 5.5) made each component's `ensure` stage delete its provider's previews of Git branches that have no open pull request, keeping the run's own branch. This replaces a proposed 3-day expiry, which Vercel cannot express: its retention has no 3-day option and never deletes previews with an alias. The production run after a merge now removes the merged branch's previews. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
