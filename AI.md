@@ -1071,3 +1071,7 @@ Claude Code (Claude Opus 5.5) committed and pushed the third review batch as b17
 ## Split the contact page's opening hours into a tested pure function (@ElectroluxV2)
 
 Claude Code (Claude Opus 5.5) applied Miłosz Chojnacki's (@Buzeqq) review comment on PR #24: the grouping of consecutive days with the same hours moved from the contact page's `computed` into a pure `weeklyHours()` in `contact-page/weekly-hours.ts`, with 3 unit tests (requested in the review). The component's `computed` now only reads the resource and calls it. eslint, oxfmt, `tsc`, `ng test` (10 tests) and `ng build` pass; not checked in a browser, since the local proxy wasn't running.
+
+## Rebase and squash-merge the stack (@ElectroluxV2)
+
+Claude Code (Claude Opus 5.5) rebased the gh-stack (#21 → #22 → #24) on main, resolving a `CONTRIBUTING.md` conflict with #27 by keeping its `pnpm runtime set node` command with Node 26. After lint, tests and build passed locally and CI passed on all three PRs, it squash-merged #21 and #22 with `gh stack merge 22 --squash`. #24 lost its approvals when the rebased branch was pushed, so it was rebased onto the new main and left for re-review.
