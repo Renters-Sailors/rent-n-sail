@@ -1067,3 +1067,7 @@ Claude Code (Claude Opus 5.5) applied the third review batch: a promise-based `A
 ## Commit the third review batch and reply on #24 (@ElectroluxV2)
 
 Claude Code (Claude Opus 5.5) committed and pushed the third review batch as b17e6e7, then posted replies to the 23 new review threads on PR #24.
+
+## Split the contact page's opening hours into a tested pure function (@ElectroluxV2)
+
+Claude Code (Claude Opus 5.5) applied Miłosz Chojnacki's (@Buzeqq) review comment on PR #24: the grouping of consecutive days with the same hours moved from the contact page's `computed` into a pure `weeklyHours()` in `contact-page/weekly-hours.ts`, with 3 unit tests (requested in the review). The component's `computed` now only reads the resource and calls it. eslint, oxfmt, `tsc`, `ng test` (10 tests) and `ng build` pass; not checked in a browser, since the local proxy wasn't running.

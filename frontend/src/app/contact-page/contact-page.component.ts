@@ -1,6 +1,6 @@
 import { Component, computed, inject } from '@angular/core';
-import { isoWeekdays, weekdayName } from '../opening-hours/opening-hours';
 import { OpeningHoursService } from '../opening-hours/opening-hours.service';
+import { weeklyHours } from './weekly-hours';
 
 @Component({
   selector: 'app-contact-page',
@@ -19,23 +19,10 @@ export class ContactPageComponent {
   };
 
   private readonly week = inject(OpeningHoursService).week;
-  /** Consecutive days with the same hours share a row, e.g. "Monday – Friday". */
+  /** Empty until the hours load; see `weeklyHours`. */
   protected readonly openingHours = computed(() => {
     const week = this.week.value();
-    if (!week) return [];
-    const rows: { first: string; last: string; hours: string }[] = [];
-    isoWeekdays.forEach((weekday) => {
-      const name = weekdayName(weekday);
-      const day = week.find((hours) => hours.weekday === weekday);
-      const hours = day ? `${day.opens} – ${day.closes}` : 'Closed';
-      const previous = rows.at(-1);
-      if (previous?.hours === hours) previous.last = name;
-      else rows.push({ first: name, last: name, hours });
-    });
-    return rows.map(({ first, last, hours }) => ({
-      days: first === last ? first : `${first} – ${last}`,
-      hours,
-    }));
+    return week ? weeklyHours(week) : [];
   });
 
   protected readonly people = [
