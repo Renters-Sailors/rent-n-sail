@@ -1,8 +1,9 @@
 import decimal
+
 from dataclasses import dataclass
 
-from sqlalchemy import CheckConstraint, Numeric, String
-from sqlalchemy.orm import DeclarativeBase, Mapped, composite, mapped_column
+from sqlalchemy import CheckConstraint, String, Numeric
+from sqlalchemy.orm import DeclarativeBase, Mapped, composite, mapped_column, composite
 
 
 class Base(DeclarativeBase):
