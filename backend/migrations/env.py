@@ -24,7 +24,9 @@ from models import Base
 DEFAULT_URL = "postgresql://postgres:admin@localhost:5432/rent_n_sail"
 AUTHTUNA_SCHEMA = "authtuna"
 
-# AuthTuna's models have no schema; its tables live in the authtuna schema.
+# MetaData is SQLAlchemy's collection of table definitions; autogenerate diffs
+# it against the database. AuthTuna's models have no schema, but its tables
+# live in the authtuna schema, so copy them into a MetaData of their own there.
 authtuna_metadata = MetaData()
 for table in AuthTunaBase.metadata.sorted_tables:
     table.to_metadata(authtuna_metadata, schema=AUTHTUNA_SCHEMA)
@@ -33,7 +35,12 @@ for table in AuthTunaBase.metadata.sorted_tables:
 def include_name(
     name: str | None, type_: str, _parent_names: Mapping[str, str | None]
 ) -> bool:
-    """Compare only public (the default schema, None) and authtuna."""
+    """Tell autogenerate which reflected database names to compare.
+
+    Alembic calls it for every schema, table, column, index and so on it reads
+    from the database; returning False skips that name. Only schemas are
+    filtered: public (the default schema, passed as None) and authtuna.
+    """
     return type_ != "schema" or name in (None, AUTHTUNA_SCHEMA)
 
 
