@@ -4,6 +4,9 @@ const path = require('node:path');
 // Checked-in bundle: no install or registry access at run time; see vendor/package.json.
 const sdk = require('./vendor/dist/sdk.cjs');
 
+// Least-privilege role the backend logs in as; migrations grant it access.
+const APP_DATABASE_ROLE = 'rent_n_sail_app';
+
 function serviceAlias(project, branch, target) {
   if (target === 'production') return `${project}.vercel.app`;
   const digest = createHash('sha256').update(`${project}:${branch}`).digest('hex').slice(0, 12);
@@ -108,14 +111,27 @@ function createProviders({ core, exec, env = process.env }) {
     }
   }
 
-  async function getDatabaseConnection(pooled) {
+  // The branch holds more than one role, so the role is always named explicitly.
+  // Migrations connect as the database owner; the backend connects as APP_DATABASE_ROLE.
+  async function getDatabaseConnection(pooled, roleName) {
     const database = await findDatabaseBranch();
     if (!database) throw new Error('Run the database workflow first to create its preview.');
-    core.info(`Resolving the ${pooled ? 'pooled' : 'direct'} connection to ${database.address}.`);
+    const databases = await neonRequest((client) =>
+      client.postgres.databases.list({ projectId: env.NEON_PROJECT_ID, branchId: database.id }),
+    );
+    if (databases.length !== 1)
+      throw new Error(`Expected one database on ${database.address}, found ${databases.length}.`);
+    const [{ name: databaseName, owner_name: ownerName }] = databases;
+    const role = roleName ?? ownerName;
+    core.info(
+      `Resolving the ${pooled ? 'pooled' : 'direct'} connection to ${database.address} as ${role}.`,
+    );
     const uri = await neonRequest((client) =>
       client.postgres.connectionString({
         projectId: env.NEON_PROJECT_ID,
         branchId: database.id,
+        databaseName,
+        roleName: role,
         pooled,
       }),
     );
@@ -267,7 +283,7 @@ function createProviders({ core, exec, env = process.env }) {
   async function getBackendServiceSettings() {
     const frontend = await reserveServiceAlias(env.VERCEL_FRONTEND_PROJECT_ID);
     return {
-      DATABASE_URL: await getDatabaseConnection(true),
+      DATABASE_URL: await getDatabaseConnection(true, APP_DATABASE_ROLE),
       // Passkey ceremonies run on the frontend origin, which forwards the browser's calls here.
       WEBAUTHN_ORIGIN: `https://${frontend}`,
       WEBAUTHN_RP_ID: frontend,

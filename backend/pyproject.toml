@@ -17,8 +17,15 @@ dependencies = [
 [tool.fastapi]
 entrypoint = "main:app"
 
+# Generates revisions only; the database component applies them.
+[tool.alembic]
+script_location = "%(here)s/migrations"
+version_locations = ["%(here)s/../database/scripts/versions"]
+prepend_sys_path = ["."]
+
 [dependency-groups]
 dev = [
+    "alembic>=1.20.1",
     "pytest>=9.1.1",
     "pytest-github-actions-annotate-failures>=0.4.2",
     "ruff>=0.17.2",

@@ -1,7 +1,7 @@
 """authtuna
 
 Revision ID: 986845c1cba6
-Revises:
+Revises: 0001_boats
 Create Date: 2026-10-29 22:50:52.357594
 
 """
@@ -13,7 +13,7 @@ from alembic import op
 
 # revision identifiers, used by Alembic.
 revision: str = "7eac88f07b1d"
-down_revision: str | Sequence[str] | None = None
+down_revision: str | Sequence[str] | None = "0001_boats"
 branch_labels: str | Sequence[str] | None = None
 depends_on: str | Sequence[str] | None = None
 
