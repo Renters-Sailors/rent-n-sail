@@ -1,0 +1,15 @@
+@if (item.value(); as item) {
+  <img
+    [ngSrc]="item.slug"
+    [fill]="true"
+    [priority]="priority()"
+    [alt]="item.name"
+    [sizes]="sizes()"
+  />
+} @else if (item.isLoading()) {
+  <progress class="placeholder loading" aria-label="Loading photo"></progress>
+} @else {
+  <span class="placeholder" role="img" aria-label="Photo unavailable">
+    <span class="material-symbols-outlined" aria-hidden="true">hide_image</span>
+  </span>
+}
