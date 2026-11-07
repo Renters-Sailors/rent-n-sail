@@ -1,27 +1,24 @@
 import os
-from collections.abc import Iterator
+from collections.abc import AsyncGenerator
 from typing import Annotated
 
 from fastapi import Depends, HTTPException
-from sqlalchemy import create_engine
 from sqlalchemy.engine import make_url
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.pool import NullPool
 
 
-def get_session() -> Iterator[Session]:
+async def get_async_session() -> AsyncGenerator[AsyncSession]:
     raw_url = os.environ.get("DATABASE_URL")
     if not raw_url:
         raise HTTPException(status_code=503, detail="Database is not configured")
-    url = make_url(raw_url)
-    if url.drivername in {"postgres", "postgresql"}:
-        url = url.set(drivername="postgresql+psycopg")
-    engine = create_engine(url, poolclass=NullPool, pool_pre_ping=True)
+    url = make_url(raw_url).set(drivername="postgresql+psycopg")
+    engine = create_async_engine(url, poolclass=NullPool, pool_pre_ping=True)
     try:
-        with Session(engine) as session:
+        async with AsyncSession(engine) as session:
             yield session
     finally:
-        engine.dispose()
+        await engine.dispose()
 
 
-SessionDep = Annotated[Session, Depends(get_session)]
+AsyncDbSession = Annotated[AsyncSession, Depends(get_async_session)]

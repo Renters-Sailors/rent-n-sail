@@ -11,7 +11,7 @@ from auth.passkey import (
     PASSKEY_REGISTER_CHALLENGE_SESSION_KEY,
     verify_registration,
 )
-from auth.register.requests import (
+from auth.register.schemas import (
     PasskeyRegistrationCompleteRequest,
     PasskeyRegistrationInitRequest,
 )
