@@ -19,6 +19,14 @@
 
 - AI assistance: OpenCode (GPT-6.1 Terra) traced Scalar's production loading error to its root-relative schema URL, which bypassed the frontend's `/api` proxy, and configured a relative schema URL for proxied and direct backend access. Attribution: `@Buzeqq` (verified with `gh api user`).
 
+## 2026-11-07 — Explain flushing mock equipment data
+
+- AI assistance: OpenCode (GPT-6.1 Terra) reproduced the frontend test timeout and identified the unflushed equipment request and unused mock data. Attribution: `@Buzeqq` (verified with `gh api user`).
+
+## 2026-11-07 — Investigate frontend test timeout
+
+- AI assistance: OpenCode (GPT-6.1 Terra) reproduced the app test timeout and investigated its unresolved HTTP resource and test backend setup. Attribution: `@Buzeqq` (verified with `gh api user`).
+
 ## 2026-11-07 — Explain JSON-only price aliases
 
 - AI assistance: OpenCode (GPT-6.1 Terra) explained Pydantic serialization aliases for rental equipment price fields. Attribution: `@Buzeqq` (verified with `gh api user`).
