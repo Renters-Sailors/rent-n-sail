@@ -6,8 +6,6 @@ create table authtuna.encryption_keys
     deleted_at     double precision
 );
 
-alter table authtuna.encryption_keys
-    owner to postgres;
 
 create table authtuna.roles
 (
@@ -19,8 +17,6 @@ create table authtuna.roles
     level       integer
 );
 
-alter table authtuna.roles
-    owner to postgres;
 
 create table authtuna.permissions
 (
@@ -32,8 +28,6 @@ create table authtuna.permissions
     system      boolean     not null
 );
 
-alter table authtuna.permissions
-    owner to postgres;
 
 create table authtuna.deleted_users
 (
@@ -46,8 +40,6 @@ create table authtuna.deleted_users
     cleanup_counter integer          not null
 );
 
-alter table authtuna.deleted_users
-    owner to postgres;
 
 create table authtuna.role_assign_permissions
 (
@@ -58,8 +50,6 @@ create table authtuna.role_assign_permissions
     primary key (assigner_role_id, assignable_role_id)
 );
 
-alter table authtuna.role_assign_permissions
-    owner to postgres;
 
 create table authtuna.role_grant_permissions
 (
@@ -70,8 +60,6 @@ create table authtuna.role_grant_permissions
     primary key (granter_role_id, grantable_permission_id)
 );
 
-alter table authtuna.role_grant_permissions
-    owner to postgres;
 
 create table authtuna.users
 (
@@ -91,8 +79,6 @@ create table authtuna.users
     last_login              double precision not null
 );
 
-alter table authtuna.users
-    owner to postgres;
 
 create unique index ix_users_username
     on authtuna.users (username);
@@ -115,8 +101,6 @@ create table authtuna.user_roles
     primary key (user_id, role_id, scope)
 );
 
-alter table authtuna.user_roles
-    owner to postgres;
 
 create table authtuna.role_permissions
 (
@@ -130,8 +114,6 @@ create table authtuna.role_permissions
     primary key (role_id, permission_id)
 );
 
-alter table authtuna.role_permissions
-    owner to postgres;
 
 create table authtuna.sessions
 (
@@ -152,8 +134,6 @@ create table authtuna.sessions
     previous_random_strings jsonb            not null
 );
 
-alter table authtuna.sessions
-    owner to postgres;
 
 create index ix_sessions_user_id
     on authtuna.sessions (user_id);
@@ -172,8 +152,6 @@ create table authtuna.tokens
         references authtuna.tokens
 );
 
-alter table authtuna.tokens
-    owner to postgres;
 
 create index ix_tokens_user_id
     on authtuna.tokens (user_id);
@@ -204,8 +182,6 @@ create table authtuna.social_accounts
     client_metadata          text
 );
 
-alter table authtuna.social_accounts
-    owner to postgres;
 
 create index ix_social_accounts_user_id
     on authtuna.social_accounts (user_id);
@@ -230,8 +206,6 @@ create table authtuna.mfa_methods
     is_verified boolean     not null
 );
 
-alter table authtuna.mfa_methods
-    owner to postgres;
 
 create index ix_mfa_methods_user_id
     on authtuna.mfa_methods (user_id);
@@ -249,8 +223,6 @@ create table authtuna.mfa_recovery_codes
     active      boolean      not null
 );
 
-alter table authtuna.mfa_recovery_codes
-    owner to postgres;
 
 create index ix_mfa_recovery_codes_user_id
     on authtuna.mfa_recovery_codes (user_id);
@@ -274,8 +246,6 @@ create table authtuna.passkey_credentials
     last_used_at       double precision not null
 );
 
-alter table authtuna.passkey_credentials
-    owner to postgres;
 
 create index ix_passkey_credentials_user_id
     on authtuna.passkey_credentials (user_id);
@@ -294,8 +264,6 @@ create table authtuna.audit_events
     details              jsonb
 );
 
-alter table authtuna.audit_events
-    owner to postgres;
 
 create index ix_audit_events_event_type
     on authtuna.audit_events (event_type);
@@ -317,8 +285,6 @@ create table authtuna.organization
     created_at double precision not null
 );
 
-alter table authtuna.organization
-    owner to postgres;
 
 create table authtuna.api_keys
 (
@@ -336,8 +302,6 @@ create table authtuna.api_keys
     expires_at   double precision
 );
 
-alter table authtuna.api_keys
-    owner to postgres;
 
 create index ix_api_keys_user_id
     on authtuna.api_keys (user_id);
@@ -355,8 +319,6 @@ create table authtuna.organization_members
     primary key (user_id, organization_id)
 );
 
-alter table authtuna.organization_members
-    owner to postgres;
 
 create table authtuna.api_key_scopes
 (
@@ -371,8 +333,6 @@ create table authtuna.api_key_scopes
         on delete cascade
 );
 
-alter table authtuna.api_key_scopes
-    owner to postgres;
 
 create table authtuna.team
 (
@@ -384,8 +344,6 @@ create table authtuna.team
     created_at      double precision not null
 );
 
-alter table authtuna.team
-    owner to postgres;
 
 create table authtuna.team_members
 (
@@ -397,5 +355,3 @@ create table authtuna.team_members
     primary key (user_id, team_id)
 );
 
-alter table authtuna.team_members
-    owner to postgres;
