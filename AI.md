@@ -1,5 +1,12 @@
 # AI usage docs
 
+## 2026-11-07 - Sequence diagrams of 3 authomatic builds scenarios
+
+- AI assistance: Gemini 3.5 Flash-Lite created draft mermaid diagrams from screenshot of created diagrams via Excalidraw https://excalidraw.com/#json=hSJBNy8qq1DWdF3ZTlI89,K7wTxdvbf3TxpDP_I0N1FA and proposed .md structure for branching.md file
+
+## 2026-10-30 — Flowchart diagrams of every CI/CD path
+
+- AI assistance: Gemini Flash 3 written mermaid diagrams from screenshot of created diagrams via Excalidraw https://excalidraw.com/#json=hSJBNy8qq1DWdF3ZTlI89,K7wTxdvbf3TxpDP_I0N1FA
 ## 2026-11-07 — Set the AuthTuna search path on the database
 
 - AI assistance: Claude Code (Claude Opus 5.5) traced the production and PR #31 database deploy failures (`permission denied to alter role`) to the migration's `ALTER ROLE rent_n_sail_app ... SET search_path`. `neondb_owner` cannot change a role created in the Neon console. At the user's choice, the migration now sets `search_path` on the current database (`"$user", public, authtuna`), which the owner may change, and the backend README warns against `public` tables named like AuthTuna's. The migration has not been applied anywhere yet, because each failed deploy rolled back. Not run against a database locally. Attribution: `@ElectroluxV2` (verified with `gh api user`).
