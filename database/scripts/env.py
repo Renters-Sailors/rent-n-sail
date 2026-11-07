@@ -34,9 +34,10 @@ if config.config_file_name is not None:
 # placeholders. Pointing it at the migrated database keeps it from setting up
 # SQLite, its default, whose PRAGMA hook would run on every connection.
 init_settings(
-    API_BASE_URL="http://localhost",
+    API_BASE_URL="https://placeholder-for-migrations-only.invalid",
     DEFAULT_DATABASE_URI=config.get_main_option("sqlalchemy.url"),
-    FERNET_KEYS=["MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDA="],
+    # Base64 of "placeholder-for-migrations-only!" (a Fernet key is 32 bytes).
+    FERNET_KEYS=["cGxhY2Vob2xkZXItZm9yLW1pZ3JhdGlvbnMtb25seSE="],
 )
 
 # Revisions are generated from the backend (see backend/README.md).
