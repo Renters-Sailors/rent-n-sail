@@ -1,6 +1,10 @@
 # AI usage docs
 
-## 2026-10-30 — Sequence diagrams of every CI/CD path
+## 2026-11-07 - Sequence diagrams of 3 authomatic builds scenarios
+
+- AI assistance: Gemini 3.5 Flash-Lite created draft mermaid diagrams from screenshot of created diagrams via Excalidraw https://excalidraw.com/#json=hSJBNy8qq1DWdF3ZTlI89,K7wTxdvbf3TxpDP_I0N1FA and proposed .md structure for branching.md file
+
+## 2026-10-30 — Flowchart diagrams of every CI/CD path
 
 - AI assistance: Gemini Flash 3 written mermaid diagrams from screenshot of created diagrams via Excalidraw https://excalidraw.com/#json=hSJBNy8qq1DWdF3ZTlI89,K7wTxdvbf3TxpDP_I0N1FA
 
