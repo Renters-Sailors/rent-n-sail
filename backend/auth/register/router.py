@@ -13,7 +13,7 @@ from auth.passkey import (
     verify_registration,
     without_large_blob,
 )
-from auth.register.schemas import (
+from auth.register.requests import (
     PasskeyRegistrationCompleteRequest,
     PasskeyRegistrationInitRequest,
 )

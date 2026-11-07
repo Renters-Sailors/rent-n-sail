@@ -6,7 +6,7 @@ from authtuna.integrations import auth_service
 from fastapi import APIRouter, HTTPException, Request, Response
 
 from auth.display_name import display_name
-from auth.login.schemas import PasskeyLoginRequest
+from auth.login.requests import PasskeyLoginRequest
 from auth.passkey import (
     PASSKEY_AUTH_CHALLENGE_SESSION_KEY,
     verify_authentication,
