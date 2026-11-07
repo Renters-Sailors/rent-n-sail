@@ -1,10 +1,8 @@
-from typing import Annotated
-
 import os
 from collections.abc import Iterator
 from typing import Annotated
 
-from fastapi import Depends, HTTPException, Depends
+from fastapi import Depends, HTTPException
 from sqlalchemy import create_engine
 from sqlalchemy.engine import make_url
 from sqlalchemy.orm import Session

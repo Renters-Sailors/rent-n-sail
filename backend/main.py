@@ -1,6 +1,6 @@
 import os
 
-from authtuna import init_app, init_settings, init_app
+from authtuna import init_app, init_settings
 from fastapi import APIRouter, FastAPI
 from scalar_fastapi import add_scalar_reference
 
@@ -33,7 +33,7 @@ auth_settings = init_settings(
 from auth.login.router import router as login_router  # noqa: I001, E402
 from auth.register.router import router as register_router  # noqa: I001, E402
 from rental_equipment.router import router as rental_equipment_router  # noqa: I001, E402
-from rental_equipment.router import router as rental_equipment_router # noqa: I001, E402
+from rental_equipment.router import router as rental_equipment_router  # noqa: I001, E402
 
 app = FastAPI()
 init_app(app)
@@ -51,10 +51,13 @@ add_scalar_reference(app)
 def read_root():
     return {"Hello": "World"}
 
+
 @api_router.get("/health")
 def health():
     return {"status": "ok"}
 
+
 if __name__ == "__main__":  # for debugging
     import uvicorn
+
     uvicorn.run(app, host="0.0.0.0", port=8000)
