@@ -1,4 +1,4 @@
-@if (item.value(); as item) {
+@if (item(); as item) {
   <img
     [ngSrc]="item.slug"
     [fill]="true"
@@ -6,7 +6,7 @@
     [alt]="item.name"
     [sizes]="sizes()"
   />
-} @else if (item.isLoading()) {
+} @else if (this.isLoading()) {
   <progress class="placeholder loading" aria-label="Loading photo"></progress>
 } @else {
   <span class="placeholder" role="img" aria-label="Photo unavailable">

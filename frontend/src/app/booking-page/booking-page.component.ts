@@ -1,13 +1,5 @@
 import { CurrencyPipe, I18nPluralPipe, KeyValuePipe } from '@angular/common';
-import {
-  Component,
-  computed,
-  inject,
-  input,
-  linkedSignal,
-  numberAttribute,
-  resource,
-} from '@angular/core';
+import { Component, computed, inject, input, linkedSignal, numberAttribute } from '@angular/core';
 import {
   disabled,
   form,
@@ -89,10 +81,7 @@ export class BookingPageComponent {
   readonly id = input.required({ transform: numberAttribute });
 
   private readonly equipment = inject(RentalEquipmentService);
-  protected readonly item = resource({
-    params: () => ({ id: this.id() }),
-    loader: ({ params }) => this.equipment.getById(params.id),
-  });
+  protected readonly item = computed(() => this.equipment.getById(this.id())());
   private readonly auth = inject(AuthService);
   private readonly reservations = inject(ReservationService);
   private readonly router = inject(Router);
@@ -109,7 +98,7 @@ export class BookingPageComponent {
   }
 
   /** Resets to the initial booking whenever the item changes. */
-  private readonly booking = linkedSignal({ source: this.item.value, computation: initialBooking });
+  private readonly booking = linkedSignal({ source: this.item, computation: initialBooking });
   protected readonly bookingForm = form(
     this.booking,
     (path) => {
@@ -145,7 +134,7 @@ export class BookingPageComponent {
   /** Price of the whole booking: the chosen duration's price times the quantity. */
   protected readonly total = computed(() => {
     const { durationId, quantity } = this.booking();
-    return (this.item.value()?.prices[durationId] ?? 0) * quantity;
+    return (this.item()?.prices[durationId] ?? 0) * quantity;
   });
   /** Hours for the start time picker's limits. */
   protected readonly dayHours = computed(() => this.hoursOn(this.booking().date));
