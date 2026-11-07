@@ -1,4 +1,4 @@
-"""authtuna from models
+"""authtuna
 
 Revision ID: 51813c9846d7
 Revises: 2dc1f6579efa
