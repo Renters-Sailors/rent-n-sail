@@ -1,23 +1,26 @@
 import os
-from collections.abc import Iterator
+from collections.abc import AsyncGenerator
+from typing import Annotated
 
-from fastapi import HTTPException
-from sqlalchemy import create_engine
+from fastapi import Depends, HTTPException
 from sqlalchemy.engine import make_url
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.pool import NullPool
 
 
-def get_session() -> Iterator[Session]:
-    raw_url = os.environ.get("DATABASE_URL")
+async def get_async_session() -> AsyncGenerator[AsyncSession]:
+    raw_url = os.environ.get(
+        "DATABASE_URL", "postgresql://postgres:admin@localhost:5432/rent_n_sail"
+    )
     if not raw_url:
         raise HTTPException(status_code=503, detail="Database is not configured")
-    url = make_url(raw_url)
-    if url.drivername in {"postgres", "postgresql"}:
-        url = url.set(drivername="postgresql+psycopg")
-    engine = create_engine(url, poolclass=NullPool, pool_pre_ping=True)
+    url = make_url(raw_url).set(drivername="postgresql+psycopg")
+    engine = create_async_engine(url, poolclass=NullPool, pool_pre_ping=True)
     try:
-        with Session(engine) as session:
+        async with AsyncSession(engine) as session:
             yield session
     finally:
-        engine.dispose()
+        await engine.dispose()
+
+
+AsyncDbSession = Annotated[AsyncSession, Depends(get_async_session)]

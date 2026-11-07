@@ -7,6 +7,10 @@
 ## 2026-10-30 — Flowchart diagrams of every CI/CD path
 
 - AI assistance: Gemini Flash 3 written mermaid diagrams from screenshot of created diagrams via Excalidraw https://excalidraw.com/#json=hSJBNy8qq1DWdF3ZTlI89,K7wTxdvbf3TxpDP_I0N1FA
+## 2026-11-07 — Set the AuthTuna search path on the database
+
+- AI assistance: Claude Code (Claude Opus 5.5) traced the production and PR #31 database deploy failures (`permission denied to alter role`) to the migration's `ALTER ROLE rent_n_sail_app ... SET search_path`. `neondb_owner` cannot change a role created in the Neon console. At the user's choice, the migration now sets `search_path` on the current database (`"$user", public, authtuna`), which the owner may change, and the backend README warns against `public` tables named like AuthTuna's. The migration has not been applied anywhere yet, because each failed deploy rolled back. Not run against a database locally. Attribution: `@ElectroluxV2` (verified with `gh api user`).
+
 ## 2026-10-31 — Fetch Git LFS images for frontend deployments
 
 - AI assistance: Junie (gpt-6-luna) enabled Git LFS checkout in the frontend deployment workflow so optimized image files are available to the build instead of being deployed as pointer files. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
@@ -215,6 +219,55 @@
 
 - AI assistance: Junie (gpt-6-luna) updated the component-changes action to use a multiline GitHub `case()` expression to select the pull request target branch SHA as `BEFORE` on opened and reopened events, preventing a nonempty event `before` value from omitting changes in the new PR. Other events keep their existing before/current SHA behavior; no Bash selection logic is used. Prepared as the second layer in the `gh-stack` stack. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
 
+## 2026-11-06 — Map rental equipment seed data
+
+- AI assistance: OpenCode (GPT-6.1 Terra) mapped the supplied TypeScript rental equipment objects into SQL insert values. Attribution: `@Buzeqq` (Miłosz Chojnacki, verified with `gh api user`).
+
+## 2026-11-06 — Explain monetary precision
+
+- AI assistance: OpenCode (GPT-6.1 Terra) explained SQL numeric precision and scale for rental equipment prices and how to configure SQLAlchemy composite columns. Attribution: `@Buzeqq` (Miłosz Chojnacki, verified with `gh api user`).
+- Follow-up: corrected the suggested dataclass metadata approach and explained explicit composite columns. Attribution: `@Buzeqq` (Miłosz Chojnacki, verified with `gh api user`).
+
+## 2026-11-07 — Split migration generation from migration runs
+
+- AI assistance: Claude Code (Claude Opus 5.5) reviewed the Alembic setup and explained how the backend can generate revisions into `database/scripts/versions` while the database deploy only runs them, without importing backend models. Attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Follow-up: implemented the split. `env.py` loads models only for `--autogenerate`, `../backend` is no longer on the database `sys.path`, `alembic` is a backend dev dependency, and `backend/README.md` documents generating and applying migrations. Verification: against an unreachable database, `upgrade head` from `database` and `revision --autogenerate` from `backend` both reach the connection step, while autogenerate from `database` fails to import `models` as intended. A full run against a live Postgres was not done. Attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Follow-up: at the user's request, the database project no longer imports backend code at all. The backend has its own Alembic environment (`backend/migrations`, `[tool.alembic]` in `backend/pyproject.toml`) whose `version_locations` points at `database/scripts/versions`, and the revision template moved there. Verified the same way as above. The preview deploy failure (`Can't locate revision identified by '0001_boats'`) comes from the base branch deleting the old boats migration and was reported to the user. Attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Follow-up: at the user's choice, restored `0001_boats` as the root revision and made the authtuna revision follow it, so databases stamped `0001_boats` (production and its previews) upgrade without manual changes. Verified the chain with `alembic history`. Attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Follow-up: the next deploy failed with `role "postgres" does not exist` because the authtuna SQL dump set `owner to postgres` on 22 objects; removed those statements so the migrating role owns them. Also replaced the outdated `sqlalchemy-stubs` (SQLAlchemy 1.x stubs that hid `sqlalchemy.ext.asyncio` from the IDE) with a direct `sqlalchemy` dependency. Attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Follow-up: kept `alembic` as a backend dev dependency and suppressed the IDE's package-requirements inspection on its import in `backend/migrations/env.py`. Attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Follow-up: fixed the failing backend CI inherited from `feat/rental-equipment`. Added a Pydantic `RentalEquipmentResponse` schema in the rental equipment slice because FastAPI cannot use the SQLAlchemy model as a response type, applied Ruff lint and format fixes, and removed `test_boats.py`, which tested the deleted `Boat` model and `create_app`. Verified with Ruff, pytest, and TestClient requests to both rental equipment routes. Attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Follow-up: wired up the `rent_n_sail_app` role the user created in Neon. The deploy helper now names the role explicitly (the database owner for migrations, `rent_n_sail_app` for the backend) because the Neon SDK cannot pick a role once a branch has more than one. The app role migration uses `current_database()` instead of a fixed name, and a new migration grants the role access to `public`, including default privileges for later tables. Ignored `backend/env.txt`, which holds the role's credentials; it is not needed as a GitHub secret because CI gets the password from the Neon API. Verified the JavaScript syntax, the SDK methods, and the revision chain; not yet run in CI. Attribution: `@ElectroluxV2` (verified with `gh api user`).
+
+## 2026-11-06 — Map rental equipment seed data
+
+- AI assistance: OpenCode (GPT-6.1 Terra) mapped the supplied TypeScript rental equipment objects into SQL insert values. Attribution: `@Buzeqq` (Miłosz Chojnacki, verified with `gh api user`).
+
+## 2026-11-06 — Explain monetary precision
+
+- AI assistance: OpenCode (GPT-6.1 Terra) explained SQL numeric precision and scale for rental equipment prices and how to configure SQLAlchemy composite columns. Attribution: `@Buzeqq` (Miłosz Chojnacki, verified with `gh api user`).
+- Follow-up: corrected the suggested dataclass metadata approach and explained explicit composite columns. Attribution: `@Buzeqq` (Miłosz Chojnacki, verified with `gh api user`).
+
+## 2026-11-07 — Split migration generation from migration runs
+
+- AI assistance: Claude Code (Claude Opus 5.5) reviewed the Alembic setup and explained how the backend can generate revisions into `database/scripts/versions` while the database deploy only runs them, without importing backend models. Attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Follow-up: implemented the split. `env.py` loads models only for `--autogenerate`, `../backend` is no longer on the database `sys.path`, `alembic` is a backend dev dependency, and `backend/README.md` documents generating and applying migrations. Verification: against an unreachable database, `upgrade head` from `database` and `revision --autogenerate` from `backend` both reach the connection step, while autogenerate from `database` fails to import `models` as intended. A full run against a live Postgres was not done. Attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Follow-up: at the user's request, the database project no longer imports backend code at all. The backend has its own Alembic environment (`backend/migrations`, `[tool.alembic]` in `backend/pyproject.toml`) whose `version_locations` points at `database/scripts/versions`, and the revision template moved there. Verified the same way as above. The preview deploy failure (`Can't locate revision identified by '0001_boats'`) comes from the base branch deleting the old boats migration and was reported to the user. Attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Follow-up: at the user's choice, restored `0001_boats` as the root revision and made the authtuna revision follow it, so databases stamped `0001_boats` (production and its previews) upgrade without manual changes. Verified the chain with `alembic history`. Attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Follow-up: the next deploy failed with `role "postgres" does not exist` because the authtuna SQL dump set `owner to postgres` on 22 objects; removed those statements so the migrating role owns them. Also replaced the outdated `sqlalchemy-stubs` (SQLAlchemy 1.x stubs that hid `sqlalchemy.ext.asyncio` from the IDE) with a direct `sqlalchemy` dependency. Attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Follow-up: kept `alembic` as a backend dev dependency and suppressed the IDE's package-requirements inspection on its import in `backend/migrations/env.py`. Attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Follow-up: fixed the failing backend CI inherited from `feat/rental-equipment`. Added a Pydantic `RentalEquipmentResponse` schema in the rental equipment slice because FastAPI cannot use the SQLAlchemy model as a response type, applied Ruff lint and format fixes, and removed `test_boats.py`, which tested the deleted `Boat` model and `create_app`. Verified with Ruff, pytest, and TestClient requests to both rental equipment routes. Attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Follow-up: wired up the `rent_n_sail_app` role the user created in Neon. The deploy helper now names the role explicitly (the database owner for migrations, `rent_n_sail_app` for the backend) because the Neon SDK cannot pick a role once a branch has more than one. The app role migration uses `current_database()` instead of a fixed name, and a new migration grants the role access to `public`, including default privileges for later tables. Ignored `backend/env.txt`, which holds the role's credentials; it is not needed as a GitHub secret because CI gets the password from the Neon API. Verified the JavaScript syntax, the SDK methods, and the revision chain; not yet run in CI. Attribution: `@ElectroluxV2` (verified with `gh api user`).
+
+## 2026-11-06 — Map rental equipment seed data
+
+- AI assistance: OpenCode (GPT-6.1 Terra) mapped the supplied TypeScript rental equipment objects into SQL insert values. Attribution: `@Buzeqq` (Miłosz Chojnacki, verified with `gh api user`).
+
+## 2026-11-06 — Explain monetary precision
+
+- AI assistance: OpenCode (GPT-6.1 Terra) explained SQL numeric precision and scale for rental equipment prices and how to configure SQLAlchemy composite columns. Attribution: `@Buzeqq` (Miłosz Chojnacki, verified with `gh api user`).
+- Follow-up: corrected the suggested dataclass metadata approach and explained explicit composite columns. Attribution: `@Buzeqq` (Miłosz Chojnacki, verified with `gh api user`).
+
 ## 2026-10-28 — Delete previews of branches without an open pull request
 
 - AI assistance: OpenCode (Claude Opus 5.5) made each component's `ensure` stage delete its provider's previews of Git branches that have no open pull request, keeping the run's own branch. This replaces a proposed 3-day expiry, which Vercel cannot express: its retention has no 3-day option and never deletes previews with an alias. The production run after a merge now removes the merged branch's previews. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
@@ -222,6 +275,26 @@
   - **Vercel:** deletes the pipeline's own preview aliases, including the frontend alias the backend reserves, and the preview deployments whose `githubCommitRef` names such a branch. Production, other aliases, and deployments without a `githubCommitRef` stay. The vendored SDK bundle gained `aliasesListAliases`, `aliasesDeleteAlias`, and `deploymentsDeleteDeployment` (+6 KB).
   - **Failures:** a failed cleanup only warns, so it never blocks a release; the next run retries it.
   - **Verification:** a throwaway mock of both providers and the real bundled SDK against a stubbed `fetch`; no tests were added, per project guidelines. Stack run `40751355386` then deleted the previews of the merged `cd` and of teammate PRs #16 and #17, which were closed without merging. That was 3 Neon branches, plus 3 aliases and 4 deployments in the backend and 3 aliases and 5 deployments in the frontend. It then forked this branch's previews, and the deleted aliases return `DEPLOYMENT_NOT_FOUND`. A re-run reused the previews and deleted nothing.
+
+## 2026-10-29 — Explain executing an SQL script with asyncpg
+
+- AI assistance: OpenCode (GPT-6.1 Terra) explained using SQLAlchemy's adapted connection to execute a multi-statement script with asyncpg rather than splitting on semicolons. Attribution: `@Buzeqq` (Miłosz Chojnacki, verified with `gh api user`).
+
+## 2026-10-29 — Configure AuthTuna application role
+
+- AI assistance: OpenCode (GPT-6.1 Terra) added an Alembic migration to grant an existing application login role access to AuthTuna and set its database-specific search path. The user selected an existing role identified by `APP_DATABASE_ROLE`; no credentials are created. Attribution: `@Buzeqq` (Miłosz Chojnacki, verified with `gh api user`).
+
+## 2026-10-29 — Explain AuthTuna schema lookup
+
+- AI assistance: OpenCode (GPT-6.1 Terra) inspected AuthTuna's engine setup and explained how to configure PostgreSQL's search path for its unqualified table names. Attribution: `@Buzeqq` (Miłosz Chojnacki, verified with `gh api user`).
+
+## 2026-10-29 — Explain duplicate migration sequences
+
+- AI assistance: OpenCode (GPT-6.1 Terra) identified that the AuthTuna SQL defines serial columns and then explicitly creates the same sequences again. Attribution: `@Buzeqq` (Miłosz Chojnacki, verified with `gh api user`).
+
+## 2026-10-29 — Explain migration prepared-statement error
+
+- AI assistance: OpenCode (GPT-6.1 Terra) inspected the Alembic migrations and identified that the AuthTuna SQL file contains multiple commands passed to a single asyncpg prepared statement. Also noted a schema mismatch that may surface after that is fixed. The error was not reproduced against a database. Attribution: `@Buzeqq` (Miłosz Chojnacki, verified with `gh api user`).
 
 ## 2026-10-28 — Benchmark: vendored SDK bundle vs. cached pnpm install
 

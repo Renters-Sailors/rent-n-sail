@@ -13,7 +13,7 @@ from auth.passkey import (
     verify_registration,
     without_large_blob,
 )
-from auth.register.requests import (
+from auth.register.schemas import (
     PasskeyRegistrationCompleteRequest,
     PasskeyRegistrationInitRequest,
 )
@@ -82,7 +82,9 @@ async def register_complete(
 
     try:
         await auth_service.passkeys.save_new_credential(
-            user_id=user.id, cred_data=credential_data, nickname=user_agent
+            user_id=user.id,
+            cred_data=credential_data,
+            nickname=user_agent[:100],
         )
         await create_session_and_set_cookie(
             user, request, response, auth_service.db_manager.get_db()
