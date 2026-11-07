@@ -221,6 +221,7 @@
 
 - AI assistance: Claude Code (Claude Opus 5.5) reviewed the Alembic setup and explained how the backend can generate revisions into `database/scripts/versions` while the database deploy only runs them, without importing backend models. Attribution: `@ElectroluxV2` (verified with `gh api user`).
 - Follow-up: implemented the split. `env.py` loads models only for `--autogenerate`, `../backend` is no longer on the database `sys.path`, `alembic` is a backend dev dependency, and `backend/README.md` documents generating and applying migrations. Verification: against an unreachable database, `upgrade head` from `database` and `revision --autogenerate` from `backend` both reach the connection step, while autogenerate from `database` fails to import `models` as intended. A full run against a live Postgres was not done. Attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Follow-up: at the user's request, the database project no longer imports backend code at all. The backend has its own Alembic environment (`backend/migrations`, `[tool.alembic]` in `backend/pyproject.toml`) whose `version_locations` points at `database/scripts/versions`, and the revision template moved there. Verified the same way as above. The preview deploy failure (`Can't locate revision identified by '0001_boats'`) comes from the base branch deleting the old boats migration and was reported to the user. Attribution: `@ElectroluxV2` (verified with `gh api user`).
 
 ## 2026-11-06 — Map rental equipment seed data
 
