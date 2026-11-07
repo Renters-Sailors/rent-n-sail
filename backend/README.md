@@ -20,6 +20,8 @@ The `database` component only applies them and never imports backend code.
 4. Review the new file in `database/scripts/versions` and commit it with the model change.
 
 Use the backend environment only for `revision` commands. Apply migrations from `database`.
+
+Deployed backends connect as the `rent_n_sail_app` role, which can only read and write rows. Tables that migrations create in `public` are granted to it automatically. For tables in other schemas, add the grants in the migration.
 Migration files must not import from `models`. For data changes, use plain SQL (see `database/scripts/versions/sql`) or `sa.table(...)`.
 
 ### Apply migrations

@@ -13,15 +13,19 @@ depends_on = None
 
 
 def upgrade() -> None:
-    op.execute(f"GRANT USAGE ON SCHEMA authtuna TO rent_n_sail_app")
+    op.execute("GRANT USAGE ON SCHEMA authtuna TO rent_n_sail_app")
     op.execute(
-        f"GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA authtuna TO rent_n_sail_app"
+        "GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA authtuna "
+        "TO rent_n_sail_app"
     )
     op.execute(
-        f"GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA authtuna TO rent_n_sail_app"
+        "GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA authtuna TO rent_n_sail_app"
     )
+    # The database name differs between environments (Neon defaults to neondb).
     op.execute(
-        f"ALTER ROLE rent_n_sail_app IN DATABASE rent_n_sail SET search_path TO authtuna, public"
+        "DO $$ BEGIN EXECUTE format("
+        "'ALTER ROLE rent_n_sail_app IN DATABASE %I SET search_path TO authtuna, public', "
+        "current_database()); END $$"
     )
 
 
