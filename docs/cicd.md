@@ -6,10 +6,7 @@ This document describes the automated deployment and build infrastructure. The a
 
 ```mermaid
 flowchart TD
-%% Global Styling
-classDef successIcon color:#2da44e;
-classDef trigger fill:#f6f8fa,stroke:#d0d7de;
-classDef decision fill:#fff8c5,stroke:#d4a017;
+
 
 %% 1. ORCHESTRATOR
 subgraph s_sub["1. stack (Orchestrator)"]
