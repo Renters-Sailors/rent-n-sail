@@ -112,7 +112,7 @@ export class BookingPageComponent {
           : undefined;
       });
       // A full day has no start time to pick.
-      disabled(path.startTime, ({ valueOf }) => valueOf(path.durationId) === 'full-day');
+      disabled(path.startTime, { when: ({ valueOf }) => valueOf(path.durationId) === 'full-day' });
       required(path.startTime);
       // "HH:MM" strings compare correctly as text.
       // A closed day has no hours to check against; the date shows that error.

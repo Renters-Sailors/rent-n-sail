@@ -7,8 +7,8 @@ export class RentalEquipmentService {
   /** All rental equipment; empty until loaded. */
   readonly equipmentResource = httpResource<readonly RentalEquipment[]>(() => 'rental_equipment');
   /** All rental equipment by id, for lists that look up many items at once; empty until loaded. */
-  readonly byId = computed(
-    () => new Map((this.equipmentResource.value() ?? []).map((item) => [item.id, item])),
+  readonly byId = computed(() =>
+    Map.groupBy(this.equipmentResource.value() ?? [], (equipment) => equipment.id),
   );
 
   /** One item, or undefined when no item has that id. */
