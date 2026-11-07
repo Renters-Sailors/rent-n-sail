@@ -54,7 +54,7 @@ def read_root():
 
 @api_router.get("/health")
 def health():
-    return {"status": "ok"}
+    return {"status": "🆗"}
 
 
 if __name__ == "__main__":  # for debugging
