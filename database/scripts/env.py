@@ -6,7 +6,6 @@ from alembic import context
 from sqlalchemy import pool
 from sqlalchemy.engine import Connection, make_url
 from sqlalchemy.ext.asyncio import async_engine_from_config
-from models import Base
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -29,11 +28,14 @@ if database_url:
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-# add your model's MetaData object here
-# for 'autogenerate' support
-# from myapp import mymodel
-# target_metadata = mymodel.Base.metadata
-target_metadata = Base.metadata
+# Models live in the backend. They are only needed to autogenerate revisions,
+# which is run from the backend environment (see backend/README.md).
+# Applying migrations needs only the revision files.
+target_metadata = None
+if getattr(config.cmd_opts, "autogenerate", False):
+    from models import Base
+
+    target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:

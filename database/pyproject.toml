@@ -28,7 +28,6 @@ script_location = "%(here)s/scripts"
 
 # additional paths to be prepended to sys.path. defaults to the current working directory.
 prepend_sys_path = [
-    "../backend",
     ".",
 ]
 

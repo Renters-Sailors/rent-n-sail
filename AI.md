@@ -1,5 +1,10 @@
 # AI usage docs
 
+## 2026-11-07 — Split migration generation from migration runs
+
+- AI assistance: Claude Code (Claude Opus 5.5) reviewed the Alembic setup and explained how the backend can generate revisions into `database/scripts/versions` while the database deploy only runs them, without importing backend models. Attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Follow-up: implemented the split. `env.py` loads models only for `--autogenerate`, `../backend` is no longer on the database `sys.path`, `alembic` is a backend dev dependency, and `backend/README.md` documents generating and applying migrations. Verification: against an unreachable database, `upgrade head` from `database` and `revision --autogenerate` from `backend` both reach the connection step, while autogenerate from `database` fails to import `models` as intended. A full run against a live Postgres was not done. Attribution: `@ElectroluxV2` (verified with `gh api user`).
+
 ## 2026-11-06 — Map rental equipment seed data
 
 - AI assistance: OpenCode (GPT-6.1 Terra) mapped the supplied TypeScript rental equipment objects into SQL insert values. Attribution: `@Buzeqq` (Miłosz Chojnacki, verified with `gh api user`).
