@@ -5,6 +5,7 @@ component applies them. Only revision commands are meant to run from here.
 """
 
 import os
+from collections.abc import Mapping
 
 # alembic is a dev dependency: it only generates revisions locally.
 # noinspection PyPackageRequirements
@@ -23,16 +24,15 @@ from models import Base
 DEFAULT_URL = "postgresql://postgres:admin@localhost:5432/rent_n_sail"
 AUTHTUNA_SCHEMA = "authtuna"
 
-# AuthTuna's tables have no schema; ours live in the authtuna schema. Copy them
-# there, keeping AuthTuna's index names (by default they'd gain the schema).
-authtuna_metadata = MetaData(
-    naming_convention={"ix": "ix_%(table_name)s_%(column_0_name)s"}
-)
+# AuthTuna's models have no schema; its tables live in the authtuna schema.
+authtuna_metadata = MetaData()
 for table in AuthTunaBase.metadata.sorted_tables:
     table.to_metadata(authtuna_metadata, schema=AUTHTUNA_SCHEMA)
 
 
-def include_name(name: str | None, type_: str, _parent_names: object) -> bool:
+def include_name(
+    name: str | None, type_: str, _parent_names: Mapping[str, str | None]
+) -> bool:
     """Compare only public (the default schema, None) and authtuna."""
     return type_ != "schema" or name in (None, AUTHTUNA_SCHEMA)
 
