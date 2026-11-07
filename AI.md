@@ -15,6 +15,10 @@
 - Follow-up: at the user's request, added a Mako `##` comment to `backend/migrations/script.py.mako` explaining the imports every revision starts with, why Ruff's post-write hook drops the unused ones, and why AuthTuna is imported inside `upgrade()`/`downgrade()`, plus the user's remark about Python in Polish. Checked that an empty generated revision doesn't contain the comment. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
 - Follow-up: at the user's request, removed the remark about Python from the template comment. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
 
+## 2026-11-07 — Fix Scalar schema loading behind the frontend proxy
+
+- AI assistance: OpenCode (GPT-6.1 Terra) traced Scalar's production loading error to its root-relative schema URL, which bypassed the frontend's `/api` proxy, and configured a relative schema URL for proxied and direct backend access. Attribution: `@Buzeqq` (verified with `gh api user`).
+
 ## 2026-11-07 - Sequence diagrams of 3 authomatic builds scenarios
 
 - AI assistance: Gemini 3.5 Flash-Lite created draft mermaid diagrams from screenshot of created diagrams via Excalidraw https://excalidraw.com/#json=hSJBNy8qq1DWdF3ZTlI89,K7wTxdvbf3TxpDP_I0N1FA and proposed .md structure for branching.md file
