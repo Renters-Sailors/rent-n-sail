@@ -22,6 +22,11 @@ url = url.set(drivername="postgresql+psycopg")
 engine = create_engine(url, poolclass=NullPool)
 
 with engine.connect() as connection:
+    # The database's search_path includes the authtuna schema, and SQLAlchemy
+    # reflects every visible table as if it were in public. Hide AuthTuna's
+    # tables so autogenerate doesn't drop them.
+    connection.exec_driver_sql("SET search_path TO public")
+    connection.commit()
     context.configure(connection=connection, target_metadata=Base.metadata)
     with context.begin_transaction():
         context.run_migrations()
