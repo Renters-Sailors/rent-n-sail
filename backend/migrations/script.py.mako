@@ -25,8 +25,6 @@ depends_on: Union[str, Sequence[str], None] = ${repr(depends_on)}
 ## needs AuthTuna's settings, which database/scripts/env.py sets only when
 ## migrations run; `alembic history` and `revision` load revision files
 ## without that.
-## Python to gówno: zaimportowanie modułu wykonuje jego kod, więc sam import
-## typu kolumny wymaga skonfigurowanej AuthTuny.
 def upgrade() -> None:
     """Upgrade schema."""
     import authtuna.core.database  # AuthTuna's column types; Ruff drops it if unused
