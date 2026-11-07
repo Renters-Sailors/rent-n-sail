@@ -17,13 +17,13 @@ The `database` component only applies them and never imports backend code.
    uv run alembic revision --autogenerate -m "short description"
    ```
 
-4. Review the new file in `database/scripts/versions` and commit it with the model change.
+4. Review the new file in `database/scripts/versions` and commit it with the model change. Ruff fixes and formats it when it's written.
 
 Use the backend environment only for `revision` commands. Apply migrations from `database`.
 
-Deployed backends connect as the `rent_n_sail_app` role, which can only read and write rows. Tables that migrations create in `public` are granted to it automatically. For tables in other schemas, add the grants in the migration.
+Deployed backends connect as the `rent_n_sail_app` role, which can only read and write rows. Every table that migrations create in `public` is granted to it automatically (set up by the first revision).
 
-AuthTuna's tables live in the `authtuna` schema, which the database's `search_path` includes after `public`. Don't create tables in `public` with the same names as AuthTuna's (such as `users`, `roles` or `permissions`), or AuthTuna will read those instead.
+Autogenerate compares both our models and AuthTuna's, and all tables live in `public`. Upgrading AuthTuna to a version that changes its tables therefore produces a regular revision. AuthTuna takes generic table names such as `users`, `sessions`, `roles` and `permissions`; our models can't use them.
 
 Migration files must not import from `models`. For data changes, use plain SQL (see `database/scripts/versions/sql`) or `sa.table(...)`.
 
