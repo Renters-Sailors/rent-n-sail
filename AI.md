@@ -1,5 +1,9 @@
 # AI usage docs
 
+## 2026-11-07 — Set the AuthTuna search path on the database
+
+- AI assistance: Claude Code (Claude Opus 5.5) traced the production and PR #31 database deploy failures (`permission denied to alter role`) to the migration's `ALTER ROLE rent_n_sail_app ... SET search_path`. `neondb_owner` cannot change a role created in the Neon console. At the user's choice, the migration now sets `search_path` on the current database (`"$user", public, authtuna`), which the owner may change, and the backend README warns against `public` tables named like AuthTuna's. The migration has not been applied anywhere yet, because each failed deploy rolled back. Not run against a database locally. Attribution: `@ElectroluxV2` (verified with `gh api user`).
+
 ## 2026-10-31 — Fetch Git LFS images for frontend deployments
 
 - AI assistance: Junie (gpt-6-luna) enabled Git LFS checkout in the frontend deployment workflow so optimized image files are available to the build instead of being deployed as pointer files. Attribution: `@ElectroluxV2` (Mateusz Budzisz, verified with `gh api user`).
