@@ -1171,3 +1171,7 @@ Claude Code (Claude Opus 5.5) rebased the gh-stack (#21 → #22 → #24) on main
 ## Sparse checkout in component CI jobs (@ElectroluxV2)
 
 Claude Code (Claude Opus 5.5) added `sparse-checkout` to the `actions/checkout` step of the backend, database and frontend reusable workflows, so each job checks out only its own component folder plus the repository's root files (cone mode). No job reads another component's folder; the backend's `version_locations` into `database/` is only used locally for generating revisions. Not run in CI yet.
+
+## Diagnose passkey login 500s and run Postgres locally in Docker (@ElectroluxV2)
+
+Claude Code (Claude Opus 5.5) traced the `POST /login/passkey/complete` 500s to `ConnectionRefusedError`: with no `DATABASE_URL`, AuthTuna fell back to `localhost:5432`, where nothing was listening. It started Docker Desktop and ran a `postgres:18` container (`rent-n-sail-postgres`, volume `rent-n-sail-pgdata`, superuser `postgres`/`admin`, database `rent_n_sail`) matching the backend's fallback URLs, created the `rent_n_sail_app` login role with password `test`, and applied all migrations with `uv run alembic upgrade head` from `database`. The app role sees `"$user", public, authtuna` on its `search_path` and can query `passkey_credentials` and `boats`. No project files changed besides this entry; a passkey login through the UI was not tried.
