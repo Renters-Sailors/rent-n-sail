@@ -9,7 +9,7 @@ from sqlalchemy.pool import NullPool
 
 
 async def get_async_session() -> AsyncGenerator[AsyncSession]:
-    raw_url = os.environ.get("DATABASE_URL")
+    raw_url = os.environ.get("DATABASE_URL", "postgresql://postgres:admin@localhost:5432/rent_n_sail")
     if not raw_url:
         raise HTTPException(status_code=503, detail="Database is not configured")
     url = make_url(raw_url).set(drivername="postgresql+psycopg")
