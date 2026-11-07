@@ -20,9 +20,11 @@ depends_on: Union[str, Sequence[str], None] = ${repr(depends_on)}
 
 def upgrade() -> None:
     """Upgrade schema."""
+    import authtuna.core.database  # AuthTuna's column types; Ruff drops it if unused
     ${upgrades if upgrades else "pass"}
 
 
 def downgrade() -> None:
     """Downgrade schema."""
+    import authtuna.core.database  # AuthTuna's column types; Ruff drops it if unused
     ${downgrades if downgrades else "pass"}

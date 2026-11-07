@@ -23,7 +23,7 @@ Use the backend environment only for `revision` commands. Apply migrations from 
 
 Deployed backends connect as the `rent_n_sail_app` role, which can only read and write rows. Every table that migrations create in `public` is granted to it automatically (set up by the first revision).
 
-Autogenerate compares both our models and AuthTuna's, and all tables live in `public`. Upgrading AuthTuna to a version that changes its tables therefore produces a regular revision. AuthTuna takes generic table names such as `users`, `sessions`, `roles` and `permissions`; our models can't use them.
+Autogenerate compares both our models and AuthTuna's, and all tables live in `public`. Upgrading AuthTuna to a version that changes its tables therefore produces a regular revision. Revisions use AuthTuna's column types, so the `database` component installs AuthTuna too and configures it with placeholder settings before applying them. Keep its version in line with the backend's. AuthTuna takes generic table names such as `users`, `sessions`, `roles` and `permissions`; our models can't use them.
 
 Migration files must not import from `models`. For data changes, use plain SQL (see `database/scripts/versions/sql`) or `sa.table(...)`.
 
