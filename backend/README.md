@@ -24,6 +24,7 @@ Use the backend environment only for `revision` commands. Apply migrations from 
 Deployed backends connect as the `rent_n_sail_app` role, which can only read and write rows. Tables that migrations create in `public` are granted to it automatically. For tables in other schemas, add the grants in the migration.
 
 AuthTuna's tables live in the `authtuna` schema, which the database's `search_path` includes after `public`. Don't create tables in `public` with the same names as AuthTuna's (such as `users`, `roles` or `permissions`), or AuthTuna will read those instead.
+
 Migration files must not import from `models`. For data changes, use plain SQL (see `database/scripts/versions/sql`) or `sa.table(...)`.
 
 ### Apply migrations
