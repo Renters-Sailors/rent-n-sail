@@ -5,7 +5,7 @@ from authtuna.helpers import create_session_and_set_cookie
 from authtuna.integrations import auth_service
 from fastapi import APIRouter, HTTPException, Request, Response
 
-from auth.login.schemas import PasskeyLoginRequest
+from auth.login.requests import PasskeyLoginRequest
 from auth.passkey import PASSKEY_AUTH_CHALLENGE_SESSION_KEY, verify_authentication
 
 router = APIRouter(prefix="/passkey")
