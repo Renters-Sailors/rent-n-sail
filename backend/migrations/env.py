@@ -6,6 +6,8 @@ component applies them. Only revision commands are meant to run from here.
 
 import os
 
+# alembic is a dev dependency: it only generates revisions locally.
+# noinspection PyPackageRequirements
 from alembic import context
 from sqlalchemy import create_engine
 from sqlalchemy.engine import make_url
