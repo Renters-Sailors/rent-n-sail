@@ -1128,3 +1128,7 @@ Claude Code (Claude Opus 5.5) applied Miłosz Chojnacki's (@Buzeqq) review comme
 ## Rebase and squash-merge the stack (@ElectroluxV2)
 
 Claude Code (Claude Opus 5.5) rebased the gh-stack (#21 → #22 → #24) on main, resolving a `CONTRIBUTING.md` conflict with #27 by keeping its `pnpm runtime set node` command with Node 26. After lint, tests and build passed locally and CI passed on all three PRs, it squash-merged #21 and #22 with `gh stack merge 22 --squash`. #24 lost its approvals when the rebased branch was pushed, so it was rebased onto the new main and left for re-review.
+
+## Sparse checkout in component CI jobs (@ElectroluxV2)
+
+Claude Code (Claude Opus 5.5) added `sparse-checkout` to the `actions/checkout` step of the backend, database and frontend reusable workflows, so each job checks out only its own component folder plus the repository's root files (cone mode). No job reads another component's folder; the backend's `version_locations` into `database/` is only used locally for generating revisions. Not run in CI yet.

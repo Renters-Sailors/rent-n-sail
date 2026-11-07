@@ -55,6 +55,7 @@ jobs:
         if: env.BUILD_NEEDED == 'true'
         uses: actions/checkout@v7.0.1
         with:
+          sparse-checkout: database
           persist-credentials: false
       - name: ⚙️ Set up uv and Python
         uses: astral-sh/setup-uv@v10.3.2
