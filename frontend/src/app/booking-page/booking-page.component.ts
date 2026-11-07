@@ -80,8 +80,9 @@ export class BookingPageComponent {
   /** Route parameter `:id`, bound by `withComponentInputBinding`. */
   readonly id = input.required({ transform: numberAttribute });
 
-  private readonly equipment = inject(RentalEquipmentService);
-  protected readonly item = computed(() => this.equipment.getById(this.id())());
+  private readonly equipmentService = inject(RentalEquipmentService);
+  protected readonly item = computed(() => this.equipmentService.getById(this.id())());
+  protected readonly isLoading = this.equipmentService.equipmentResource.isLoading;
   private readonly auth = inject(AuthService);
   private readonly reservations = inject(ReservationService);
   private readonly router = inject(Router);

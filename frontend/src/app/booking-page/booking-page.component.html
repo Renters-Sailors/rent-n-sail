@@ -75,7 +75,7 @@
         </div>
       </form>
     </article>
-  } @else {
+  } @else if (!this.isLoading()) {
     <h1>Equipment not found</h1>
     <p><a routerLink="/">Back to discover</a></p>
   }
