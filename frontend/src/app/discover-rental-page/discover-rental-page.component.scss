@@ -1,0 +1,212 @@
+@import url('https://fonts.googleapis.com/css2?family=Gabriela&family=Londrina+Solid:wght@900&display=swap');
+
+:host {
+  position: relative;
+  timeline-scope: --discover-scroll;
+
+  display: block;
+  height: 100%;
+
+  // Scroll progress bar, driven by the section's scroll position.
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    z-index: 3;
+
+    height: 4px;
+
+    background: var(--color-accent);
+
+    transform-origin: left;
+    animation: discover-scroll-progress linear both;
+    animation-timeline: --discover-scroll;
+
+    pointer-events: none;
+  }
+}
+
+@keyframes discover-scroll-progress {
+  from {
+    scale: 0 1;
+  }
+}
+
+section {
+  height: 100%;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  scroll-timeline: --discover-scroll y;
+
+  font-family: 'Google Sans Flex', sans-serif;
+}
+
+article {
+  position: relative;
+  anchor-scope: --rental-heading;
+
+  display: grid;
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+
+  height: 100%;
+  scroll-snap-align: start;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: calc(anchor(--rental-heading top) - 2em) 0 0;
+    z-index: 1;
+
+    background:
+      radial-gradient(
+          color-mix(in srgb, var(--color-black) 60%, transparent) 1px,
+          transparent 1.5px
+        )
+        0 0 / 6px 6px,
+      linear-gradient(transparent, color-mix(in srgb, var(--color-black) 30%, transparent));
+    backdrop-filter: blur(10px);
+    mask-image: linear-gradient(transparent, #000 50%);
+
+    pointer-events: none;
+  }
+}
+
+.rental-content {
+  z-index: 2;
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  align-self: end;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+
+  padding: 2rem;
+}
+
+main {
+  flex: 1 1 20rem;
+
+  h2 {
+    anchor-name: --rental-heading;
+
+    width: 60%;
+    margin-bottom: 0;
+
+    color: var(--color-black);
+    font:
+      900 xxx-large 'Londrina Solid',
+      sans-serif;
+    -webkit-text-stroke: 5px var(--color-white);
+    paint-order: stroke fill;
+  }
+
+  p {
+    width: min(100%, 40rem);
+    margin: 0.5em 0 0;
+
+    color: var(--color-white);
+    font-family: 'Gabriela', serif;
+    font-size: x-large;
+    text-wrap: balance;
+    -webkit-text-stroke: 3px var(--color-black);
+    paint-order: stroke fill;
+
+    &.capacity {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+
+      width: fit-content;
+      margin-top: 0.75rem;
+
+      font-family: 'Google Sans Flex', sans-serif;
+      font-size: 1.25rem;
+    }
+  }
+}
+
+.booking-panel {
+  flex: 0 1 22rem;
+  margin-left: auto;
+
+  ul {
+    margin: 0;
+    padding: 0;
+
+    list-style: none;
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1rem;
+
+    padding: 0.55rem 0;
+
+    color: var(--color-accent);
+    font-size: x-large;
+    text-align: right;
+    -webkit-text-stroke: 5px var(--color-black);
+    paint-order: stroke fill;
+
+    strong {
+      white-space: nowrap;
+    }
+  }
+
+  button {
+    width: 100%;
+    margin-top: 1rem;
+    // The border is always there, so hovering never changes the button's size.
+    padding: calc(0.8rem - 3px) calc(1rem - 3px);
+    border: 3px solid transparent;
+    border-radius: 0.65rem;
+
+    color: var(--color-white);
+    font: inherit;
+    font-size: 1.1rem;
+    font-weight: 700;
+
+    background:
+      linear-gradient(var(--color-brand)) padding-box,
+      linear-gradient(var(--color-brand)) border-box;
+
+    cursor: pointer;
+
+    // On hover an orange-and-white streak circles the border.
+    &:hover {
+      background:
+        linear-gradient(var(--color-brand-dark)) padding-box,
+        conic-gradient(
+            from var(--book-border-angle),
+            var(--color-brand),
+            var(--color-accent) 20%,
+            var(--color-white) 30%,
+            var(--color-accent) 40%,
+            var(--color-brand) 60%
+          )
+          border-box;
+      animation: book-border-spin 1.5s linear infinite;
+    }
+
+    &:focus-visible {
+      outline: 3px solid var(--color-white);
+      outline-offset: 3px;
+    }
+  }
+}
+
+// Registered so the angle can be animated inside the conic gradient.
+@property --book-border-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes book-border-spin {
+  to {
+    --book-border-angle: 360deg;
+  }
+}

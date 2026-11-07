@@ -1,0 +1,37 @@
+<section #scroller>
+  @for (item of equipment.value(); track item.id) {
+    <article>
+      <app-rental-image [id]="item.id" [priority]="$first" />
+      <div class="rental-content">
+        <main>
+          <h2>{{ item.name }}</h2>
+          <p>{{ item.description }}</p>
+          <p class="capacity">
+            <span class="material-symbols-outlined" aria-hidden="true">people_size_increase</span>
+            <span>
+              {{ item.capacity.min | formatRange: item.capacity.max }}
+              {{ item.capacity.max | i18nPlural: capacityNoun }}
+            </span>
+          </p>
+        </main>
+        <aside class="booking-panel" aria-label="Rental pricing">
+          <ul>
+            @for (duration of durations | keyvalue: null; track duration.key) {
+              <li>
+                <span>{{ duration.value.label }}</span>
+                <strong>{{ item.prices[duration.key] | currency: 'USD' }}</strong>
+              </li>
+            }
+          </ul>
+          <button
+            type="button"
+            [routerLink]="['/', item.id, item.slug]"
+            [attr.aria-label]="'Book ' + item.name + ' now'"
+          >
+            Book now!
+          </button>
+        </aside>
+      </div>
+    </article>
+  }
+</section>

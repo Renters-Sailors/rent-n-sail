@@ -3,7 +3,7 @@
 ## Local setup
 
 1. Install pnpm 12: https://pnpm.io/installation
-2. Install Node.js using pnpm: `pnpm env use --global 24`. This matches `devEngines.runtime` in `frontend/package.json`.
+2. Install Node.js using pnpm: `pnpm runtime set node 26 -g`. This matches `devEngines.runtime` in `frontend/package.json`.
 3. Install frontend dependencies: `cd frontend && pnpm install`
 4. uv 0.13.5: https://docs.astral.sh/uv/getting-started/installation/
 5. Install backend dependencies: `cd backend && uv sync`. uv selects Python from `backend/pyproject.toml`.

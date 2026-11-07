@@ -1,0 +1,85 @@
+dialog {
+  width: min(100% - 2rem, 26rem);
+  padding: 1.5rem;
+  border: 0;
+  border-radius: 0.65rem;
+
+  // CSS system colors: Canvas is the page background and CanvasText the text on it, so the
+  // dialog follows the browser's light or dark scheme without colors of its own.
+  color: CanvasText;
+  font-family: 'Google Sans Flex', sans-serif;
+
+  background: Canvas;
+
+  &::backdrop {
+    background: color-mix(in srgb, var(--color-black) 50%, transparent);
+    backdrop-filter: blur(4px);
+  }
+}
+
+form {
+  display: grid;
+  gap: 0.75rem;
+}
+
+h2 {
+  margin: 0;
+}
+
+label {
+  display: grid;
+  gap: 0.25rem;
+}
+
+input {
+  font: inherit;
+}
+
+small {
+  opacity: 0.7;
+}
+
+.error {
+  // Room for the longest message, so one appearing doesn't move the buttons: two lines while the
+  // dialog is narrower than its 26rem (viewports under 28rem), one line once it's full width.
+  // The multiplied difference is far below 1lh or above 2lh, so clamp picks one of the two.
+  min-height: clamp(1lh, (28rem - 100vw) * 1000, 2lh);
+  margin: 0;
+  color: var(--color-danger);
+}
+
+footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+button {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+
+  padding: 0.7rem 1rem;
+  border: 0;
+  border-radius: 0.65rem;
+
+  color: var(--color-white);
+  font: inherit;
+  font-weight: 700;
+  white-space: nowrap;
+
+  background: var(--color-brand);
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: progress;
+  }
+
+  &.cancel {
+    color: inherit;
+    background: color-mix(in srgb, currentColor 12%, transparent);
+  }
+}
