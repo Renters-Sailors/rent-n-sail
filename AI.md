@@ -8,6 +8,7 @@
 - Follow-up: at the user's choice, restored `0001_boats` as the root revision and made the authtuna revision follow it, so databases stamped `0001_boats` (production and its previews) upgrade without manual changes. Verified the chain with `alembic history`. Attribution: `@ElectroluxV2` (verified with `gh api user`).
 - Follow-up: the next deploy failed with `role "postgres" does not exist` because the authtuna SQL dump set `owner to postgres` on 22 objects; removed those statements so the migrating role owns them. Also replaced the outdated `sqlalchemy-stubs` (SQLAlchemy 1.x stubs that hid `sqlalchemy.ext.asyncio` from the IDE) with a direct `sqlalchemy` dependency. Attribution: `@ElectroluxV2` (verified with `gh api user`).
 - Follow-up: kept `alembic` as a backend dev dependency and suppressed the IDE's package-requirements inspection on its import in `backend/migrations/env.py`. Attribution: `@ElectroluxV2` (verified with `gh api user`).
+- Follow-up: fixed the failing backend CI inherited from `feat/rental-equipment`. Added a Pydantic `RentalEquipmentResponse` schema in the rental equipment slice because FastAPI cannot use the SQLAlchemy model as a response type, applied Ruff lint and format fixes, and removed `test_boats.py`, which tested the deleted `Boat` model and `create_app`. Verified with Ruff, pytest, and TestClient requests to both rental equipment routes. Attribution: `@ElectroluxV2` (verified with `gh api user`).
 
 ## 2026-11-06 — Map rental equipment seed data
 
