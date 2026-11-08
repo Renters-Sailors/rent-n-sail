@@ -35,7 +35,7 @@ from auth.register.router import router as register_router  # noqa: I001, E402
 from opening_hours.router import router as opening_hours_router  # noqa: I001, E402
 from rental_equipment.router import router as rental_equipment_router  # noqa: I001, E402
 
-app = FastAPI()
+app = FastAPI(servers=[{"url": "."}])
 init_app(app)
 api_router = APIRouter()
 
