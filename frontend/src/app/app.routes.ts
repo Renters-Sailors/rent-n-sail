@@ -36,7 +36,7 @@ export const routes: Routes = [
         path: '',
         pathMatch: 'full',
         redirectTo: async ({ params }) => {
-          const item = inject(RentalEquipmentService).getById(Number(params['id']))();
+          const item = inject(RentalEquipmentService).getById(Number(params['id'])).value();
           return item ? `/${item.id}/${item.slug}` : '/';
         },
       },
@@ -47,7 +47,7 @@ export const routes: Routes = [
     canMatch: [equipmentExists],
     component: BookingPageComponent,
     title: async ({ params }) => {
-      const item = inject(RentalEquipmentService).getById(Number(params['id']))();
+      const item = inject(RentalEquipmentService).getById(Number(params['id'])).value();
       return `Book ${item?.name ?? 'equipment'} — Rent'n'Sail`;
     },
   },

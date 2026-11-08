@@ -19,6 +19,6 @@ export class RentalImageComponent {
   readonly sizes = input('100vw');
 
   private readonly equipmentService = inject(RentalEquipmentService);
-  protected readonly item = computed(() => this.equipmentService.getById(this.id())());
+  protected readonly item = computed(() => this.equipmentService.getById(this.id()).value());
   protected readonly isLoading = this.equipmentService.equipmentResource.isLoading;
 }
