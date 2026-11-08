@@ -19,6 +19,22 @@
 
 - AI assistance: OpenCode (GPT-6.1 Terra) traced Scalar's production loading error to its root-relative schema URL, which bypassed the frontend's `/api` proxy, and configured a relative schema URL for proxied and direct backend access. Attribution: `@Buzeqq` (verified with `gh api user`).
 
+## 2026-11-07 — Explain flushing mock equipment data
+
+- AI assistance: OpenCode (GPT-6.1 Terra) reproduced the frontend test timeout and identified the unflushed equipment request and unused mock data. Attribution: `@Buzeqq` (verified with `gh api user`).
+
+## 2026-11-07 — Investigate frontend test timeout
+
+- AI assistance: OpenCode (GPT-6.1 Terra) reproduced the app test timeout and investigated its unresolved HTTP resource and test backend setup. Attribution: `@Buzeqq` (verified with `gh api user`).
+
+## 2026-11-07 — Explain JSON-only price aliases
+
+- AI assistance: OpenCode (GPT-6.1 Terra) explained Pydantic serialization aliases for rental equipment price fields. Attribution: `@Buzeqq` (verified with `gh api user`).
+
+## 2026-11-07 — Explain reactive rental image lookup
+
+- AI assistance: OpenCode (GPT-6.1 Terra) explained deriving a rental item with a computed signal and using the existing HTTP resource's loading and error states. Attribution: `@Buzeqq` (verified with `gh api user`).
+
 ## 2026-11-07 - Sequence diagrams of 3 authomatic builds scenarios
 
 - AI assistance: Gemini 3.5 Flash-Lite created draft mermaid diagrams from screenshot of created diagrams via Excalidraw https://excalidraw.com/#json=hSJBNy8qq1DWdF3ZTlI89,K7wTxdvbf3TxpDP_I0N1FA and proposed .md structure for branching.md file

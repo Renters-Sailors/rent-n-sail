@@ -1,5 +1,5 @@
 <main>
-  @if (item.value(); as item) {
+  @if (item(); as item) {
     <article>
       <figure class="hero">
         <app-rental-image
@@ -75,7 +75,7 @@
         </div>
       </form>
     </article>
-  } @else if (!item.isLoading()) {
+  } @else if (!this.isLoading()) {
     <h1>Equipment not found</h1>
     <p><a routerLink="/">Back to discover</a></p>
   }

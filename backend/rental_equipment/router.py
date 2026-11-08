@@ -17,8 +17,8 @@ async def get_equipment_by_id(
     return RentalEquipmentResponse.model_validate(equipment) if equipment else None
 
 
-@router.get("/")
+@router.get("")
 async def get_all_equipment(session: AsyncDbSession) -> list[RentalEquipmentResponse]:
-    result = await session.execute(select(RentalEquipment))
+    result = await session.execute(select(RentalEquipment).order_by(RentalEquipment.id))
     equipment_sequence = result.scalars().all()
     return [RentalEquipmentResponse.model_validate(item) for item in equipment_sequence]
