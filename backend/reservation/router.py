@@ -1,6 +1,3 @@
-from pydantic import Field
-from typing import Annotated
-
 from fastapi import APIRouter, HTTPException, status
 from sqlalchemy import select
 

@@ -1,8 +1,10 @@
 from datetime import date
-from pydantic import BaseModel, ConfigDict, model_validator
-from models import RentalDuration
-from clock import ClockTime
 from typing import Self
+
+from pydantic import BaseModel, ConfigDict, model_validator
+
+from clock import ClockTime
+from models import RentalDuration
 
 
 class ReservationCreate(BaseModel):

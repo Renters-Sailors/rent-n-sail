@@ -1,10 +1,9 @@
-from enum import StrEnum
-
 import decimal
 from dataclasses import dataclass
 from datetime import date
+from enum import StrEnum
 
-from sqlalchemy import CheckConstraint, Numeric, String, Date, ForeignKey, Enum
+from sqlalchemy import CheckConstraint, Date, Enum, ForeignKey, Numeric, String
 from sqlalchemy.orm import DeclarativeBase, Mapped, composite, mapped_column
 
 

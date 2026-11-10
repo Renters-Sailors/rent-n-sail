@@ -2,6 +2,7 @@ from typing import Annotated
 
 from fastapi import APIRouter
 from pydantic import BaseModel, Field
+
 from clock import ClockTime
 
 router = APIRouter(prefix="/opening-hours")
