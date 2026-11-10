@@ -24,6 +24,7 @@ class Prices:
     two_hours: decimal.Decimal
     full_day: decimal.Decimal
 
+
 class RentalDuration(StrEnum):
     hour = "hour"
     two_hours = "two-hours"
@@ -54,6 +55,7 @@ class RentalEquipment(Base):
     width: Mapped[int] = mapped_column()
     height: Mapped[int] = mapped_column()
 
+
 class Reservation(Base):
     __tablename__ = "reservation"
     __table_args__ = (
@@ -64,7 +66,7 @@ class Reservation(Base):
     )
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     equipmentId: Mapped[int] = mapped_column(ForeignKey("rental_equipment.id"))
-    durationId: Mapped[str] = mapped_column(        
+    durationId: Mapped[str] = mapped_column(
         Enum(
             RentalDuration,
             native_enum=False,
@@ -74,7 +76,7 @@ class Reservation(Base):
         )
     )
     date: Mapped[date] = mapped_column(Date)
-    #  "HH:MM", or null for a full day. 
+    #  "HH:MM", or null for a full day.
     startTime: Mapped[str | None] = mapped_column(String(5), nullable=True)
     quantity: Mapped[int] = mapped_column()
     total: Mapped[int] = mapped_column()

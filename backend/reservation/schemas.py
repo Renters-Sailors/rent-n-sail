@@ -16,11 +16,12 @@ class ReservationCreate(BaseModel):
     @model_validator(mode="after")
     def check_start_time(self) -> Self:
         if self.durationId is RentalDuration.full_day:
-                if self.startTime is not None:
-                   raise ValueError("A full-day booking must not have a startTime")
+            if self.startTime is not None:
+                raise ValueError("A full-day booking must not have a startTime")
         elif self.startTime is None:
             raise ValueError("startTime is required unless the duration is full-day")
         return self
+
 
 class ReservationResponse(BaseModel):
     id: int

@@ -6,6 +6,7 @@ from clock import ClockTime
 
 router = APIRouter(prefix="/opening-hours")
 
+
 class OpeningHours(BaseModel):
     """Hours for one weekday; days missing from the list are closed."""
 

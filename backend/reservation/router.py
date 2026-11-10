@@ -10,20 +10,22 @@ from reservation.schemas import ReservationCreate, ReservationResponse
 
 router = APIRouter(prefix="/reservations", tags=["reservations"])
 
+
 @router.get("/", response_model=list[ReservationResponse])
 async def get_all_reservations(
-        session: AsyncDbSession,
+    session: AsyncDbSession,
 ) -> list[ReservationResponse]:
-    result = await session.execute(
-        select(Reservation).order_by(Reservation.id.desc())
-    )
+    result = await session.execute(select(Reservation).order_by(Reservation.id.desc()))
     reservations = result.scalars().all()
     return [ReservationResponse.model_validate(item) for item in reservations]
 
-@router.post("/", response_model=ReservationResponse, status_code=status.HTTP_201_CREATED)
+
+@router.post(
+    "/", response_model=ReservationResponse, status_code=status.HTTP_201_CREATED
+)
 async def create_reservation(
-        payload: ReservationCreate,
-        session: AsyncDbSession,
+    payload: ReservationCreate,
+    session: AsyncDbSession,
 ) -> ReservationResponse:
     equipment = await session.get(RentalEquipment, payload.equipmentId)
     if equipment is None:
@@ -43,8 +45,8 @@ async def create_reservation(
 
 @router.delete("/{reservation_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def cancel_reservation(
-        reservation_id: int,
-        session: AsyncDbSession,
+    reservation_id: int,
+    session: AsyncDbSession,
 ) -> None:
     result = await session.execute(
         select(Reservation).where(Reservation.id == reservation_id)
