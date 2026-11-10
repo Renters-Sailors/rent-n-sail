@@ -46,7 +46,7 @@ api_router.include_router(login_router, prefix="/login")
 api_router.include_router(opening_hours_router)
 api_router.include_router(rental_equipment_router)
 api_router.include_router(reservation_router)
-add_scalar_reference(app)
+add_scalar_reference(app, openapi_url="openapi.json")
 
 
 @api_router.get("/")

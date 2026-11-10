@@ -3,6 +3,7 @@ import os
 from logging.config import fileConfig
 
 from alembic import context
+from authtuna.core.config import init_settings
 from sqlalchemy import pool
 from sqlalchemy.engine import Connection, make_url
 from sqlalchemy.ext.asyncio import async_engine_from_config
@@ -27,6 +28,17 @@ if database_url:
 # This line sets up loggers basically.
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
+
+# Revisions use AuthTuna's column types, and importing them requires AuthTuna's
+# settings. Migrations never use its API or encryption, so those values are
+# placeholders. Pointing it at the migrated database keeps it from setting up
+# SQLite, its default, whose PRAGMA hook would run on every connection.
+init_settings(
+    API_BASE_URL="https://placeholder-for-migrations-only.invalid",
+    DEFAULT_DATABASE_URI=config.get_main_option("sqlalchemy.url"),
+    # Base64 of "placeholder-for-migrations-only!" (a Fernet key is 32 bytes).
+    FERNET_KEYS=["cGxhY2Vob2xkZXItZm9yLW1pZ3JhdGlvbnMtb25seSE="],
+)
 
 # Revisions are generated from the backend (see backend/README.md).
 # This project only applies them, so it needs no model metadata.

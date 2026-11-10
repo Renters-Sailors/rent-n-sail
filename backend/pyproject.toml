@@ -23,6 +23,19 @@ script_location = "%(here)s/migrations"
 version_locations = ["%(here)s/../database/scripts/versions"]
 prepend_sys_path = ["."]
 
+# Generated revisions follow the backend's Ruff rules.
+[[tool.alembic.post_write_hooks]]
+name = "ruff_check"
+type = "module"
+module = "ruff"
+options = "check --fix --config ruff.toml REVISION_SCRIPT_FILENAME"
+
+[[tool.alembic.post_write_hooks]]
+name = "ruff_format"
+type = "module"
+module = "ruff"
+options = "format --config ruff.toml REVISION_SCRIPT_FILENAME"
+
 [dependency-groups]
 dev = [
     "alembic>=1.20.1",

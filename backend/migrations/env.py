@@ -13,6 +13,11 @@ from sqlalchemy import create_engine
 from sqlalchemy.engine import make_url
 from sqlalchemy.pool import NullPool
 
+import main  # noqa: F401  # configures AuthTuna before its models are imported
+
+# isort: split
+from authtuna.core.database import Base as AuthTunaBase
+
 from models import Base
 
 DEFAULT_URL = "postgresql://postgres:admin@localhost:5432/rent_n_sail"
@@ -22,7 +27,12 @@ url = url.set(drivername="postgresql+psycopg")
 engine = create_engine(url, poolclass=NullPool)
 
 with engine.connect() as connection:
-    context.configure(connection=connection, target_metadata=Base.metadata)
+    context.configure(
+        connection=connection,
+        # MetaData is SQLAlchemy's collection of table definitions; autogenerate
+        # diffs ours and AuthTuna's against the database.
+        target_metadata=[Base.metadata, AuthTunaBase.metadata],
+    )
     with context.begin_transaction():
         context.run_migrations()
 
