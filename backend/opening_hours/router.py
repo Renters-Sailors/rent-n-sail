@@ -2,11 +2,9 @@ from typing import Annotated
 
 from fastapi import APIRouter
 from pydantic import BaseModel, Field
+from clock import ClockTime
 
 router = APIRouter(prefix="/opening-hours")
-
-ClockTime = Annotated[str, Field(pattern=r"^([01]\d|2[0-3]):[0-5]\d$")]
-
 
 class OpeningHours(BaseModel):
     """Hours for one weekday; days missing from the list are closed."""

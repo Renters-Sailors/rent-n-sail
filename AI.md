@@ -1,5 +1,17 @@
 # AI usage docs
 
+## 2026-11-09 — POST /reservations 500
+
+- AI assistance: Junie (grok-4.6) traced GET working vs POST 500 to `reservation.id` having no Postgres identity/default (insert omitted `id`) and missing FK checks on `equipmentId`. Added identity migration, `autoincrement=True`, and 404 when equipment is missing. Attribution: `@Kseroten1` (verified with `gh api user`).
+
+## 2026-11-08 — Whether to care about SQLAlchemy constructor warnings
+
+- AI assistance: Junie (grok-4.6) advised that the Rider “Unexpected argument” warnings on `Reservation(...)` can be ignored; prefer `Reservation(**payload.model_dump())` over empty-construct-then-assign. Attribution: `@Kseroten1` (verified with `gh api user`).
+
+## 2026-11-08 — SQLAlchemy unexpected-argument warnings on Reservation()
+
+- AI assistance: Junie (grok-4.6) explained that PyCharm/Rider still flags named kwargs on `Reservation(...)` because SQLAlchemy mapped classes have no typed `__init__` in the IDE. Attribution: `@Kseroten1` (verified with `gh api user`).
+
 ## 2026-11-07 - Sequence diagrams of 3 authomatic builds scenarios
 
 - AI assistance: Gemini 3.5 Flash-Lite created draft mermaid diagrams from screenshot of created diagrams via Excalidraw https://excalidraw.com/#json=hSJBNy8qq1DWdF3ZTlI89,K7wTxdvbf3TxpDP_I0N1FA and proposed .md structure for branching.md file
@@ -1159,3 +1171,7 @@ Claude Code (Claude Opus 5.5) rebased the gh-stack (#21 → #22 → #24) on main
 ## Sparse checkout in component CI jobs (@ElectroluxV2)
 
 Claude Code (Claude Opus 5.5) added `sparse-checkout` to the `actions/checkout` step of the backend, database and frontend reusable workflows, so each job checks out only its own component folder plus the repository's root files (cone mode). No job reads another component's folder; the backend's `version_locations` into `database/` is only used locally for generating revisions. Not run in CI yet.
+
+## Diagnose empty rental equipment inventory in local Postgres (@Kseroten1)
+
+Big Pickle (OpenCode) checked the local Docker Postgres (`postgres:latest`, database `rent_n_sail`), confirmed the backend and frontend were running through Portless and that `/rental_equipment/` returned `[]`. The schema was migrated but `rental_equipment` had no rows: the seed SQL in `database/scripts/versions/sql/rental_equipment.sql` is not applied by any Alembic revision, so only `boats` had its demo row. Applied the seed file to the local database and reset `rental_equipment_id_seq` to the max id, then verified 15 items through both `https://backend.localhost/rental_equipment/` and `https://frontend.localhost/api/rental_equipment/`. Also noted that local head is `d4e8f1a90b21` while the database is at `c9a5ca3c9800`; the pending identity migration is not required for inserts because `reservation.id` already has a serial default. Attribution: `@Kseroten1` (Damian Klein, verified with `gh api user`).
