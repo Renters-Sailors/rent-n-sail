@@ -1,10 +1,22 @@
 import os
 
 from authtuna import init_app, init_settings
-from fastapi import APIRouter, FastAPI
+from fastapi import APIRouter, FastAPI, Request
 from scalar_fastapi import add_scalar_reference
 
 DEFAULT_FRONTEND_ORIGIN = "https://frontend.localhost"
+
+# AuthTuna's session middleware sets the session cookie again after the route has run, which
+# would overwrite the cookie these routes set or clear. Public routes are skipped entirely.
+COOKIE_WRITING_ROUTES = {
+    ("POST", "/login/passkey/complete"),
+    ("POST", "/register/passkey/complete"),
+    ("DELETE", "/session"),
+}
+
+
+def writes_session_cookie(request: Request) -> bool:
+    return (request.method, request.url.path) in COOKIE_WRITING_ROUTES
 
 
 auth_settings = init_settings(
@@ -38,7 +50,7 @@ from rental_equipment.router import router as rental_equipment_router  # noqa: I
 from reservation.router import router as reservation_router  # noqa: I001, E402
 
 app = FastAPI()
-init_app(app)
+init_app(app, session_middleware_kwargs={"public_routes": writes_session_cookie})
 api_router = APIRouter()
 
 app.include_router(api_router)

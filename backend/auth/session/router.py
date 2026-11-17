@@ -2,6 +2,7 @@ from typing import Annotated
 
 from authtuna import settings
 from authtuna.core.database import User
+from authtuna.core.encryption import encryption_utils
 from authtuna.integrations import auth_service
 from authtuna.integrations.fastapi_integration import get_current_user_optional
 from fastapi import APIRouter, Depends, Request, Response
@@ -26,7 +27,10 @@ async def read_session(
 
 @router.delete("", status_code=204)
 async def sign_out(request: Request, response: Response) -> None:
-    session_id = getattr(request.state, "session_id", None)
+    """Signs out. Public to AuthTuna's middleware, so it reads the cookie itself."""
+    token = request.cookies.get(settings.SESSION_TOKEN_NAME)
+    session = encryption_utils.decode_jwt_token(token) if token else None
+    session_id = session.get("session") if session else None
     if session_id:
         await auth_service.sessions.terminate(session_id, request.state.user_ip_address)
     response.delete_cookie(
