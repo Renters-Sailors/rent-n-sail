@@ -1,5 +1,17 @@
 # AI usage docs
 
+## 2026-11-17 — Verify equipment migration locally
+
+- AI assistance: OpenCode (GPT-6.1 Terra) applied the migration chain to a temporary database in the local PostgreSQL container, checked the 15 seeded rows and ID sequence, and verified downgrade/re-upgrade preserves an edited row. The temporary database was removed. Attribution: `@Buzeqq` (Miłosz Chojnacki, verified with `gh api user`).
+
+## 2026-11-17 — Seed rental equipment in migrations
+
+- AI assistance: OpenCode (GPT-6.1 Terra) added a migration to apply the existing rental equipment seed without overwriting existing IDs and advance its ID sequence. Attribution: `@Buzeqq` (Miłosz Chojnacki, verified with `gh api user`).
+
+## 2026-11-17 — Investigate empty equipment preview
+
+- AI assistance: OpenCode (GPT-6.1 Terra) reproduced an empty equipment list through PR #39's preview API and traced the likely cause to the schema migration creating the table without applying the separate equipment seed SQL. No database changes were made. Attribution: `@Buzeqq` (Miłosz Chojnacki, verified with `gh api user`).
+
 ## 2026-11-17 — Address rental equipment PR review
 
 - AI assistance: OpenCode (GPT-6.1 Terra) addressed PR #39 review comments by exposing a single reactive item resource to the booking and rental image templates. Attribution: `@Buzeqq` (Miłosz Chojnacki, verified with `gh api user`).
