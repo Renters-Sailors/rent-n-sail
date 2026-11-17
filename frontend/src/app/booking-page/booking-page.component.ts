@@ -1,13 +1,5 @@
 import { CurrencyPipe, I18nPluralPipe, KeyValuePipe } from '@angular/common';
-import {
-  Component,
-  computed,
-  inject,
-  input,
-  linkedSignal,
-  numberAttribute,
-  resource,
-} from '@angular/core';
+import { Component, computed, inject, input, linkedSignal, numberAttribute } from '@angular/core';
 import {
   disabled,
   form,
@@ -88,11 +80,8 @@ export class BookingPageComponent {
   /** Route parameter `:id`, bound by `withComponentInputBinding`. */
   readonly id = input.required({ transform: numberAttribute });
 
-  private readonly equipment = inject(RentalEquipmentService);
-  protected readonly item = resource({
-    params: () => ({ id: this.id() }),
-    loader: ({ params }) => this.equipment.getById(params.id),
-  });
+  private readonly equipmentService = inject(RentalEquipmentService);
+  protected readonly item = this.equipmentService.getById(this.id);
   private readonly auth = inject(AuthService);
   private readonly reservations = inject(ReservationService);
   private readonly router = inject(Router);
@@ -122,7 +111,7 @@ export class BookingPageComponent {
           : undefined;
       });
       // A full day has no start time to pick.
-      disabled(path.startTime, ({ valueOf }) => valueOf(path.durationId) === 'full-day');
+      disabled(path.startTime, { when: ({ valueOf }) => valueOf(path.durationId) === 'full-day' });
       required(path.startTime);
       // "HH:MM" strings compare correctly as text.
       // A closed day has no hours to check against; the date shows that error.

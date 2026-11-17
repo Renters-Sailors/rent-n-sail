@@ -10,7 +10,7 @@ import { RentalEquipmentService } from './rental-equipment/rental-equipment.serv
 
 /** Matches only ids of existing equipment; anything else falls through to the 404 page. */
 const equipmentExists: CanMatchFn = async (_route, [id]) =>
-  (await inject(RentalEquipmentService).getById(Number(id?.path))) !== undefined;
+  inject(RentalEquipmentService).getById(Number(id?.path)) !== undefined;
 
 export const routes: Routes = [
   {
@@ -36,7 +36,7 @@ export const routes: Routes = [
         path: '',
         pathMatch: 'full',
         redirectTo: async ({ params }) => {
-          const item = await inject(RentalEquipmentService).getById(Number(params['id']));
+          const item = inject(RentalEquipmentService).getById(Number(params['id'])).value();
           return item ? `/${item.id}/${item.slug}` : '/';
         },
       },
@@ -47,7 +47,7 @@ export const routes: Routes = [
     canMatch: [equipmentExists],
     component: BookingPageComponent,
     title: async ({ params }) => {
-      const item = await inject(RentalEquipmentService).getById(Number(params['id']));
+      const item = inject(RentalEquipmentService).getById(Number(params['id'])).value();
       return `Book ${item?.name ?? 'equipment'} — Rent'n'Sail`;
     },
   },

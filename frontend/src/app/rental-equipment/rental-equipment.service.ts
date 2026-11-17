@@ -1,21 +1,25 @@
-import { computed, resource, Service } from '@angular/core';
+import { computed, Service, resourceFromSnapshots, ResourceSnapshot, Signal } from '@angular/core';
 import { RentalEquipment } from './rental-equipment';
-import { rentalEquipment } from './rental-equipment.mock';
+import { httpResource } from '@angular/common/http';
 
 @Service()
 export class RentalEquipmentService {
   /** All rental equipment; empty until loaded. */
-  readonly equipment = resource({ loader: () => this.fetchAll(), defaultValue: [] });
+  readonly equipmentResource = httpResource<readonly RentalEquipment[]>(() => 'rental_equipment');
   /** All rental equipment by id, for lists that look up many items at once; empty until loaded. */
-  readonly byId = computed(() => new Map(this.equipment.value().map((item) => [item.id, item])));
+  readonly byId = computed(
+    () => new Map((this.equipmentResource.value() ?? []).map((item) => [item.id, item])),
+  );
 
   /** One item, or undefined when no item has that id. */
-  async getById(id: number): Promise<RentalEquipment | undefined> {
-    return (await this.fetchAll()).find((item) => item.id === id);
-  }
+  public getById(id: number | Signal<number>) {
+    const derived = computed<ResourceSnapshot<RentalEquipment | undefined>>(() => {
+      const source = this.equipmentResource.snapshot();
+      if (source.status === 'error') return source;
+      const currentId = typeof id === 'function' ? id() : id;
+      return { status: source.status, value: source.value?.find((e) => e.id === currentId) };
+    });
 
-  // Mock backend call; swap for HttpClient once the API exists.
-  private fetchAll(): Promise<readonly RentalEquipment[]> {
-    return Promise.resolve(rentalEquipment);
+    return resourceFromSnapshots(derived);
   }
 }

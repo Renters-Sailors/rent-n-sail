@@ -40,5 +40,5 @@ export class DiscoverRentalPageComponent {
   protected readonly capacityNoun = capacityNoun;
   protected readonly durations = rentalDurations;
 
-  protected readonly equipment = inject(RentalEquipmentService).equipment;
+  protected readonly equipment = inject(RentalEquipmentService).equipmentResource;
 }

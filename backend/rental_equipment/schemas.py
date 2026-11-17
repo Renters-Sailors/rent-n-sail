@@ -1,6 +1,6 @@
 import decimal
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class Capacity(BaseModel):
@@ -14,8 +14,8 @@ class Prices(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     hour: decimal.Decimal
-    two_hours: decimal.Decimal
-    full_day: decimal.Decimal
+    two_hours: decimal.Decimal = Field(serialization_alias="two-hours")
+    full_day: decimal.Decimal = Field(serialization_alias="full-day")
 
 
 class RentalEquipmentResponse(BaseModel):
