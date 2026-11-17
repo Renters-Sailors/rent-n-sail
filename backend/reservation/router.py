@@ -1,4 +1,8 @@
-from fastapi import APIRouter, HTTPException, status
+from typing import Annotated
+
+from authtuna.core.database import User
+from authtuna.integrations.fastapi_integration import get_current_user
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
 
 from database import AsyncDbSession
@@ -7,12 +11,19 @@ from reservation.schemas import ReservationCreate, ReservationResponse
 
 router = APIRouter(prefix="/reservations", tags=["reservations"])
 
+CurrentUser = Annotated[User, Depends(get_current_user)]
+
 
 @router.get("/", response_model=list[ReservationResponse])
 async def get_all_reservations(
+    user: CurrentUser,
     session: AsyncDbSession,
 ) -> list[ReservationResponse]:
-    result = await session.execute(select(Reservation).order_by(Reservation.id.desc()))
+    result = await session.execute(
+        select(Reservation)
+        .where(Reservation.userId == user.id)
+        .order_by(Reservation.id.desc())
+    )
     reservations = result.scalars().all()
     return [ReservationResponse.model_validate(item) for item in reservations]
 
@@ -22,6 +33,7 @@ async def get_all_reservations(
 )
 async def create_reservation(
     payload: ReservationCreate,
+    user: CurrentUser,
     session: AsyncDbSession,
 ) -> ReservationResponse:
     equipment = await session.get(RentalEquipment, payload.equipmentId)
@@ -31,7 +43,12 @@ async def create_reservation(
             detail="Equipment not found",
         )
 
-    reservation = Reservation(**payload.model_dump())
+    price = getattr(equipment.prices, payload.durationId.name)
+    reservation = Reservation(
+        **payload.model_dump(),
+        userId=user.id,
+        total=price * payload.quantity,
+    )
 
     session.add(reservation)
     await session.commit()
@@ -43,10 +60,14 @@ async def create_reservation(
 @router.delete("/{reservation_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def cancel_reservation(
     reservation_id: int,
+    user: CurrentUser,
     session: AsyncDbSession,
 ) -> None:
     result = await session.execute(
-        select(Reservation).where(Reservation.id == reservation_id)
+        select(Reservation).where(
+            Reservation.id == reservation_id,
+            Reservation.userId == user.id,
+        )
     )
     reservation = result.scalars().first()
 

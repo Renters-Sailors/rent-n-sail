@@ -1,9 +1,10 @@
 import decimal
 from dataclasses import dataclass
-from datetime import date
+from datetime import date, time
 from enum import StrEnum
 
-from sqlalchemy import CheckConstraint, Date, Enum, ForeignKey, Numeric, String
+from authtuna.core.database import User
+from sqlalchemy import CheckConstraint, Date, Enum, ForeignKey, Numeric, String, Time
 from sqlalchemy.orm import DeclarativeBase, Mapped, composite, mapped_column
 
 
@@ -57,25 +58,27 @@ class RentalEquipment(Base):
 
 class Reservation(Base):
     __tablename__ = "reservation"
-    __table_args__ = (
-        CheckConstraint(
-            "\"durationId\" IN ('hour', 'two-hours', 'full-day')",
-            name="ck_reservation_duration",
-        ),
-    )
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    # A string, not an int: AuthTuna mints user ids as 32 random alphanumeric
+    # characters. `User.id` instead of "users.id" because AuthTuna's table lives in a
+    # separate MetaData, where a string name can't be resolved.
+    userId: Mapped[str] = mapped_column(
+        ForeignKey(User.id, name="reservation_userId_fkey", ondelete="CASCADE"),
+        index=True,
+    )
     equipmentId: Mapped[int] = mapped_column(ForeignKey("rental_equipment.id"))
-    durationId: Mapped[str] = mapped_column(
+    durationId: Mapped[RentalDuration] = mapped_column(
         Enum(
             RentalDuration,
             native_enum=False,
             length=64,
-            create_constraint=False,
+            create_constraint=True,
+            name="ck_reservation_duration",
             values_callable=lambda enum: [member.value for member in enum],
         )
     )
     date: Mapped[date] = mapped_column(Date)
     #  "HH:MM", or null for a full day.
-    startTime: Mapped[str | None] = mapped_column(String(5), nullable=True)
+    startTime: Mapped[time | None] = mapped_column(Time, nullable=True)
     quantity: Mapped[int] = mapped_column()
-    total: Mapped[int] = mapped_column()
+    total: Mapped[decimal.Decimal] = mapped_column(Numeric(10, 2))

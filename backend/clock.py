@@ -1,5 +1,12 @@
+from datetime import time
 from typing import Annotated
 
-from pydantic import Field
+from pydantic import PlainSerializer
 
-ClockTime = Annotated[str, Field(pattern=r"^([01]\d|2[0-3]):[0-5]\d$")]
+# A real `time` in Python and in the database; "HH:MM" on the wire.
+ClockTime = Annotated[
+    time,
+    PlainSerializer(
+        lambda value: value.strftime("%H:%M"), return_type=str, when_used="json"
+    ),
+]
