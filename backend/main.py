@@ -32,7 +32,6 @@ auth_settings = init_settings(
 
 from auth.login.router import router as login_router  # noqa: I001, E402
 from auth.register.router import router as register_router  # noqa: I001, E402
-from auth.session.middleware import RouteSessionCookieMiddleware  # noqa: I001, E402
 from auth.session.router import router as session_router  # noqa: I001, E402
 from opening_hours.router import router as opening_hours_router  # noqa: I001, E402
 from rental_equipment.router import router as rental_equipment_router  # noqa: I001, E402
@@ -40,8 +39,6 @@ from reservation.router import router as reservation_router  # noqa: I001, E402
 
 app = FastAPI()
 init_app(app)
-# Added last, so it runs after AuthTuna's middleware on the way out; see the class docstring.
-app.add_middleware(RouteSessionCookieMiddleware)
 api_router = APIRouter()
 
 app.include_router(api_router)
