@@ -1,10 +1,4 @@
-import {
-  computed,
-  linkedSignal,
-  Service,
-  resourceFromSnapshots,
-  ResourceSnapshot,
-} from '@angular/core';
+import { computed, Service, resourceFromSnapshots, ResourceSnapshot, Signal } from '@angular/core';
 import { RentalEquipment } from './rental-equipment';
 import { httpResource } from '@angular/common/http';
 
@@ -18,23 +12,12 @@ export class RentalEquipmentService {
   );
 
   /** One item, or undefined when no item has that id. */
-  public getById(id: number) {
-    const derived = linkedSignal<
-      ResourceSnapshot<readonly RentalEquipment[] | undefined>,
-      ResourceSnapshot<RentalEquipment | undefined>
-    >({
-      source: this.equipmentResource.snapshot,
-      computation: (source, previous) => {
-        if (source.status === 'loading' && previous && previous.value.status !== 'error') {
-          return { status: 'loading' as const, value: previous.value.value };
-        }
-
-        if (source.status === 'error') {
-          return source;
-        }
-
-        return { status: 'local' as const, value: source.value?.find((e) => e.id === id) };
-      },
+  public getById(id: number | Signal<number>) {
+    const derived = computed<ResourceSnapshot<RentalEquipment | undefined>>(() => {
+      const source = this.equipmentResource.snapshot();
+      if (source.status === 'error') return source;
+      const currentId = typeof id === 'function' ? id() : id;
+      return { status: source.status, value: source.value?.find((e) => e.id === currentId) };
     });
 
     return resourceFromSnapshots(derived);

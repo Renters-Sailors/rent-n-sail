@@ -81,8 +81,7 @@ export class BookingPageComponent {
   readonly id = input.required({ transform: numberAttribute });
 
   private readonly equipmentService = inject(RentalEquipmentService);
-  protected readonly item = computed(() => this.equipmentService.getById(this.id()).value());
-  protected readonly isLoading = this.equipmentService.equipmentResource.isLoading;
+  protected readonly item = this.equipmentService.getById(this.id);
   private readonly auth = inject(AuthService);
   private readonly reservations = inject(ReservationService);
   private readonly router = inject(Router);
@@ -99,7 +98,7 @@ export class BookingPageComponent {
   }
 
   /** Resets to the initial booking whenever the item changes. */
-  private readonly booking = linkedSignal({ source: this.item, computation: initialBooking });
+  private readonly booking = linkedSignal({ source: this.item.value, computation: initialBooking });
   protected readonly bookingForm = form(
     this.booking,
     (path) => {
@@ -135,7 +134,7 @@ export class BookingPageComponent {
   /** Price of the whole booking: the chosen duration's price times the quantity. */
   protected readonly total = computed(() => {
     const { durationId, quantity } = this.booking();
-    return (this.item()?.prices[durationId] ?? 0) * quantity;
+    return (this.item.value()?.prices[durationId] ?? 0) * quantity;
   });
   /** Hours for the start time picker's limits. */
   protected readonly dayHours = computed(() => this.hoursOn(this.booking().date));
