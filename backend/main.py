@@ -1,8 +1,10 @@
 import os
 
-from authtuna import init_app, init_settings
+from authtuna import init_settings
 from fastapi import APIRouter, FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from scalar_fastapi import add_scalar_reference
+from starlette.middleware.sessions import SessionMiddleware
 
 DEFAULT_FRONTEND_ORIGIN = "https://frontend.localhost"
 
@@ -20,7 +22,7 @@ auth_settings = init_settings(
     FERNET_KEYS=os.getenv(
         "FERNET_KEYS", ["MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDA="]
     ),
-    SESSION_SAME_SITE="strict",
+    SESSION_SAME_SITE=os.getenv("SESSION_SAME_SITE", "none"),
     SESSION_SECURE=True,
     MFA_ENABLED=False,
     PASSKEYS_ENABLED=True,
@@ -30,6 +32,7 @@ auth_settings = init_settings(
     ONLY_MIDDLEWARE=True,
 )
 
+from authtuna.middlewares import DatabaseSessionMiddleware  # noqa: I001, E402
 from auth.login.router import router as login_router  # noqa: I001, E402
 from auth.register.router import router as register_router  # noqa: I001, E402
 from auth.session.router import router as session_router  # noqa: I001, E402
@@ -38,7 +41,25 @@ from rental_equipment.router import router as rental_equipment_router  # noqa: I
 from reservation.router import router as reservation_router  # noqa: I001, E402
 
 app = FastAPI()
-init_app(app)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origin_regex=r"https://(frontend\.localhost|.*\.vercel\.app)",
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Add AuthTuna's middlewares directly so the challenge cookie can cross origins locally.
+# init_app() hardcodes SessionMiddleware's default SameSite=Lax.
+app.add_middleware(DatabaseSessionMiddleware)
+app.add_middleware(
+    SessionMiddleware,
+    secret_key=auth_settings.ENCRYPTION_PRIMARY_KEY.get_secret_value(),
+    same_site=auth_settings.SESSION_SAME_SITE.lower(),
+    https_only=auth_settings.SESSION_SECURE,
+)
+
 api_router = APIRouter()
 
 app.include_router(api_router)

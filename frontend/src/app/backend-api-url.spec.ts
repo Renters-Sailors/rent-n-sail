@@ -1,6 +1,7 @@
 import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { DEFAULT_BACKEND_URL } from '../local-origins';
 import { backendApiInterceptor } from './backend-api-url';
 
 describe('backendApiInterceptor', () => {
@@ -20,22 +21,26 @@ describe('backendApiInterceptor', () => {
 
   afterEach(() => httpTestingController.verify());
 
-  it('prefixes relative URLs and preserves the query string', () => {
+  it('points relative URLs at the backend origin and preserves the query string', () => {
     http.get('/boats?status=available').subscribe();
 
-    httpTestingController.expectOne('/api/boats?status=available').flush({});
+    const request = httpTestingController.expectOne(`${DEFAULT_BACKEND_URL}boats?status=available`);
+    expect(request.request.withCredentials).toBe(true);
+    request.flush({});
   });
 
-  it('does not duplicate the API prefix', () => {
+  it('keeps a relative /api/ path when pointing at the backend origin', () => {
     http.get('/api/boats').subscribe();
 
-    httpTestingController.expectOne('/api/boats').flush({});
+    httpTestingController.expectOne(`${DEFAULT_BACKEND_URL}api/boats`).flush({});
   });
 
-  it('passes requests to another origin through unchanged', () => {
+  it('sends requests to another origin through unchanged, with credentials', () => {
     const url = 'https://backend.example/boats?status=available';
     http.get(url).subscribe();
 
-    httpTestingController.expectOne(url).flush({});
+    const request = httpTestingController.expectOne(url);
+    expect(request.request.withCredentials).toBe(true);
+    request.flush({});
   });
 });

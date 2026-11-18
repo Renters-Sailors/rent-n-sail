@@ -1,5 +1,17 @@
 # AI usage docs
 
+## 2026-11-18 — Fix local "Passkey login expired" in tutorial Option 2
+
+- AI assistance: OpenCode (Big Pickle) traced the local `Passkey login expired` error to the Starlette `session` cookie carrying the WebAuthn challenge: `frontend.localhost` and `backend.localhost` are different sites, so the default `SameSite=Lax` cookie was not sent to `/login/passkey/complete`. It now sets AuthTuna's `SESSION_SAME_SITE` to `none` by default (overridable by env) and adds AuthTuna's middlewares directly instead of calling `init_app()`, so `SessionMiddleware` uses `same_site="none"` with `https_only=True` as well. This does not fix production, which still fails because the browser bundle hardcodes `https://backend.localhost/`. Verified: `/login/passkey/begin` now sets `session=…; samesite=none; secure`, the challenge survives to `/login/passkey/complete`, the CORS preflight returns the expected headers, and backend Ruff and pytest pass. No tests were generated. Attribution: `@Kseroten1` (Damian Klein, verified with `gh api user`).
+
+## 2026-11-18 — Finalize tutorial Option 2 auth branch for a local demo
+
+- AI assistance: OpenCode (Big Pickle) finalized the tutorial Option 2 branch. The direct-backend interceptor and credentialed CORS middleware were already present in the working tree; it updated the existing `backend-api-url.spec.ts` expectations to match calls to `DEFAULT_BACKEND_URL` with `withCredentials`. No new tests were generated. The hardcoded `https://backend.localhost/` browser URL and the AuthTuna middleware cookie overwrite were deliberately left in place, so the local demo works while production still fails. Verification: frontend unit tests (10 passed), ESLint, formatting, and production build passed; backend Ruff and pytest passed. Attribution: `@Kseroten1` (Damian Klein, verified with `gh api user`).
+
+## 2026-11-18 — Production viability of tutorial Option 2 auth
+
+- AI assistance: OpenCode (Big Pickle) answered whether the tutorial Option 2 setup, where the browser calls the backend origin directly, would work in production. It found that the browser bundle still hardcodes `DEFAULT_BACKEND_URL = 'https://backend.localhost/'`, while `BACKEND_URL` is only used by SSR and the Express proxy, so production browsers would call localhost. It also explained that with separate `vercel.app` frontend and backend sites, `SESSION_SAME_SITE="strict"` cookies would not be sent cross-site, the CORS regex is broader than necessary, and `WEBAUTHN_ORIGIN`/`WEBAUTHN_RP_ID` must match the production frontend origin (with preview origins needing their own configuration). Recommendation: keep the same-origin `/api` proxy, or inject the real backend URL into the browser and configure cookies, CORS, and WebAuthn for the actual production origins. No source changes were made. Attribution: `@Kseroten1` (Damian Klein, verified with `gh api user`).
+
 ## 2026-11-10 — Fix Ruff failures in the backend CI job
 
 - AI assistance: OpenCode (Big Pickle) reproduced the failing `ruff check` step locally with the locked Ruff 0.17.2 and ran `ruff check --fix` plus `ruff format`. It sorted the import blocks in `models.py`, `opening_hours/router.py`, `reservation/router.py` and `reservation/schemas.py`, and removed the unused `pydantic.Field` / `typing.Annotated` imports that were left behind when `ClockTime` moved to `clock.py`. `ruff check`, `ruff format --check` and `pytest` all pass. Attribution: `@Kseroten1` (verified with `gh api user`).
