@@ -168,7 +168,6 @@ export class BookingPageComponent {
       // A full day has no start time; its field is disabled.
       startTime: this.bookingForm.startTime().disabled() ? null : startTime,
       quantity,
-      total: this.total(),
     });
     await this.router.navigateByUrl('/reservations');
   }

@@ -9,11 +9,13 @@ const relativeUrlOrigin = 'http://frontend.invalid';
 
 export const backendApiInterceptor: HttpInterceptorFn = (request, next) => {
   const url = new URL(request.url, relativeUrlOrigin);
-  if (url.origin !== relativeUrlOrigin) return next(request);
+  if (url.origin !== relativeUrlOrigin) {
+    return next(request.clone({ withCredentials: true }));
+  }
   const path = url.pathname.startsWith(BACKEND_API_PREFIX)
     ? url.pathname
     : `${BACKEND_API_PREFIX}${url.pathname.slice(1)}`;
-  return next(request.clone({ url: `${path}${url.search}` }));
+  return next(request.clone({ url: `${path}${url.search}`, withCredentials: true }));
 };
 
 /** Keep the SSR rewrite at the backend so transfer-cache requests retain their /api/ URL. */

@@ -3,9 +3,9 @@ from typing import Annotated
 from fastapi import APIRouter
 from pydantic import BaseModel, Field
 
-router = APIRouter(prefix="/opening-hours")
+from clock import ClockTime
 
-ClockTime = Annotated[str, Field(pattern=r"^([01]\d|2[0-3]):[0-5]\d$")]
+router = APIRouter(prefix="/opening-hours")
 
 
 class OpeningHours(BaseModel):

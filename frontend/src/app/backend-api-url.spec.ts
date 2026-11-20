@@ -14,6 +14,7 @@ describe('backendApiInterceptor', () => {
         provideHttpClientTesting(),
       ],
     });
+
     http = TestBed.inject(HttpClient);
     httpTestingController = TestBed.inject(HttpTestingController);
   });
@@ -23,19 +24,25 @@ describe('backendApiInterceptor', () => {
   it('prefixes relative URLs and preserves the query string', () => {
     http.get('/boats?status=available').subscribe();
 
-    httpTestingController.expectOne('/api/boats?status=available').flush({});
+    const request = httpTestingController.expectOne('/api/boats?status=available');
+    expect(request.request.withCredentials).toBe(true);
+    request.flush({});
   });
 
   it('does not duplicate the API prefix', () => {
     http.get('/api/boats').subscribe();
 
-    httpTestingController.expectOne('/api/boats').flush({});
+    const request = httpTestingController.expectOne('/api/boats');
+    expect(request.request.withCredentials).toBe(true);
+    request.flush({});
   });
 
-  it('passes requests to another origin through unchanged', () => {
+  it('passes requests to another origin through unchanged, with credentials', () => {
     const url = 'https://backend.example/boats?status=available';
     http.get(url).subscribe();
 
-    httpTestingController.expectOne(url).flush({});
+    const request = httpTestingController.expectOne(url);
+    expect(request.request.withCredentials).toBe(true);
+    request.flush({});
   });
 });

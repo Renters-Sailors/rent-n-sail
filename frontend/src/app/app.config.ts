@@ -8,7 +8,6 @@ import { provideClientHydration } from '@angular/platform-browser';
 import { transientRetryInterceptor } from './api/transient-retry.interceptor';
 import { backendApiInterceptor } from './backend-api-url';
 import { rentalImageLoader } from './discover-rental-page/discover-rental-image-loader';
-import { reservationsMockInterceptor } from './reservation/reservation.mock';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -22,7 +21,6 @@ export const appConfig: ApplicationConfig = {
         transientRetryInterceptor,
         backendApiInterceptor,
         // Sees URLs after `backendApiInterceptor` adds the /api/ prefix.
-        reservationsMockInterceptor,
       ]),
     ),
     provideClientHydration(),

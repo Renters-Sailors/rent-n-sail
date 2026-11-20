@@ -1,4 +1,6 @@
 insert into public.rental_equipment
+    (id, name, description, capacity_min, capacity_max, price_for_hour,
+     price_for_two_hours, price_for_full_day, slug, width, height)
 values
     (1, 'Kayak', 'A lightweight boat for exploring lakes, rivers, and coastlines.',
      1, 2, 18, 32.4, 72, 'kayak', 5125, 3417),
@@ -29,4 +31,5 @@ values
     (14, 'Kite surfing', 'A wind-powered board sport steered by a large controllable kite.',
      1, 1, 65, 117, 260, 'kite-surfing', 4681, 3121),
     (15, 'Jet boarding', 'A motorized board for riding quickly across the water.',
-     1, 1, 120, 216, 480, 'jet-boarding', 6000, 4000);
+     1, 1, 120, 216, 480, 'jet-boarding', 6000, 4000)
+on conflict (id) do nothing;

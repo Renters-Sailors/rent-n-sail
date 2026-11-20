@@ -20,6 +20,11 @@ export class AuthService {
   private readonly pending = signal<SignInPrompt | null>(null);
 
   readonly username = computed(() => this.user()?.username ?? null);
+  /** `undefined` until the server has been asked, then whether someone is signed in. */
+  readonly signedIn = computed(() => {
+    const user = this.user();
+    return user === undefined ? undefined : user !== null;
+  });
   /** Heading of the open sign-in dialog, or null when it's closed. */
   readonly prompt = computed(() => this.pending()?.reason ?? null);
 
